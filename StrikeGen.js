@@ -9229,6 +9229,145 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _evancz$elm_markdown$Native_Markdown = function() {
+
+
+// VIRTUAL-DOM WIDGETS
+
+function toHtml(options, factList, rawMarkdown)
+{
+	var model = {
+		options: options,
+		markdown: rawMarkdown
+	};
+	return _elm_lang$virtual_dom$Native_VirtualDom.custom(factList, model, implementation);
+}
+
+
+// WIDGET IMPLEMENTATION
+
+var implementation = {
+	render: render,
+	diff: diff
+};
+
+function render(model)
+{
+	var html = marked(model.markdown, formatOptions(model.options));
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	return div;
+}
+
+function diff(a, b)
+{
+	
+	if (a.model.markdown === b.model.markdown && a.model.options === b.model.options)
+	{
+		return null;
+	}
+
+	return {
+		applyPatch: applyPatch,
+		data: marked(b.model.markdown, formatOptions(b.model.options))
+	};
+}
+
+function applyPatch(domNode, data)
+{
+	domNode.innerHTML = data;
+	return domNode;
+}
+
+
+// ACTUAL MARKDOWN PARSER
+
+var marked = function() {
+	// catch the `marked` object regardless of the outer environment.
+	// (ex. a CommonJS module compatible environment.)
+	// note that this depends on marked's implementation of environment detection.
+	var module = {};
+	var exports = module.exports = {};
+
+	/**
+	 * marked - a markdown parser
+	 * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
+	 * https://github.com/chjj/marked
+	 */
+	(function(){var block={newline:/^\n+/,code:/^( {4}[^\n]+\n*)+/,fences:noop,hr:/^( *[-*_]){3,} *(?:\n+|$)/,heading:/^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,nptable:noop,lheading:/^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,blockquote:/^( *>[^\n]+(\n(?!def)[^\n]+)*\n*)+/,list:/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,html:/^ *(?:comment|closed|closing) *(?:\n{2,}|\s*$)/,def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,table:noop,paragraph:/^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,text:/^[^\n]+/};block.bullet=/(?:[*+-]|\d+\.)/;block.item=/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;block.item=replace(block.item,"gm")(/bull/g,block.bullet)();block.list=replace(block.list)(/bull/g,block.bullet)("hr","\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))")("def","\\n+(?="+block.def.source+")")();block.blockquote=replace(block.blockquote)("def",block.def)();block._tag="(?!(?:"+"a|em|strong|small|s|cite|q|dfn|abbr|data|time|code"+"|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo"+"|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b";block.html=replace(block.html)("comment",/<!--[\s\S]*?-->/)("closed",/<(tag)[\s\S]+?<\/\1>/)("closing",/<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g,block._tag)();block.paragraph=replace(block.paragraph)("hr",block.hr)("heading",block.heading)("lheading",block.lheading)("blockquote",block.blockquote)("tag","<"+block._tag)("def",block.def)();block.normal=merge({},block);block.gfm=merge({},block.normal,{fences:/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/,paragraph:/^/});block.gfm.paragraph=replace(block.paragraph)("(?!","(?!"+block.gfm.fences.source.replace("\\1","\\2")+"|"+block.list.source.replace("\\1","\\3")+"|")();block.tables=merge({},block.gfm,{nptable:/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,table:/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/});function Lexer(options){this.tokens=[];this.tokens.links={};this.options=options||marked.defaults;this.rules=block.normal;if(this.options.gfm){if(this.options.tables){this.rules=block.tables}else{this.rules=block.gfm}}}Lexer.rules=block;Lexer.lex=function(src,options){var lexer=new Lexer(options);return lexer.lex(src)};Lexer.prototype.lex=function(src){src=src.replace(/\r\n|\r/g,"\n").replace(/\t/g,"    ").replace(/\u00a0/g," ").replace(/\u2424/g,"\n");return this.token(src,true)};Lexer.prototype.token=function(src,top,bq){var src=src.replace(/^ +$/gm,""),next,loose,cap,bull,b,item,space,i,l;while(src){if(cap=this.rules.newline.exec(src)){src=src.substring(cap[0].length);if(cap[0].length>1){this.tokens.push({type:"space"})}}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);cap=cap[0].replace(/^ {4}/gm,"");this.tokens.push({type:"code",text:!this.options.pedantic?cap.replace(/\n+$/,""):cap});continue}if(cap=this.rules.fences.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"code",lang:cap[2],text:cap[3]});continue}if(cap=this.rules.heading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[1].length,text:cap[2]});continue}if(top&&(cap=this.rules.nptable.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].split(/ *\| */)}this.tokens.push(item);continue}if(cap=this.rules.lheading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[2]==="="?1:2,text:cap[1]});continue}if(cap=this.rules.hr.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"hr"});continue}if(cap=this.rules.blockquote.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"blockquote_start"});cap=cap[0].replace(/^ *> ?/gm,"");this.token(cap,top,true);this.tokens.push({type:"blockquote_end"});continue}if(cap=this.rules.list.exec(src)){src=src.substring(cap[0].length);bull=cap[2];this.tokens.push({type:"list_start",ordered:bull.length>1});cap=cap[0].match(this.rules.item);next=false;l=cap.length;i=0;for(;i<l;i++){item=cap[i];space=item.length;item=item.replace(/^ *([*+-]|\d+\.) +/,"");if(~item.indexOf("\n ")){space-=item.length;item=!this.options.pedantic?item.replace(new RegExp("^ {1,"+space+"}","gm"),""):item.replace(/^ {1,4}/gm,"")}if(this.options.smartLists&&i!==l-1){b=block.bullet.exec(cap[i+1])[0];if(bull!==b&&!(bull.length>1&&b.length>1)){src=cap.slice(i+1).join("\n")+src;i=l-1}}loose=next||/\n\n(?!\s*$)/.test(item);if(i!==l-1){next=item.charAt(item.length-1)==="\n";if(!loose)loose=next}this.tokens.push({type:loose?"loose_item_start":"list_item_start"});this.token(item,false,bq);this.tokens.push({type:"list_item_end"})}this.tokens.push({type:"list_end"});continue}if(cap=this.rules.html.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:this.options.sanitize?"paragraph":"html",pre:cap[1]==="pre"||cap[1]==="script"||cap[1]==="style",text:cap[0]});continue}if(!bq&&top&&(cap=this.rules.def.exec(src))){src=src.substring(cap[0].length);this.tokens.links[cap[1].toLowerCase()]={href:cap[2],title:cap[3]};continue}if(top&&(cap=this.rules.table.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/(?: *\| *)?\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].replace(/^ *\| *| *\| *$/g,"").split(/ *\| */)}this.tokens.push(item);continue}if(top&&(cap=this.rules.paragraph.exec(src))){src=src.substring(cap[0].length);this.tokens.push({type:"paragraph",text:cap[1].charAt(cap[1].length-1)==="\n"?cap[1].slice(0,-1):cap[1]});continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"text",text:cap[0]});continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return this.tokens};var inline={escape:/^\\([\\`*{}\[\]()#+\-.!_>])/,autolink:/^<([^ >]+(@|:\/)[^ >]+)>/,url:noop,tag:/^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,link:/^!?\[(inside)\]\(href\)/,reflink:/^!?\[(inside)\]\s*\[([^\]]*)\]/,nolink:/^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,strong:/^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,em:/^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,code:/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,br:/^ {2,}\n(?!\s*$)/,del:noop,text:/^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/};inline._inside=/(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;inline._href=/\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;inline.link=replace(inline.link)("inside",inline._inside)("href",inline._href)();inline.reflink=replace(inline.reflink)("inside",inline._inside)();inline.normal=merge({},inline);inline.pedantic=merge({},inline.normal,{strong:/^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,em:/^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/});inline.gfm=merge({},inline.normal,{escape:replace(inline.escape)("])","~|])")(),url:/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,del:/^~~(?=\S)([\s\S]*?\S)~~/,text:replace(inline.text)("]|","~]|")("|","|https?://|")()});inline.breaks=merge({},inline.gfm,{br:replace(inline.br)("{2,}","*")(),text:replace(inline.gfm.text)("{2,}","*")()});function InlineLexer(links,options){this.options=options||marked.defaults;this.links=links;this.rules=inline.normal;this.renderer=this.options.renderer||new Renderer;this.renderer.options=this.options;if(!this.links){throw new Error("Tokens array requires a `links` property.")}if(this.options.gfm){if(this.options.breaks){this.rules=inline.breaks}else{this.rules=inline.gfm}}else if(this.options.pedantic){this.rules=inline.pedantic}}InlineLexer.rules=inline;InlineLexer.output=function(src,links,options){var inline=new InlineLexer(links,options);return inline.output(src)};InlineLexer.prototype.output=function(src){var out="",link,text,href,cap;while(src){if(cap=this.rules.escape.exec(src)){src=src.substring(cap[0].length);out+=cap[1];continue}if(cap=this.rules.autolink.exec(src)){src=src.substring(cap[0].length);if(cap[2]==="@"){text=cap[1].charAt(6)===":"?this.mangle(cap[1].substring(7)):this.mangle(cap[1]);href=this.mangle("mailto:")+text}else{text=escape(cap[1]);href=text}out+=this.renderer.link(href,null,text);continue}if(!this.inLink&&(cap=this.rules.url.exec(src))){src=src.substring(cap[0].length);text=escape(cap[1]);href=text;out+=this.renderer.link(href,null,text);continue}if(cap=this.rules.tag.exec(src)){if(!this.inLink&&/^<a /i.test(cap[0])){this.inLink=true}else if(this.inLink&&/^<\/a>/i.test(cap[0])){this.inLink=false}src=src.substring(cap[0].length);out+=this.options.sanitize?escape(cap[0]):cap[0];continue}if(cap=this.rules.link.exec(src)){src=src.substring(cap[0].length);this.inLink=true;out+=this.outputLink(cap,{href:cap[2],title:cap[3]});this.inLink=false;continue}if((cap=this.rules.reflink.exec(src))||(cap=this.rules.nolink.exec(src))){src=src.substring(cap[0].length);link=(cap[2]||cap[1]).replace(/\s+/g," ");link=this.links[link.toLowerCase()];if(!link||!link.href){out+=cap[0].charAt(0);src=cap[0].substring(1)+src;continue}this.inLink=true;out+=this.outputLink(cap,link);this.inLink=false;continue}if(cap=this.rules.strong.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.strong(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.em.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.em(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.codespan(escape(cap[2],true));continue}if(cap=this.rules.br.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.br();continue}if(cap=this.rules.del.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.del(this.output(cap[1]));continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);out+=escape(this.smartypants(cap[0]));continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return out};InlineLexer.prototype.outputLink=function(cap,link){var href=escape(link.href),title=link.title?escape(link.title):null;return cap[0].charAt(0)!=="!"?this.renderer.link(href,title,this.output(cap[1])):this.renderer.image(href,title,escape(cap[1]))};InlineLexer.prototype.smartypants=function(text){if(!this.options.smartypants)return text;return text.replace(/--/g,"—").replace(/(^|[-\u2014/(\[{"\s])'/g,"$1‘").replace(/'/g,"’").replace(/(^|[-\u2014/(\[{\u2018\s])"/g,"$1“").replace(/"/g,"”").replace(/\.{3}/g,"…")};InlineLexer.prototype.mangle=function(text){var out="",l=text.length,i=0,ch;for(;i<l;i++){ch=text.charCodeAt(i);if(Math.random()>.5){ch="x"+ch.toString(16)}out+="&#"+ch+";"}return out};function Renderer(options){this.options=options||{}}Renderer.prototype.code=function(code,lang,escaped){if(this.options.highlight){var out=this.options.highlight(code,lang);if(out!=null&&out!==code){escaped=true;code=out}}if(!lang){return"<pre><code>"+(escaped?code:escape(code,true))+"\n</code></pre>"}return'<pre><code class="'+this.options.langPrefix+escape(lang,true)+'">'+(escaped?code:escape(code,true))+"\n</code></pre>\n"};Renderer.prototype.blockquote=function(quote){return"<blockquote>\n"+quote+"</blockquote>\n"};Renderer.prototype.html=function(html){return html};Renderer.prototype.heading=function(text,level,raw){return"<h"+level+' id="'+this.options.headerPrefix+raw.toLowerCase().replace(/[^\w]+/g,"-")+'">'+text+"</h"+level+">\n"};Renderer.prototype.hr=function(){return this.options.xhtml?"<hr/>\n":"<hr>\n"};Renderer.prototype.list=function(body,ordered){var type=ordered?"ol":"ul";return"<"+type+">\n"+body+"</"+type+">\n"};Renderer.prototype.listitem=function(text){return"<li>"+text+"</li>\n"};Renderer.prototype.paragraph=function(text){return"<p>"+text+"</p>\n"};Renderer.prototype.table=function(header,body){return"<table>\n"+"<thead>\n"+header+"</thead>\n"+"<tbody>\n"+body+"</tbody>\n"+"</table>\n"};Renderer.prototype.tablerow=function(content){return"<tr>\n"+content+"</tr>\n"};Renderer.prototype.tablecell=function(content,flags){var type=flags.header?"th":"td";var tag=flags.align?"<"+type+' style="text-align:'+flags.align+'">':"<"+type+">";return tag+content+"</"+type+">\n"};Renderer.prototype.strong=function(text){return"<strong>"+text+"</strong>"};Renderer.prototype.em=function(text){return"<em>"+text+"</em>"};Renderer.prototype.codespan=function(text){return"<code>"+text+"</code>"};Renderer.prototype.br=function(){return this.options.xhtml?"<br/>":"<br>"};Renderer.prototype.del=function(text){return"<del>"+text+"</del>"};Renderer.prototype.link=function(href,title,text){if(this.options.sanitize){try{var prot=decodeURIComponent(unescape(href)).replace(/[^\w:]/g,"").toLowerCase()}catch(e){return""}if(prot.indexOf("javascript:")===0){return""}}var out='<a href="'+href+'"';if(title){out+=' title="'+title+'"'}out+=">"+text+"</a>";return out};Renderer.prototype.image=function(href,title,text){var out='<img src="'+href+'" alt="'+text+'"';if(title){out+=' title="'+title+'"'}out+=this.options.xhtml?"/>":">";return out};function Parser(options){this.tokens=[];this.token=null;this.options=options||marked.defaults;this.options.renderer=this.options.renderer||new Renderer;this.renderer=this.options.renderer;this.renderer.options=this.options}Parser.parse=function(src,options,renderer){var parser=new Parser(options,renderer);return parser.parse(src)};Parser.prototype.parse=function(src){this.inline=new InlineLexer(src.links,this.options,this.renderer);this.tokens=src.reverse();var out="";while(this.next()){out+=this.tok()}return out};Parser.prototype.next=function(){return this.token=this.tokens.pop()};Parser.prototype.peek=function(){return this.tokens[this.tokens.length-1]||0};Parser.prototype.parseText=function(){var body=this.token.text;while(this.peek().type==="text"){body+="\n"+this.next().text}return this.inline.output(body)};Parser.prototype.tok=function(){switch(this.token.type){case"space":{return""}case"hr":{return this.renderer.hr()}case"heading":{return this.renderer.heading(this.inline.output(this.token.text),this.token.depth,this.token.text)}case"code":{return this.renderer.code(this.token.text,this.token.lang,this.token.escaped)}case"table":{var header="",body="",i,row,cell,flags,j;cell="";for(i=0;i<this.token.header.length;i++){flags={header:true,align:this.token.align[i]};cell+=this.renderer.tablecell(this.inline.output(this.token.header[i]),{header:true,align:this.token.align[i]})}header+=this.renderer.tablerow(cell);for(i=0;i<this.token.cells.length;i++){row=this.token.cells[i];cell="";for(j=0;j<row.length;j++){cell+=this.renderer.tablecell(this.inline.output(row[j]),{header:false,align:this.token.align[j]})}body+=this.renderer.tablerow(cell)}return this.renderer.table(header,body)}case"blockquote_start":{var body="";while(this.next().type!=="blockquote_end"){body+=this.tok()}return this.renderer.blockquote(body)}case"list_start":{var body="",ordered=this.token.ordered;while(this.next().type!=="list_end"){body+=this.tok()}return this.renderer.list(body,ordered)}case"list_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.token.type==="text"?this.parseText():this.tok()}return this.renderer.listitem(body)}case"loose_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.tok()}return this.renderer.listitem(body)}case"html":{var html=!this.token.pre&&!this.options.pedantic?this.inline.output(this.token.text):this.token.text;return this.renderer.html(html)}case"paragraph":{return this.renderer.paragraph(this.inline.output(this.token.text))}case"text":{return this.renderer.paragraph(this.parseText())}}};function escape(html,encode){return html.replace(!encode?/&(?!#?\w+;)/g:/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function unescape(html){return html.replace(/&([#\w]+);/g,function(_,n){n=n.toLowerCase();if(n==="colon")return":";if(n.charAt(0)==="#"){return n.charAt(1)==="x"?String.fromCharCode(parseInt(n.substring(2),16)):String.fromCharCode(+n.substring(1))}return""})}function replace(regex,opt){regex=regex.source;opt=opt||"";return function self(name,val){if(!name)return new RegExp(regex,opt);val=val.source||val;val=val.replace(/(^|[^\[])\^/g,"$1");regex=regex.replace(name,val);return self}}function noop(){}noop.exec=noop;function merge(obj){var i=1,target,key;for(;i<arguments.length;i++){target=arguments[i];for(key in target){if(Object.prototype.hasOwnProperty.call(target,key)){obj[key]=target[key]}}}return obj}function marked(src,opt,callback){if(callback||typeof opt==="function"){if(!callback){callback=opt;opt=null}opt=merge({},marked.defaults,opt||{});var highlight=opt.highlight,tokens,pending,i=0;try{tokens=Lexer.lex(src,opt)}catch(e){return callback(e)}pending=tokens.length;var done=function(err){if(err){opt.highlight=highlight;return callback(err)}var out;try{out=Parser.parse(tokens,opt)}catch(e){err=e}opt.highlight=highlight;return err?callback(err):callback(null,out)};if(!highlight||highlight.length<3){return done()}delete opt.highlight;if(!pending)return done();for(;i<tokens.length;i++){(function(token){if(token.type!=="code"){return--pending||done()}return highlight(token.text,token.lang,function(err,code){if(err)return done(err);if(code==null||code===token.text){return--pending||done()}token.text=code;token.escaped=true;--pending||done()})})(tokens[i])}return}try{if(opt)opt=merge({},marked.defaults,opt);return Parser.parse(Lexer.lex(src,opt),opt)}catch(e){e.message+="\nPlease report this to https://github.com/chjj/marked.";if((opt||marked.defaults).silent){return"<p>An error occured:</p><pre>"+escape(e.message+"",true)+"</pre>"}throw e}}marked.options=marked.setOptions=function(opt){merge(marked.defaults,opt);return marked};marked.defaults={gfm:true,tables:true,breaks:false,pedantic:false,sanitize:false,smartLists:false,silent:false,highlight:null,langPrefix:"lang-",smartypants:false,headerPrefix:"",renderer:new Renderer,xhtml:false};marked.Parser=Parser;marked.parser=Parser.parse;marked.Renderer=Renderer;marked.Lexer=Lexer;marked.lexer=Lexer.lex;marked.InlineLexer=InlineLexer;marked.inlineLexer=InlineLexer.output;marked.parse=marked;if(typeof module!=="undefined"&&typeof exports==="object"){module.exports=marked}else if(typeof define==="function"&&define.amd){define(function(){return marked})}else{this.marked=marked}}).call(function(){return this||(typeof window!=="undefined"?window:global)}());
+
+	return module.exports;
+}();
+
+
+// FORMAT OPTIONS FOR MARKED IMPLEMENTATION
+
+function formatOptions(options)
+{
+	function toHighlight(code, lang)
+	{
+		if (!lang && options.defaultHighlighting.ctor === 'Just')
+		{
+			lang = options.defaultHighlighting._0;
+		}
+
+		if (typeof hljs !== 'undefined' && lang && hljs.listLanguages().indexOf(lang) >= 0)
+		{
+			return hljs.highlight(lang, code, true).value;
+		}
+
+		return code;
+	}
+
+	var gfm = options.githubFlavored;
+	if (gfm.ctor === 'Just')
+	{
+		return {
+			highlight: toHighlight,
+			gfm: true,
+			tables: gfm._0.tables,
+			breaks: gfm._0.breaks,
+			sanitize: options.sanitize,
+			smartypants: options.smartypants
+		};
+	}
+
+	return {
+		highlight: toHighlight,
+		gfm: false,
+		tables: false,
+		breaks: false,
+		sanitize: options.sanitize,
+		smartypants: options.smartypants
+	};
+}
+
+
+// EXPORTS
+
+return {
+	toHtml: F3(toHtml)
+};
+
+}();
+
+var _evancz$elm_markdown$Markdown$toHtmlWith = _evancz$elm_markdown$Native_Markdown.toHtml;
+var _evancz$elm_markdown$Markdown$defaultOptions = {
+	githubFlavored: _elm_lang$core$Maybe$Just(
+		{tables: false, breaks: false}),
+	defaultHighlighting: _elm_lang$core$Maybe$Nothing,
+	sanitize: false,
+	smartypants: false
+};
+var _evancz$elm_markdown$Markdown$toHtml = F2(
+	function (attrs, string) {
+		return A3(_evancz$elm_markdown$Native_Markdown.toHtml, _evancz$elm_markdown$Markdown$defaultOptions, attrs, string);
+	});
+var _evancz$elm_markdown$Markdown$Options = F4(
+	function (a, b, c, d) {
+		return {githubFlavored: a, defaultHighlighting: b, sanitize: c, smartypants: d};
+	});
+
 var _user$project$FormsModel$fieldDel = function (x) {
 	var _p0 = x;
 	switch (_p0.ctor) {
@@ -9279,7 +9418,29 @@ var _user$project$ModelDB$indirectLookup = F6(
 			}
 		}
 	});
-var _user$project$ModelDB$blankDatabase = {backgrounds: _elm_lang$core$Dict$empty, origins: _elm_lang$core$Dict$empty};
+var _user$project$ModelDB$splitTexts = function (str) {
+	var extractParaKey = function (s) {
+		var theHead = A2(
+			_elm_lang$core$Maybe$withDefault,
+			'BrokenHeader',
+			_elm_lang$core$List$head(s));
+		var theTail = A2(
+			_elm_lang$core$Maybe$withDefault,
+			_elm_lang$core$Native_List.fromArray(
+				['Header without a body in texts??']),
+			_elm_lang$core$List$tail(s));
+		return {
+			ctor: '_Tuple2',
+			_0: theHead,
+			_1: A2(_elm_lang$core$String$join, '\n', theTail)
+		};
+	};
+	var paragraphs = A2(_elm_lang$core$String$split, '@@', str);
+	var brokenParas = A2(_elm_lang$core$List$map, _elm_lang$core$String$lines, paragraphs);
+	var paraPairs = A2(_elm_lang$core$List$map, extractParaKey, brokenParas);
+	return _elm_lang$core$Dict$fromList(paraPairs);
+};
+var _user$project$ModelDB$blankDatabase = {backgrounds: _elm_lang$core$Dict$empty, origins: _elm_lang$core$Dict$empty, texts: _elm_lang$core$Dict$empty};
 var _user$project$ModelDB$blankCharacter = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -9334,9 +9495,25 @@ var _user$project$ModelDB$updateDatabase = F2(
 				database: updater(model.database)
 			});
 	});
-var _user$project$ModelDB$overtext = F2(
-	function (key, $default) {
-		return $default;
+var _user$project$ModelDB$unpackTexts = F2(
+	function (str, model) {
+		return A2(
+			_user$project$ModelDB$updateDatabase,
+			function (d) {
+				return _elm_lang$core$Native_Utils.update(
+					d,
+					{
+						texts: _user$project$ModelDB$splitTexts(str)
+					});
+			},
+			model);
+	});
+var _user$project$ModelDB$overtext = F3(
+	function (model, key, $default) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			$default,
+			A2(_elm_lang$core$Dict$get, key, model.database.texts));
 	});
 var _user$project$ModelDB$getResponseInt = F3(
 	function (model, key, $default) {
@@ -9391,9 +9568,9 @@ var _user$project$ModelDB$Model = F2(
 	function (a, b) {
 		return {character: a, database: b};
 	});
-var _user$project$ModelDB$Database = F2(
-	function (a, b) {
-		return {backgrounds: a, origins: b};
+var _user$project$ModelDB$Database = F3(
+	function (a, b, c) {
+		return {backgrounds: a, origins: b, texts: c};
 	});
 var _user$project$ModelDB$Skill = F2(
 	function (a, b) {
@@ -9510,15 +9687,18 @@ var _user$project$ModelDB$KitAdvance = F2(
 	function (a, b) {
 		return {name: a, desc: b};
 	});
-var _user$project$ModelDB$Power = F7(
-	function (a, b, c, d, e, f, g) {
-		return {name: a, text: b, slot: c, freq: d, range: e, area: f, damage: g};
+var _user$project$ModelDB$Power = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {name: a, text: b, slot: c, freq: d, range: e, area: f, damage: g, styl: h};
 	});
-var _user$project$ModelDB$Class = F5(
-	function (a, b, c, d, e) {
-		return {name: a, classPowerList: b, classForms: c, modifyBasicMeleeDamage: d, modifyBasicRangeDamage: e};
+var _user$project$ModelDB$Class = F6(
+	function (a, b, c, d, e, f) {
+		return {name: a, classPowerList: b, classForms: c, modifyBasicMeleeDamage: d, modifyBasicRangeDamage: e, modifyBasicRangeRange: f};
 	});
 var _user$project$ModelDB$DoSave = {ctor: 'DoSave'};
+var _user$project$ModelDB$TextsLoaded = function (a) {
+	return {ctor: 'TextsLoaded', _0: a};
+};
 var _user$project$ModelDB$FormAddClicked = function (a) {
 	return {ctor: 'FormAddClicked', _0: a};
 };
@@ -9560,6 +9740,12 @@ var _user$project$ModelDB$dbUpdate = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: A2(_user$project$ModelDB$unpackOrigins, _p6._0, model),
+					_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/texts.md', _user$project$ModelDB$TextsLoaded)
+				};
+			case 'TextsLoaded':
+				return {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$ModelDB$unpackTexts, _p6._0, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -9587,14 +9773,44 @@ var _user$project$ModelDB$Role = {ctor: 'Role'};
 var _user$project$ModelDB$None = {ctor: 'None'};
 var _user$project$ModelDB$Encounter = {ctor: 'Encounter'};
 var _user$project$ModelDB$AtWill = {ctor: 'AtWill'};
+var _user$project$ModelDB$Purple = {ctor: 'Purple'};
+var _user$project$ModelDB$Green = {ctor: 'Green'};
+var _user$project$ModelDB$Yellow = {ctor: 'Yellow'};
+var _user$project$ModelDB$Blue = {ctor: 'Blue'};
+var _user$project$ModelDB$Red = {ctor: 'Red'};
+var _user$project$ModelDB$White = {ctor: 'White'};
 
-var _user$project$Ports$download = _elm_lang$core$Native_Platform.outgoingPort(
-	'download',
-	function (v) {
-		return [v._0, v._1];
+var _user$project$PowerUtilities$quickPower = F9(
+	function (name, page, slot, freq, range, area, damage, col, m) {
+		return {
+			name: name,
+			text: A3(
+				_user$project$ModelDB$overtext,
+				m,
+				A2(
+					_elm_lang$core$String$filter,
+					function (x) {
+						return !_elm_lang$core$Native_Utils.eq(
+							x,
+							_elm_lang$core$Native_Utils.chr(' '));
+					},
+					name),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'See page ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(page),
+						'.'))),
+			slot: slot,
+			freq: freq,
+			range: range,
+			area: area,
+			damage: damage,
+			styl: col
+		};
 	});
-
-var _user$project$Necromancer$powerChoiceField = F4(
+var _user$project$PowerUtilities$powerChoiceField = F4(
 	function (m, name, key, list) {
 		return _user$project$FormsModel$DropdownField(
 			{
@@ -9609,7 +9825,7 @@ var _user$project$Necromancer$powerChoiceField = F4(
 						list(m)))
 			});
 	});
-var _user$project$Necromancer$powerlookup = F3(
+var _user$project$PowerUtilities$powerlookup = F3(
 	function (m, key, list) {
 		var _p0 = A2(_user$project$ModelDB$getResponse, m, key);
 		if (_p0.ctor === 'Nothing') {
@@ -9629,7 +9845,7 @@ var _user$project$Necromancer$powerlookup = F3(
 			}
 		}
 	});
-var _user$project$Necromancer$powerDict = F2(
+var _user$project$PowerUtilities$powerDict = F2(
 	function (m, l) {
 		var toTuple = function (p) {
 			return {
@@ -9641,21 +9857,158 @@ var _user$project$Necromancer$powerDict = F2(
 		return _elm_lang$core$Dict$fromList(
 			A2(_elm_lang$core$List$map, toTuple, l));
 	});
+
+var _user$project$Archer$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Archer',
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$FormsModel$DropdownField(
+					{
+						name: 'Feature',
+						del: false,
+						key: 'archer-feature',
+						choices: _elm_lang$core$Native_List.fromArray(
+							['', 'Sniper', 'Blitzer', 'Sentinel'])
+					})
+				]))
+		]);
+};
+var _user$project$Archer$bullseye = A8(_user$project$PowerUtilities$quickPower, 'Bullseye', 107, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$aim = A8(_user$project$PowerUtilities$quickPower, 'Aim', 106, _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
+var _user$project$Archer$basicRangeRange = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+	if ((_p0.ctor === 'Just') && (_p0._0 === 'Sniper')) {
+		return 15;
+	} else {
+		return 5;
+	}
+};
+var _user$project$Archer$atWillDamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : 3;
+};
+var _user$project$Archer$basicRangeDamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 0 : 1;
+};
+var _user$project$Archer$basicMeleeDamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 0 : 1;
+};
+var _user$project$Archer$sniperDouble = F2(
+	function (m, i) {
+		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+		if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
+			return i * 2;
+		} else {
+			return i;
+		}
+	});
+var _user$project$Archer$flare = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Flare',
+		106,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		_user$project$Archer$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Archer$pinDown = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Pin Down',
+		106,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		_user$project$Archer$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Archer$areaDenial = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Area Denial',
+		106,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		_user$project$Archer$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Archer$powers = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Archer$aim(m),
+			_user$project$Archer$flare(m),
+			_user$project$Archer$pinDown(m),
+			_user$project$Archer$areaDenial(m)
+		]);
+};
+var _user$project$Archer$trickArrow = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Trick Arrow',
+		106,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$Encounter,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		3,
+		_user$project$ModelDB$Purple,
+		m);
+};
+var _user$project$Archer$extraTrickArrow = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Extra Trick Arrow',
+		107,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$Encounter,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		3,
+		_user$project$ModelDB$Purple,
+		m);
+};
+var _user$project$Archer$classArcher = {name: 'Archer', classPowerList: _user$project$Archer$powers, classForms: _user$project$Archer$forms, modifyBasicMeleeDamage: _user$project$Archer$basicMeleeDamage, modifyBasicRangeDamage: _user$project$Archer$basicRangeDamage, modifyBasicRangeRange: _user$project$Archer$basicRangeRange};
+
+var _user$project$Ports$download = _elm_lang$core$Native_Platform.outgoingPort(
+	'download',
+	function (v) {
+		return [v._0, v._1];
+	});
+
 var _user$project$Necromancer$giftPower = function (m) {
-	var _p2 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
-	if (_p2.ctor === 'Nothing') {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
+	if (_p0.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
-		var _p5 = _p2._0;
+		var _p3 = _p0._0;
 		var giftLevel = (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
 			5) < 0) ? 1 : ((_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
 			9) < 0) ? 2 : 3);
 		var giftLevelDesc = function () {
-			var _p3 = giftLevel;
-			switch (_p3) {
+			var _p1 = giftLevel;
+			switch (_p1) {
 				case 1:
 					return 'Lesser';
 				case 2:
@@ -9669,14 +10022,14 @@ var _user$project$Necromancer$giftPower = function (m) {
 		var giftTextKey = A2(
 			_elm_lang$core$Basics_ops['++'],
 			giftLevelDesc,
-			A2(_elm_lang$core$Basics_ops['++'], 'GiftOf', _p5));
+			A2(_elm_lang$core$Basics_ops['++'], 'GiftOf', _p3));
 		var giftName = A2(
 			_elm_lang$core$Basics_ops['++'],
 			giftLevelDesc,
-			A2(_elm_lang$core$Basics_ops['++'], ' Gift Of ', _p5));
+			A2(_elm_lang$core$Basics_ops['++'], ' Gift Of ', _p3));
 		var giftPage = function () {
-			var _p4 = giftLevel;
-			switch (_p4) {
+			var _p2 = giftLevel;
+			switch (_p2) {
 				case 1:
 					return '102';
 				case 2:
@@ -9691,8 +10044,9 @@ var _user$project$Necromancer$giftPower = function (m) {
 			[
 				{
 				name: giftName,
-				text: A2(
+				text: A3(
 					_user$project$ModelDB$overtext,
+					m,
 					giftTextKey,
 					A2(
 						_elm_lang$core$Basics_ops['++'],
@@ -9702,7 +10056,8 @@ var _user$project$Necromancer$giftPower = function (m) {
 				freq: _user$project$ModelDB$None,
 				range: 0,
 				area: 0,
-				damage: 0
+				damage: 0,
+				styl: _user$project$ModelDB$White
 			}
 			]);
 	}
@@ -9710,214 +10065,230 @@ var _user$project$Necromancer$giftPower = function (m) {
 var _user$project$Necromancer$markOfDeath = function (m) {
 	return {
 		name: 'Mark of Death',
-		text: A2(_user$project$ModelDB$overtext, 'MarkOfDeath', 'See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'MarkOfDeath', 'See page 102.'),
 		slot: _user$project$ModelDB$Special,
 		freq: _user$project$ModelDB$None,
 		range: 0,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$White
 	};
 };
 var _user$project$Necromancer$terror = function (m) {
 	return {
 		name: 'Terror',
-		text: A2(_user$project$ModelDB$overtext, 'Terror', 'See page 103.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'Terror', 'See page 103.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: -5,
 		area: 0,
-		damage: 4
+		damage: 4,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$playDiceWithDeath = function (m) {
 	return {
 		name: 'Play Dice with Death',
-		text: A2(_user$project$ModelDB$overtext, 'PlayDiceWithDeath', 'See page 103.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'PlayDiceWithDeath', 'See page 103.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 10,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$armyOfSpecters = function (m) {
 	return {
 		name: 'Army of Specters',
-		text: A2(_user$project$ModelDB$overtext, 'ArmyOfSpecters', 'See page 103.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'ArmyOfSpecters', 'See page 103.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 10,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$crudeDomination = function (m) {
 	return {
 		name: 'Crude Domination',
-		text: A2(_user$project$ModelDB$overtext, 'CrudeDomination', 'See page 103.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'CrudeDomination', 'See page 103.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 5,
 		area: 0,
-		damage: 4
+		damage: 4,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$l7encoptions = function (m) {
 	return A2(
-		_user$project$Necromancer$powerDict,
+		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
 			[_user$project$Necromancer$crudeDomination, _user$project$Necromancer$armyOfSpecters, _user$project$Necromancer$playDiceWithDeath, _user$project$Necromancer$terror]));
 };
 var _user$project$Necromancer$l7encpower = function (m) {
-	return A3(_user$project$Necromancer$powerlookup, m, 'necro-enc7', _user$project$Necromancer$l7encoptions);
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc7', _user$project$Necromancer$l7encoptions);
 };
 var _user$project$Necromancer$healthSwap = function (m) {
 	return {
 		name: 'Health Swap',
-		text: A2(_user$project$ModelDB$overtext, 'HealthSwap', 'Free Action. See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'HealthSwap', 'Free Action. See page 102.'),
 		slot: _user$project$ModelDB$Misc,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$lichPact = function (m) {
 	return {
 		name: 'Lich Pact',
-		text: A2(_user$project$ModelDB$overtext, 'LichPact', 'Reaction. See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'LichPact', 'Reaction. See page 102.'),
 		slot: _user$project$ModelDB$Reaction,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$greaterMarkOfDeath = function (m) {
 	return {
 		name: 'Greater Mark Of Death',
-		text: A2(_user$project$ModelDB$overtext, 'GreaterMarkOfDeath', 'See page 102.'),
+		text: function () {
+			var _p4 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
+			if ((_p4.ctor === 'Just') && (_p4._0 === 'Undeath')) {
+				return A3(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeathWithUndeath', 'See page 102.');
+			} else {
+				return A3(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeath', 'See page 102.');
+			}
+		}(),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: -5,
 		area: 0,
-		damage: 3
+		damage: 3,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$l3encoptions = function (m) {
 	return A2(
-		_user$project$Necromancer$powerDict,
+		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
 			[_user$project$Necromancer$greaterMarkOfDeath, _user$project$Necromancer$lichPact, _user$project$Necromancer$healthSwap]));
 };
 var _user$project$Necromancer$l3encpower = function (m) {
-	return A3(_user$project$Necromancer$powerlookup, m, 'necro-enc3', _user$project$Necromancer$l3encoptions);
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc3', _user$project$Necromancer$l3encoptions);
 };
-var _user$project$Necromancer$seedOfFear = function (m) {
-	return {
-		name: 'Seed Of Fear',
-		text: A2(_user$project$ModelDB$overtext, 'SeedOfFear', 'See page 102.'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 5,
-		area: 0,
-		damage: 3
-	};
-};
+var _user$project$Necromancer$seedOfFear = A8(_user$project$PowerUtilities$quickPower, 'Seed Of Fear', 102, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple);
 var _user$project$Necromancer$raiseAlly = function (m) {
 	return {
 		name: 'Raise Ally',
-		text: A2(_user$project$ModelDB$overtext, 'RaiseAlly', 'Free action. See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'RaiseAlly', 'Free action. See page 102.'),
 		slot: _user$project$ModelDB$Misc,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$corpseExplosion = function (m) {
 	return {
 		name: 'Corpse Explosion',
-		text: A2(_user$project$ModelDB$overtext, 'CorpseExplosion', 'See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'CorpseExplosion', 'See page 102.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$lifeDrain = function (m) {
 	return {
 		name: 'Life Drain',
-		text: A2(_user$project$ModelDB$overtext, 'LifeDrain', 'See page 102.'),
+		text: A3(_user$project$ModelDB$overtext, m, 'LifeDrain', 'See page 102.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
 		area: 0,
-		damage: 2
+		damage: 2,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$l1encoptions = function (m) {
 	return A2(
-		_user$project$Necromancer$powerDict,
+		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
 			[_user$project$Necromancer$lifeDrain, _user$project$Necromancer$corpseExplosion, _user$project$Necromancer$raiseAlly, _user$project$Necromancer$seedOfFear]));
 };
 var _user$project$Necromancer$l1encpower = function (m) {
-	return A3(_user$project$Necromancer$powerlookup, m, 'necro-enc', _user$project$Necromancer$l1encoptions);
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc', _user$project$Necromancer$l1encoptions);
 };
-var _user$project$Necromancer$terrifyingVisage = function (m) {
-	return {
-		name: 'Terrifying Visage',
-		text: (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A2(_user$project$ModelDB$overtext, 'TerrifyingVisage', 'See page 102.') : A2(_user$project$ModelDB$overtext, 'TerrifyingVisage5+', 'See page 102 (improved).'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 5,
-		area: 0,
-		damage: 2
-	};
-};
-var _user$project$Necromancer$phantasms = function (m) {
-	return {
-		name: 'Phantasms',
-		text: A2(_user$project$ModelDB$overtext, 'Phantasms', 'See page 102.'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 5,
-		area: 0,
-		damage: 2
-	};
+var _user$project$Necromancer$atwilldamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : 3;
 };
 var _user$project$Necromancer$deadlyPoison = function (m) {
 	return {
 		name: 'Deadly Poison',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A2(_user$project$ModelDB$overtext, 'DeadlyPoison', 'See page 102.') : A2(_user$project$ModelDB$overtext, 'DeadlyPoison5+', 'See page 102 (increased ongoing damage).'),
+			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'DeadlyPoison', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'DeadlyPoison5+', 'See page 102 (increased ongoing damage).'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: -5,
 		area: 0,
-		damage: 2
+		damage: _user$project$Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
+	};
+};
+var _user$project$Necromancer$phantasms = function (m) {
+	return {
+		name: 'Phantasms',
+		text: A3(_user$project$ModelDB$overtext, m, 'Phantasms', 'See page 102.'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: 5,
+		area: 0,
+		damage: _user$project$Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
+	};
+};
+var _user$project$Necromancer$terrifyingVisage = function (m) {
+	return {
+		name: 'Terrifying Visage',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'TerrifyingVisage', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'TerrifyingVisage5+', 'See page 102 (improved).'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: 5,
+		area: 0,
+		damage: _user$project$Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
 	};
 };
 var _user$project$Necromancer$l1atwills = function (m) {
 	return A2(
-		_user$project$Necromancer$powerDict,
+		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
 			[_user$project$Necromancer$deadlyPoison, _user$project$Necromancer$phantasms, _user$project$Necromancer$terrifyingVisage]));
 };
 var _user$project$Necromancer$l1atwillpower1 = function (m) {
-	return A3(_user$project$Necromancer$powerlookup, m, 'necro-aw1', _user$project$Necromancer$l1atwills);
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw1', _user$project$Necromancer$l1atwills);
 };
 var _user$project$Necromancer$l1atwillpower2 = function (m) {
-	return A3(_user$project$Necromancer$powerlookup, m, 'necro-aw2', _user$project$Necromancer$l1atwills);
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw2', _user$project$Necromancer$l1atwills);
 };
 var _user$project$Necromancer$necroForm = function (m) {
 	return A3(
@@ -9936,8 +10307,8 @@ var _user$project$Necromancer$necroForm = function (m) {
 						choices: _elm_lang$core$Native_List.fromArray(
 							['', 'Undeath', 'Terror', 'Vampirism'])
 					}),
-					A4(_user$project$Necromancer$powerChoiceField, m, 'At-Will:', 'necro-aw1', _user$project$Necromancer$l1atwills),
-					A4(_user$project$Necromancer$powerChoiceField, m, 'At-Will:', 'necro-aw2', _user$project$Necromancer$l1atwills),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw1', _user$project$Necromancer$l1atwills),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw2', _user$project$Necromancer$l1atwills),
 					_user$project$FormsModel$DropdownField(
 					{
 						name: 'Encounter Power:',
@@ -10001,12 +10372,13 @@ var _user$project$Necromancer$commandUndead = function (m) {
 		name: 'Command Undead',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? A2(_user$project$ModelDB$overtext, 'CommandUndead', 'See page 102.') : A2(_user$project$ModelDB$overtext, 'CommandUndead9+', 'See pages 102 and 103.'),
+			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'CommandUndead', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'CommandUndead9+', 'See pages 102 and 103.'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 10,
 		area: 0,
-		damage: 0
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
 	};
 };
 var _user$project$Necromancer$necroPowers = function (m) {
@@ -10040,6 +10412,9 @@ var _user$project$Necromancer$necroPowers = function (m) {
 								7) > -1) ? _user$project$Necromancer$l7encpower(m) : _elm_lang$core$Native_List.fromArray(
 								[])))))));
 };
+var _user$project$Necromancer$basicRangeRange = function (m) {
+	return 0;
+};
 var _user$project$Necromancer$necroBasicRangeDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
@@ -10050,7 +10425,7 @@ var _user$project$Necromancer$necroBasicMeleeDamage = function (m) {
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 0 : 1;
 };
-var _user$project$Necromancer$classNecro = {name: 'Necromancer', classPowerList: _user$project$Necromancer$necroPowers, classForms: _user$project$Necromancer$necroForms, modifyBasicMeleeDamage: _user$project$Necromancer$necroBasicMeleeDamage, modifyBasicRangeDamage: _user$project$Necromancer$necroBasicRangeDamage};
+var _user$project$Necromancer$classNecro = {name: 'Necromancer', classPowerList: _user$project$Necromancer$necroPowers, classForms: _user$project$Necromancer$necroForms, modifyBasicMeleeDamage: _user$project$Necromancer$necroBasicMeleeDamage, modifyBasicRangeDamage: _user$project$Necromancer$necroBasicRangeDamage, modifyBasicRangeRange: _user$project$Necromancer$basicRangeRange};
 
 var _user$project$CharModel$encodeChar = function (model) {
 	return A2(
@@ -10083,9 +10458,9 @@ var _user$project$CharModel$updateExtendForm = F2(
 			return model;
 		}
 	});
-var _user$project$CharModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$Role, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0};
-var _user$project$CharModel$pRally = {name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0};
-var _user$project$CharModel$pcharge = {name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0};
+var _user$project$CharModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$Role, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Blue};
+var _user$project$CharModel$pRally = {name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow};
+var _user$project$CharModel$pcharge = {name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green};
 var _user$project$CharModel$levelForm = function (model) {
 	return A3(
 		_user$project$FormsModel$Form,
@@ -10626,7 +11001,8 @@ var _user$project$CharModel$init = {
 var _user$project$CharModel$classes = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro}
+			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro},
+			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Archer$classArcher}
 		]));
 var _user$project$CharModel$basicsForm = function (model) {
 	return A3(
@@ -10695,7 +11071,8 @@ var _user$project$CharModel$pmeleeBasic = function (m) {
 		freq: _user$project$ModelDB$AtWill,
 		range: 0,
 		area: 0,
-		damage: 2 + _user$project$CharModel$basicMeleeDamageModifier(m)
+		damage: 2 + _user$project$CharModel$basicMeleeDamageModifier(m),
+		styl: _user$project$ModelDB$Green
 	};
 };
 var _user$project$CharModel$basicRangeDamageModifier = function (m) {
@@ -10711,15 +11088,29 @@ var _user$project$CharModel$basicRangeDamageModifier = function (m) {
 		}
 	}
 };
+var _user$project$CharModel$basicRangeRangeModifier = function (m) {
+	var _p27 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
+	if (_p27.ctor === 'Nothing') {
+		return 0;
+	} else {
+		var _p28 = A2(_elm_lang$core$Dict$get, _p27._0, _user$project$CharModel$classes);
+		if (_p28.ctor === 'Nothing') {
+			return 0;
+		} else {
+			return _p28._0.modifyBasicRangeRange(m);
+		}
+	}
+};
 var _user$project$CharModel$prangedBasic = function (m) {
 	return {
 		name: 'Ranged Basic Attack',
 		text: 'No effect.',
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
-		range: 5,
+		range: 5 + _user$project$CharModel$basicRangeRangeModifier(m),
 		area: 0,
-		damage: 2 + _user$project$CharModel$basicRangeDamageModifier(m)
+		damage: 2 + _user$project$CharModel$basicRangeDamageModifier(m),
+		styl: _user$project$ModelDB$Green
 	};
 };
 var _user$project$CharModel$basicPowers = function (m) {
@@ -10733,27 +11124,6 @@ var _user$project$CharModel$basicPowers = function (m) {
 		]);
 };
 var _user$project$CharModel$classPowers = function (m) {
-	var _p27 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p27.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		var _p28 = A2(_elm_lang$core$Dict$get, _p27._0, _user$project$CharModel$classes);
-		if (_p28.ctor === 'Nothing') {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
-		} else {
-			return _p28._0.classPowerList(m);
-		}
-	}
-};
-var _user$project$CharModel$getPowers = function (m) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_user$project$CharModel$basicPowers(m),
-		_user$project$CharModel$classPowers(m));
-};
-var _user$project$CharModel$classForms = function (m) {
 	var _p29 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
 	if (_p29.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
@@ -10764,7 +11134,28 @@ var _user$project$CharModel$classForms = function (m) {
 			return _elm_lang$core$Native_List.fromArray(
 				[]);
 		} else {
-			return _p30._0.classForms(m);
+			return _p30._0.classPowerList(m);
+		}
+	}
+};
+var _user$project$CharModel$getPowers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$CharModel$basicPowers(m),
+		_user$project$CharModel$classPowers(m));
+};
+var _user$project$CharModel$classForms = function (m) {
+	var _p31 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
+	if (_p31.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		var _p32 = A2(_elm_lang$core$Dict$get, _p31._0, _user$project$CharModel$classes);
+		if (_p32.ctor === 'Nothing') {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		} else {
+			return _p32._0.classForms(m);
 		}
 	}
 };
@@ -10811,10 +11202,28 @@ var _user$project$View$fileops = A2(
 		[
 			_elm_lang$html$Html$text('Download')
 		]));
+var _user$project$View$powerOrder = function (power) {
+	var _p0 = power.styl;
+	switch (_p0.ctor) {
+		case 'White':
+			return 0;
+		case 'Green':
+			return 1;
+		case 'Blue':
+			return 2;
+		case 'Purple':
+			return 3;
+		case 'Red':
+			return 4;
+		default:
+			return 5;
+	}
+};
+var _user$project$View$mdOptions = {githubFlavored: _elm_lang$core$Maybe$Nothing, defaultHighlighting: _elm_lang$core$Maybe$Nothing, sanitize: true, smartypants: false};
 var _user$project$View$powerCard = function (power) {
 	var damageIcon = function () {
-		var _p0 = power.damage;
-		if (_p0 === 0) {
+		var _p1 = power.damage;
+		if (_p1 === 0) {
 			return _elm_lang$core$Native_List.fromArray(
 				[]);
 		} else {
@@ -10836,8 +11245,8 @@ var _user$project$View$powerCard = function (power) {
 		}
 	}();
 	var areaIcon = function () {
-		var _p1 = power.area;
-		if (_p1 === 0) {
+		var _p2 = power.area;
+		if (_p2 === 0) {
 			return _elm_lang$core$Native_List.fromArray(
 				[]);
 		} else {
@@ -10859,11 +11268,11 @@ var _user$project$View$powerCard = function (power) {
 		}
 	}();
 	var attackTypeIcon = function () {
-		var _p2 = power.slot;
-		if (_p2.ctor === 'Attack') {
-			var _p3 = power.range;
-			if (_p3 === 0) {
-				return _elm_lang$core$Native_List.fromArray(
+		var _p3 = power.slot;
+		if (_p3.ctor === 'Attack') {
+			var _p4 = power.range;
+			if (_p4 === 0) {
+				return _elm_lang$core$Native_Utils.eq(power.area, 0) ? _elm_lang$core$Native_List.fromArray(
 					[
 						A2(
 						_elm_lang$html$Html$img,
@@ -10875,9 +11284,10 @@ var _user$project$View$powerCard = function (power) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[]))
-					]);
+					]) : _elm_lang$core$Native_List.fromArray(
+					[]);
 			} else {
-				return (_elm_lang$core$Native_Utils.cmp(_p3, 0) > 0) ? _elm_lang$core$Native_List.fromArray(
+				return (_elm_lang$core$Native_Utils.cmp(_p4, 0) > 0) ? _elm_lang$core$Native_List.fromArray(
 					[
 						A2(
 						_elm_lang$html$Html$img,
@@ -10928,8 +11338,8 @@ var _user$project$View$powerCard = function (power) {
 		attackTypeIcon,
 		A2(_elm_lang$core$Basics_ops['++'], areaIcon, damageIcon));
 	var freqText = function () {
-		var _p4 = power.freq;
-		switch (_p4.ctor) {
+		var _p5 = power.freq;
+		switch (_p5.ctor) {
 			case 'AtWill':
 				return 'At-Will';
 			case 'Encounter':
@@ -10939,8 +11349,8 @@ var _user$project$View$powerCard = function (power) {
 		}
 	}();
 	var typeIcon = function () {
-		var _p5 = power.slot;
-		switch (_p5.ctor) {
+		var _p6 = power.slot;
+		switch (_p6.ctor) {
 			case 'Attack':
 				return 'attack.svg';
 			case 'Role':
@@ -10954,38 +11364,20 @@ var _user$project$View$powerCard = function (power) {
 		}
 	}();
 	var cardCssClass = function () {
-		var _p6 = power.freq;
-		switch (_p6.ctor) {
-			case 'AtWill':
-				var _p7 = power.slot;
-				switch (_p7.ctor) {
-					case 'Attack':
-						return 'atwillattack';
-					case 'Role':
-						return 'roleatwill';
-					case 'Misc':
-						return 'roleatwill';
-					case 'Reaction':
-						return 'special';
-					default:
-						return 'special';
-				}
-			case 'Encounter':
-				var _p8 = power.slot;
-				switch (_p8.ctor) {
-					case 'Attack':
-						return 'encattack';
-					case 'Role':
-						return 'roleenc';
-					case 'Misc':
-						return 'encmisc';
-					case 'Special':
-						return 'special';
-					default:
-						return 'encmisc';
-				}
+		var _p7 = power.styl;
+		switch (_p7.ctor) {
+			case 'Yellow':
+				return 'yellowpower';
+			case 'Red':
+				return 'redpower';
+			case 'Blue':
+				return 'bluepower';
+			case 'Green':
+				return 'greenpower';
+			case 'White':
+				return 'powerwhite';
 			default:
-				return 'special';
+				return 'purplepower';
 		}
 	}();
 	return A2(
@@ -11061,35 +11453,16 @@ var _user$project$View$powerCard = function (power) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(power.text)
+						A3(
+						_evancz$elm_markdown$Markdown$toHtmlWith,
+						_user$project$View$mdOptions,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						power.text)
 					]))
 			]));
 };
 var _user$project$View$powerCards = function (model) {
-	var weirdoes = A2(
-		_elm_lang$core$List$filter,
-		function (x) {
-			return _elm_lang$core$Native_Utils.eq(x.freq, _user$project$ModelDB$None) && (!_elm_lang$core$Native_Utils.eq(x.slot, _user$project$ModelDB$Special));
-		},
-		_user$project$CharModel$getPowers(model));
-	var encounters = A2(
-		_elm_lang$core$List$filter,
-		function (x) {
-			return _elm_lang$core$Native_Utils.eq(x.freq, _user$project$ModelDB$Encounter);
-		},
-		_user$project$CharModel$getPowers(model));
-	var atwills = A2(
-		_elm_lang$core$List$filter,
-		function (x) {
-			return _elm_lang$core$Native_Utils.eq(x.freq, _user$project$ModelDB$AtWill);
-		},
-		_user$project$CharModel$getPowers(model));
-	var specials = A2(
-		_elm_lang$core$List$filter,
-		function (x) {
-			return _elm_lang$core$Native_Utils.eq(x.slot, _user$project$ModelDB$Special);
-		},
-		_user$project$CharModel$getPowers(model));
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -11100,12 +11473,9 @@ var _user$project$View$powerCards = function (model) {
 			_elm_lang$core$List$map,
 			_user$project$View$powerCard,
 			A2(
-				_elm_lang$core$Basics_ops['++'],
-				specials,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					atwills,
-					A2(_elm_lang$core$Basics_ops['++'], encounters, weirdoes)))));
+				_elm_lang$core$List$sortBy,
+				_user$project$View$powerOrder,
+				_user$project$CharModel$getPowers(model))));
 };
 var _user$project$View$useIcon = F2(
 	function (icon, size) {
@@ -11126,9 +11496,9 @@ var _user$project$View$useIcon = F2(
 var _user$project$View$dropdownFieldOption = F3(
 	function (model, key, opt) {
 		var isSelected = function () {
-			var _p9 = A2(_elm_lang$core$Dict$get, key, model.character);
-			if (_p9.ctor === 'Just') {
-				return _elm_lang$core$Native_Utils.eq(opt, _p9._0);
+			var _p8 = A2(_elm_lang$core$Dict$get, key, model.character);
+			if (_p8.ctor === 'Just') {
+				return _elm_lang$core$Native_Utils.eq(opt, _p8._0);
 			} else {
 				return false;
 			}
@@ -11150,8 +11520,8 @@ var _user$project$View$targetAndWrap = function (f) {
 var _user$project$View$formFieldDisplay = F2(
 	function (model, field) {
 		var delCol = function () {
-			var _p10 = _user$project$FormsModel$fieldDel(field);
-			if (_p10 === true) {
+			var _p9 = _user$project$FormsModel$fieldDel(field);
+			if (_p9 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						A2(
@@ -11171,8 +11541,8 @@ var _user$project$View$formFieldDisplay = F2(
 			}
 		}();
 		var colSpanForDel = function () {
-			var _p11 = _user$project$FormsModel$fieldDel(field);
-			if (_p11 === true) {
+			var _p10 = _user$project$FormsModel$fieldDel(field);
+			if (_p10 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Attributes$colspan(1)
@@ -11184,10 +11554,53 @@ var _user$project$View$formFieldDisplay = F2(
 					]);
 			}
 		}();
-		var _p12 = field;
-		switch (_p12.ctor) {
+		var _p11 = field;
+		switch (_p11.ctor) {
 			case 'FreeformField':
-				var _p13 = _p12._0;
+				var _p12 = _p11._0;
+				return A2(
+					_elm_lang$html$Html$tr,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$td,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text(_p12.name)
+									])),
+								A2(
+								_elm_lang$html$Html$td,
+								colSpanForDel,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$input,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html_Events$on,
+												'change',
+												_user$project$View$targetAndWrap(
+													_user$project$ModelDB$FormFieldUpdated(_p12.key))),
+												_elm_lang$html$Html_Attributes$value(
+												A2(
+													_elm_lang$core$Maybe$withDefault,
+													'',
+													A2(_elm_lang$core$Dict$get, _p12.key, model.character)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[]))
+									]))
+							]),
+						delCol));
+			case 'DropdownField':
+				var _p13 = _p11._0;
 				return A2(
 					_elm_lang$html$Html$tr,
 					_elm_lang$core$Native_List.fromArray(
@@ -11210,27 +11623,24 @@ var _user$project$View$formFieldDisplay = F2(
 								_elm_lang$core$Native_List.fromArray(
 									[
 										A2(
-										_elm_lang$html$Html$input,
+										_elm_lang$html$Html$select,
 										_elm_lang$core$Native_List.fromArray(
 											[
 												A2(
 												_elm_lang$html$Html_Events$on,
 												'change',
 												_user$project$View$targetAndWrap(
-													_user$project$ModelDB$FormFieldUpdated(_p13.key))),
-												_elm_lang$html$Html_Attributes$value(
-												A2(
-													_elm_lang$core$Maybe$withDefault,
-													'',
-													A2(_elm_lang$core$Dict$get, _p13.key, model.character)))
+													_user$project$ModelDB$FormFieldUpdated(_p13.key)))
 											]),
-										_elm_lang$core$Native_List.fromArray(
-											[]))
+										A2(
+											_elm_lang$core$List$map,
+											A2(_user$project$View$dropdownFieldOption, model, _p13.key),
+											_p13.choices))
 									]))
 							]),
 						delCol));
-			case 'DropdownField':
-				var _p14 = _p12._0;
+			default:
+				var _p14 = _p11._0;
 				return A2(
 					_elm_lang$html$Html$tr,
 					_elm_lang$core$Native_List.fromArray(
@@ -11253,46 +11663,6 @@ var _user$project$View$formFieldDisplay = F2(
 								_elm_lang$core$Native_List.fromArray(
 									[
 										A2(
-										_elm_lang$html$Html$select,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												A2(
-												_elm_lang$html$Html_Events$on,
-												'change',
-												_user$project$View$targetAndWrap(
-													_user$project$ModelDB$FormFieldUpdated(_p14.key)))
-											]),
-										A2(
-											_elm_lang$core$List$map,
-											A2(_user$project$View$dropdownFieldOption, model, _p14.key),
-											_p14.choices))
-									]))
-							]),
-						delCol));
-			default:
-				var _p15 = _p12._0;
-				return A2(
-					_elm_lang$html$Html$tr,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$td,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text(_p15.name)
-									])),
-								A2(
-								_elm_lang$html$Html$td,
-								colSpanForDel,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
 										_elm_lang$html$Html$input,
 										_elm_lang$core$Native_List.fromArray(
 											[
@@ -11300,17 +11670,17 @@ var _user$project$View$formFieldDisplay = F2(
 												_elm_lang$html$Html_Events$on,
 												'change',
 												_user$project$View$targetAndWrap(
-													_user$project$ModelDB$FormFieldUpdated(_p15.key))),
+													_user$project$ModelDB$FormFieldUpdated(_p14.key))),
 												_elm_lang$html$Html_Attributes$value(
 												A2(
 													_elm_lang$core$Maybe$withDefault,
 													'',
-													A2(_elm_lang$core$Dict$get, _p15.key, model.character))),
+													A2(_elm_lang$core$Dict$get, _p14.key, model.character))),
 												_elm_lang$html$Html_Attributes$type$('number'),
 												_elm_lang$html$Html_Attributes$min(
-												_elm_lang$core$Basics$toString(_p15.min)),
+												_elm_lang$core$Basics$toString(_p14.min)),
 												_elm_lang$html$Html_Attributes$max(
-												_elm_lang$core$Basics$toString(_p15.max))
+												_elm_lang$core$Basics$toString(_p14.max))
 											]),
 										_elm_lang$core$Native_List.fromArray(
 											[]))
@@ -11322,8 +11692,8 @@ var _user$project$View$formFieldDisplay = F2(
 var _user$project$View$formDisplay = F2(
 	function (model, form) {
 		var addCol = function () {
-			var _p16 = form.addable;
-			if (_p16 === false) {
+			var _p15 = form.addable;
+			if (_p15 === false) {
 				return _elm_lang$core$Native_List.fromArray(
 					[]);
 			} else {
@@ -11345,8 +11715,8 @@ var _user$project$View$formDisplay = F2(
 			}
 		}();
 		var colSpanForAdd = function () {
-			var _p17 = form.addable;
-			if (_p17 === false) {
+			var _p16 = form.addable;
+			if (_p16 === false) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Attributes$colspan(3)
@@ -11434,8 +11804,8 @@ var _user$project$View$skillTableHeader = A2(
 		_elm_lang$core$Native_List.fromArray(
 			['Name', 'Source'])));
 var _user$project$View$sourceName = function (s) {
-	var _p18 = s;
-	switch (_p18) {
+	var _p17 = s;
+	switch (_p17) {
 		case 0:
 			return 'Background';
 		case 1:
