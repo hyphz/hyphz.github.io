@@ -9780,6 +9780,21 @@ var _user$project$ModelDB$Blue = {ctor: 'Blue'};
 var _user$project$ModelDB$Red = {ctor: 'Red'};
 var _user$project$ModelDB$White = {ctor: 'White'};
 
+var _user$project$PowerUtilities$atLevelList = F3(
+	function (m, level, ab) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			level) > -1) ? ab : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
+var _user$project$PowerUtilities$atLevel = F3(
+	function (m, level, ab) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			level) > -1) ? _elm_lang$core$Native_List.fromArray(
+			[ab]) : _elm_lang$core$Native_List.fromArray(
+			[]);
+	});
 var _user$project$PowerUtilities$quickPower = F9(
 	function (name, page, slot, freq, range, area, damage, col, m) {
 		return {
@@ -9809,6 +9824,10 @@ var _user$project$PowerUtilities$quickPower = F9(
 			damage: damage,
 			styl: col
 		};
+	});
+var _user$project$PowerUtilities$quickSpecial = F3(
+	function (name, page, m) {
+		return A9(_user$project$PowerUtilities$quickPower, name, page, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$White, m);
 	});
 var _user$project$PowerUtilities$powerChoiceField = F4(
 	function (m, name, key, list) {
@@ -9858,31 +9877,92 @@ var _user$project$PowerUtilities$powerDict = F2(
 			A2(_elm_lang$core$List$map, toTuple, l));
 	});
 
-var _user$project$Archer$forms = function (m) {
+var _user$project$Archer$specials = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+	_v0_3:
+	do {
+		if (_p0.ctor === 'Just') {
+			switch (_p0._0) {
+				case 'Sniper':
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(_user$project$PowerUtilities$quickSpecial, 'Sniper', 107, m)
+							]),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								5,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Steady Sniper', 107, m)),
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								9,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Sharpshooting Sniper', 107, m))));
+				case 'Blitzer':
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(_user$project$PowerUtilities$quickSpecial, 'Blitzer', 107, m)
+							]),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								5,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Bloody Blitzer', 107, m)),
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								9,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Lightning Blitzer', 107, m))));
+				case 'Sentinel':
+					return (_elm_lang$core$Native_Utils.cmp(
+						_user$project$ModelDB$getLevel(m),
+						5) < 0) ? _elm_lang$core$Native_List.fromArray(
+						[
+							A3(_user$project$PowerUtilities$quickSpecial, 'Sentinel', 107, m)
+						]) : A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								5,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Sharp Sentinel', 107, m)),
+							A3(
+								_user$project$PowerUtilities$atLevel,
+								m,
+								9,
+								A3(_user$project$PowerUtilities$quickSpecial, 'Snapshot Sentinel', 107, m))));
+				default:
+					break _v0_3;
+			}
+		} else {
+			break _v0_3;
+		}
+	} while(false);
 	return _elm_lang$core$Native_List.fromArray(
-		[
-			A3(
-			_user$project$FormsModel$Form,
-			false,
-			'Archer',
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$FormsModel$DropdownField(
-					{
-						name: 'Feature',
-						del: false,
-						key: 'archer-feature',
-						choices: _elm_lang$core$Native_List.fromArray(
-							['', 'Sniper', 'Blitzer', 'Sentinel'])
-					})
-				]))
-		]);
+		[]);
+};
+var _user$project$Archer$youCantHide = A8(_user$project$PowerUtilities$quickPower, 'You Can\'t Hide', 107, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$splitTheirArrow = A8(_user$project$PowerUtilities$quickPower, 'Split Their Arrow', 107, _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$extraTrickArrow = function (m) {
+	return A3(_user$project$PowerUtilities$quickSpecial, 'Extra Trick Arrow', 107, m);
 };
 var _user$project$Archer$bullseye = A8(_user$project$PowerUtilities$quickPower, 'Bullseye', 107, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
 var _user$project$Archer$aim = A8(_user$project$PowerUtilities$quickPower, 'Aim', 106, _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
 var _user$project$Archer$basicRangeRange = function (m) {
-	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
-	if ((_p0.ctor === 'Just') && (_p0._0 === 'Sniper')) {
+	var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+	if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
 		return 15;
 	} else {
 		return 5;
@@ -9905,8 +9985,8 @@ var _user$project$Archer$basicMeleeDamage = function (m) {
 };
 var _user$project$Archer$sniperDouble = F2(
 	function (m, i) {
-		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
-		if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
+		var _p2 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+		if ((_p2.ctor === 'Just') && (_p2._0 === 'Sniper')) {
 			return i * 2;
 		} else {
 			return i;
@@ -9926,39 +10006,36 @@ var _user$project$Archer$flare = function (m) {
 		m);
 };
 var _user$project$Archer$pinDown = function (m) {
-	return A9(
-		_user$project$PowerUtilities$quickPower,
-		'Pin Down',
-		106,
-		_user$project$ModelDB$Attack,
-		_user$project$ModelDB$AtWill,
-		A2(_user$project$Archer$sniperDouble, m, 10),
-		0,
-		_user$project$Archer$atWillDamage(m),
-		_user$project$ModelDB$Green,
-		m);
+	return {
+		name: 'Pin Down',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'PinDown', 'See page 106.') : ((_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'PinDown5+', 'See page 106.') : A3(_user$project$ModelDB$overtext, m, 'PinDown9+', 'See page 106.')),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: A2(_user$project$Archer$sniperDouble, m, 10),
+		area: 0,
+		damage: _user$project$Archer$atWillDamage(m),
+		styl: _user$project$ModelDB$Green
+	};
 };
 var _user$project$Archer$areaDenial = function (m) {
-	return A9(
-		_user$project$PowerUtilities$quickPower,
-		'Area Denial',
-		106,
-		_user$project$ModelDB$Attack,
-		_user$project$ModelDB$AtWill,
-		A2(_user$project$Archer$sniperDouble, m, 10),
-		0,
-		_user$project$Archer$atWillDamage(m),
-		_user$project$ModelDB$Green,
-		m);
-};
-var _user$project$Archer$powers = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$Archer$aim(m),
-			_user$project$Archer$flare(m),
-			_user$project$Archer$pinDown(m),
-			_user$project$Archer$areaDenial(m)
-		]);
+	return {
+		name: 'Area Denial',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'AreaDenial', 'See page 106.') : ((_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'AreaDenial5+', 'See page 106.') : A3(_user$project$ModelDB$overtext, m, 'AreaDenial9+', 'See page 106.')),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: A2(_user$project$Archer$sniperDouble, m, 10),
+		area: 0,
+		damage: _user$project$Archer$atWillDamage(m),
+		styl: _user$project$ModelDB$Green
+	};
 };
 var _user$project$Archer$trickArrow = function (m) {
 	return A9(
@@ -9973,10 +10050,20 @@ var _user$project$Archer$trickArrow = function (m) {
 		_user$project$ModelDB$Purple,
 		m);
 };
-var _user$project$Archer$extraTrickArrow = function (m) {
+var _user$project$Archer$l1encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Archer$trickArrow, _user$project$Archer$bullseye]));
+};
+var _user$project$Archer$l1encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc1', _user$project$Archer$l1encounters);
+};
+var _user$project$Archer$legShot = function (m) {
 	return A9(
 		_user$project$PowerUtilities$quickPower,
-		'Extra Trick Arrow',
+		'Leg Shot',
 		107,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
@@ -9985,6 +10072,116 @@ var _user$project$Archer$extraTrickArrow = function (m) {
 		3,
 		_user$project$ModelDB$Purple,
 		m);
+};
+var _user$project$Archer$surprisingShot = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Surprising Shot',
+		107,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$Encounter,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		3,
+		_user$project$ModelDB$Purple,
+		m);
+};
+var _user$project$Archer$l3encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Archer$extraTrickArrow, _user$project$Archer$legShot, _user$project$Archer$surprisingShot, _user$project$Archer$splitTheirArrow]));
+};
+var _user$project$Archer$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc3', _user$project$Archer$l3encounters);
+};
+var _user$project$Archer$superTrickArrow = function (m) {
+	return A9(
+		_user$project$PowerUtilities$quickPower,
+		'Super Trick Arrow',
+		107,
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$Encounter,
+		A2(_user$project$Archer$sniperDouble, m, 10),
+		0,
+		4,
+		_user$project$ModelDB$Purple,
+		m);
+};
+var _user$project$Archer$l7encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Archer$youCantHide, _user$project$Archer$superTrickArrow]));
+};
+var _user$project$Archer$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc7', _user$project$Archer$l7encounters);
+};
+var _user$project$Archer$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Archer$specials(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$Archer$aim(m),
+					_user$project$Archer$flare(m),
+					_user$project$Archer$pinDown(m),
+					_user$project$Archer$areaDenial(m)
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Archer$l1encpower(m),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevelList,
+						m,
+						3,
+						_user$project$Archer$l3encpower(m)),
+					A3(
+						_user$project$PowerUtilities$atLevelList,
+						m,
+						7,
+						_user$project$Archer$l7encpower(m))))));
+};
+var _user$project$Archer$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Archer',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Feature',
+							del: false,
+							key: 'archer-feature',
+							choices: _elm_lang$core$Native_List.fromArray(
+								['', 'Sniper', 'Blitzer', 'Sentinel'])
+						}),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc1', _user$project$Archer$l1encounters)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						3,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc3', _user$project$Archer$l3encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						7,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc7', _user$project$Archer$l7encounters)))))
+		]);
 };
 var _user$project$Archer$classArcher = {name: 'Archer', classPowerList: _user$project$Archer$powers, classForms: _user$project$Archer$forms, modifyBasicMeleeDamage: _user$project$Archer$basicMeleeDamage, modifyBasicRangeDamage: _user$project$Archer$basicRangeDamage, modifyBasicRangeRange: _user$project$Archer$basicRangeRange};
 
