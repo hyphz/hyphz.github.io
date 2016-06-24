@@ -9404,20 +9404,6 @@ var _user$project$FormsModel$DropdownField = function (a) {
 	return {ctor: 'DropdownField', _0: a};
 };
 
-var _user$project$ModelDB$indirectLookup = F6(
-	function (model, key, db, func, $default, error) {
-		var _p0 = A2(_elm_lang$core$Dict$get, key, model.character);
-		if (_p0.ctor === 'Nothing') {
-			return $default;
-		} else {
-			var _p1 = A2(_elm_lang$core$Dict$get, _p0._0, db);
-			if (_p1.ctor === 'Nothing') {
-				return $default;
-			} else {
-				return func(_p1._0);
-			}
-		}
-	});
 var _user$project$ModelDB$splitTexts = function (str) {
 	var extractParaKey = function (s) {
 		var theHead = A2(
@@ -9439,36 +9425,6 @@ var _user$project$ModelDB$splitTexts = function (str) {
 	var brokenParas = A2(_elm_lang$core$List$map, _elm_lang$core$String$lines, paragraphs);
 	var paraPairs = A2(_elm_lang$core$List$map, extractParaKey, brokenParas);
 	return _elm_lang$core$Dict$fromList(paraPairs);
-};
-var _user$project$ModelDB$blankDatabase = {backgrounds: _elm_lang$core$Dict$empty, origins: _elm_lang$core$Dict$empty, texts: _elm_lang$core$Dict$empty};
-var _user$project$ModelDB$blankCharacter = _elm_lang$core$Dict$fromList(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			{ctor: '_Tuple2', _0: 'basics-level', _1: '1'},
-			{ctor: '_Tuple2', _0: 'basics-bg', _1: '<Not Selected>'}
-		]));
-var _user$project$ModelDB$nullKit = {
-	name: '<Not Selected>',
-	base: '',
-	advances: _elm_lang$core$Native_List.fromArray(
-		[])
-};
-var _user$project$ModelDB$nullOrigin = {
-	name: '<Not Selected>',
-	skillNames: _elm_lang$core$Native_List.fromArray(
-		[]),
-	complications: _elm_lang$core$Native_List.fromArray(
-		[]),
-	wealth: 0,
-	freeformSkill: false,
-	freeformComplication: false
-};
-var _user$project$ModelDB$nullBackground = {
-	name: '<Not Selected>',
-	skillNames: _elm_lang$core$Native_List.fromArray(
-		[]),
-	wealth: 0,
-	trick: ''
 };
 var _user$project$ModelDB$toDict = F2(
 	function (keygetter, list) {
@@ -9508,44 +9464,59 @@ var _user$project$ModelDB$unpackTexts = F2(
 			},
 			model);
 	});
-var _user$project$ModelDB$overtext = F3(
-	function (model, key, $default) {
+var _user$project$ModelDB$overtext = F2(
+	function (model, key) {
 		return A2(
 			_elm_lang$core$Maybe$withDefault,
-			$default,
+			'(Text not available)',
 			A2(_elm_lang$core$Dict$get, key, model.database.texts));
 	});
 var _user$project$ModelDB$getResponseInt = F3(
 	function (model, key, $default) {
-		var _p2 = A2(_elm_lang$core$Dict$get, key, model.character);
-		if (_p2.ctor === 'Nothing') {
+		var _p0 = A2(_elm_lang$core$Dict$get, key, model.character);
+		if (_p0.ctor === 'Nothing') {
 			return $default;
 		} else {
-			var _p3 = _elm_lang$core$String$toInt(_p2._0);
-			if (_p3.ctor === 'Err') {
+			var _p1 = _elm_lang$core$String$toInt(_p0._0);
+			if (_p1.ctor === 'Err') {
 				return $default;
 			} else {
-				return _p3._0;
+				return _p1._0;
 			}
 		}
 	});
+var _user$project$ModelDB$getLevel = function (m) {
+	return A3(_user$project$ModelDB$getResponseInt, m, 'basics-level', 1);
+};
 var _user$project$ModelDB$getResponse = F2(
 	function (model, key) {
 		return A2(_elm_lang$core$Dict$get, key, model.character);
 	});
-var _user$project$ModelDB$getLevel = function (m) {
-	var _p4 = A2(_user$project$ModelDB$getResponse, m, 'basics-level');
-	if (_p4.ctor === 'Nothing') {
-		return 1;
-	} else {
-		var _p5 = _elm_lang$core$String$toInt(_p4._0);
-		if (_p5.ctor === 'Ok') {
-			return _p5._0;
+var _user$project$ModelDB$ifResponse = F4(
+	function (model, key, $default, func) {
+		var _p2 = A2(_user$project$ModelDB$getResponse, model, key);
+		if (_p2.ctor === 'Just') {
+			return func(_p2._0);
 		} else {
-			return 1;
+			return $default;
 		}
-	}
-};
+	});
+var _user$project$ModelDB$indirectLookup = F6(
+	function (model, key, db, func, $default, error) {
+		return A4(
+			_user$project$ModelDB$ifResponse,
+			model,
+			key,
+			$default,
+			function (x) {
+				var _p3 = A2(_elm_lang$core$Dict$get, x, db);
+				if (_p3.ctor === 'Nothing') {
+					return error;
+				} else {
+					return func(_p3._0);
+				}
+			});
+	});
 var _user$project$ModelDB$killResponse = F2(
 	function (model, key) {
 		var $char = model.character;
@@ -9564,6 +9535,46 @@ var _user$project$ModelDB$setResponse = F3(
 				character: A3(_elm_lang$core$Dict$insert, key, value, $char)
 			});
 	});
+var _user$project$ModelDB$mayList = function (x) {
+	var _p4 = x;
+	if (_p4.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[_p4._0]);
+	}
+};
+var _user$project$ModelDB$blankDatabase = {backgrounds: _elm_lang$core$Dict$empty, origins: _elm_lang$core$Dict$empty, texts: _elm_lang$core$Dict$empty};
+var _user$project$ModelDB$blankCharacter = _elm_lang$core$Dict$fromList(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'basics-level', _1: '1'},
+			{ctor: '_Tuple2', _0: 'basics-bg', _1: '<Not Selected>'}
+		]));
+var _user$project$ModelDB$nullKit = {
+	name: '<Not Selected>',
+	base: '',
+	advances: _elm_lang$core$Native_List.fromArray(
+		[])
+};
+var _user$project$ModelDB$nullOrigin = {
+	name: '<Not Selected>',
+	skillNames: _elm_lang$core$Native_List.fromArray(
+		[]),
+	complications: _elm_lang$core$Native_List.fromArray(
+		[]),
+	wealth: 0,
+	freeformSkill: false,
+	freeformComplication: false
+};
+var _user$project$ModelDB$nullBackground = {
+	name: '<Not Selected>',
+	skillNames: _elm_lang$core$Native_List.fromArray(
+		[]),
+	wealth: 0,
+	trick: ''
+};
 var _user$project$ModelDB$Model = F2(
 	function (a, b) {
 		return {character: a, database: b};
@@ -9580,20 +9591,20 @@ var _user$project$ModelDB$Background = F4(
 	function (a, b, c, d) {
 		return {name: a, skillNames: b, wealth: c, trick: d};
 	});
-var _user$project$ModelDB$backgroundDecoder = A5(
-	_elm_lang$core$Json_Decode$object4,
-	_user$project$ModelDB$Background,
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
-	A2(
-		_elm_lang$core$Json_Decode_ops[':='],
-		'skillNames',
-		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'wealth', _elm_lang$core$Json_Decode$int),
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'trick', _elm_lang$core$Json_Decode$string));
 var _user$project$ModelDB$backgroundsDecoder = A2(
 	_elm_lang$core$Json_Decode_ops[':='],
 	'backgrounds',
-	_elm_lang$core$Json_Decode$list(_user$project$ModelDB$backgroundDecoder));
+	_elm_lang$core$Json_Decode$list(
+		A5(
+			_elm_lang$core$Json_Decode$object4,
+			_user$project$ModelDB$Background,
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+			A2(
+				_elm_lang$core$Json_Decode_ops[':='],
+				'skillNames',
+				_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'wealth', _elm_lang$core$Json_Decode$int),
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'trick', _elm_lang$core$Json_Decode$string))));
 var _user$project$ModelDB$unpackBackgrounds = F2(
 	function (s, model) {
 		return A2(
@@ -9624,35 +9635,35 @@ var _user$project$ModelDB$Origin = F6(
 	function (a, b, c, d, e, f) {
 		return {name: a, skillNames: b, wealth: c, complications: d, freeformSkill: e, freeformComplication: f};
 	});
-var _user$project$ModelDB$originDecoder = A7(
-	_elm_lang$core$Json_Decode$object6,
-	_user$project$ModelDB$Origin,
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
-	A2(
-		_elm_lang$core$Json_Decode_ops[':='],
-		'skillNames',
-		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'wealth', _elm_lang$core$Json_Decode$int),
-	A2(
-		_elm_lang$core$Json_Decode_ops[':='],
-		'complications',
-		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
-	_elm_lang$core$Json_Decode$oneOf(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(_elm_lang$core$Json_Decode_ops[':='], 'freeformSkill', _elm_lang$core$Json_Decode$bool),
-				_elm_lang$core$Json_Decode$succeed(false)
-			])),
-	_elm_lang$core$Json_Decode$oneOf(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(_elm_lang$core$Json_Decode_ops[':='], 'freeformComplication', _elm_lang$core$Json_Decode$bool),
-				_elm_lang$core$Json_Decode$succeed(false)
-			])));
 var _user$project$ModelDB$originsDecoder = A2(
 	_elm_lang$core$Json_Decode_ops[':='],
 	'origins',
-	_elm_lang$core$Json_Decode$list(_user$project$ModelDB$originDecoder));
+	_elm_lang$core$Json_Decode$list(
+		A7(
+			_elm_lang$core$Json_Decode$object6,
+			_user$project$ModelDB$Origin,
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+			A2(
+				_elm_lang$core$Json_Decode_ops[':='],
+				'skillNames',
+				_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'wealth', _elm_lang$core$Json_Decode$int),
+			A2(
+				_elm_lang$core$Json_Decode_ops[':='],
+				'complications',
+				_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
+			_elm_lang$core$Json_Decode$oneOf(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(_elm_lang$core$Json_Decode_ops[':='], 'freeformSkill', _elm_lang$core$Json_Decode$bool),
+						_elm_lang$core$Json_Decode$succeed(false)
+					])),
+			_elm_lang$core$Json_Decode$oneOf(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(_elm_lang$core$Json_Decode_ops[':='], 'freeformComplication', _elm_lang$core$Json_Decode$bool),
+						_elm_lang$core$Json_Decode$succeed(false)
+					])))));
 var _user$project$ModelDB$unpackOrigins = F2(
 	function (s, model) {
 		return A2(
@@ -9691,9 +9702,9 @@ var _user$project$ModelDB$Power = F8(
 	function (a, b, c, d, e, f, g, h) {
 		return {name: a, text: b, slot: c, freq: d, range: e, area: f, damage: g, styl: h};
 	});
-var _user$project$ModelDB$Class = F6(
-	function (a, b, c, d, e, f) {
-		return {name: a, classPowerList: b, classForms: c, modifyBasicMeleeDamage: d, modifyBasicRangeDamage: e, modifyBasicRangeRange: f};
+var _user$project$ModelDB$Class = F7(
+	function (a, b, c, d, e, f, g) {
+		return {name: a, classPowerList: b, classForms: c, modifyBasicMelee: d, modifyBasicRange: e, modifyCharge: f, modifyRally: g};
 	});
 var _user$project$ModelDB$DoSave = {ctor: 'DoSave'};
 var _user$project$ModelDB$TextsLoaded = function (a) {
@@ -9722,8 +9733,8 @@ var _user$project$ModelDB$OriginsLoaded = function (a) {
 };
 var _user$project$ModelDB$dbUpdate = F2(
 	function (msg, model) {
-		var _p6 = msg;
-		switch (_p6.ctor) {
+		var _p5 = msg;
+		switch (_p5.ctor) {
 			case 'HTTPLoadError':
 				return {
 					ctor: '_Tuple2',
@@ -9733,19 +9744,19 @@ var _user$project$ModelDB$dbUpdate = F2(
 			case 'BackgroundsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackBackgrounds, _p6._0, model),
+					_0: A2(_user$project$ModelDB$unpackBackgrounds, _p5._0, model),
 					_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/origins.json', _user$project$ModelDB$OriginsLoaded)
 				};
 			case 'OriginsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackOrigins, _p6._0, model),
+					_0: A2(_user$project$ModelDB$unpackOrigins, _p5._0, model),
 					_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/texts.md', _user$project$ModelDB$TextsLoaded)
 				};
 			case 'TextsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackTexts, _p6._0, model),
+					_0: A2(_user$project$ModelDB$unpackTexts, _p5._0, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -9795,11 +9806,11 @@ var _user$project$PowerUtilities$atLevel = F3(
 			[ab]) : _elm_lang$core$Native_List.fromArray(
 			[]);
 	});
-var _user$project$PowerUtilities$quickPower = F9(
-	function (name, page, slot, freq, range, area, damage, col, m) {
+var _user$project$PowerUtilities$quickPower = F8(
+	function (name, slot, freq, range, area, damage, col, m) {
 		return {
 			name: name,
-			text: A3(
+			text: A2(
 				_user$project$ModelDB$overtext,
 				m,
 				A2(
@@ -9809,14 +9820,7 @@ var _user$project$PowerUtilities$quickPower = F9(
 							x,
 							_elm_lang$core$Native_Utils.chr(' '));
 					},
-					name),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'See page ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(page),
-						'.'))),
+					name)),
 			slot: slot,
 			freq: freq,
 			range: range,
@@ -9825,9 +9829,9 @@ var _user$project$PowerUtilities$quickPower = F9(
 			styl: col
 		};
 	});
-var _user$project$PowerUtilities$quickSpecial = F3(
-	function (name, page, m) {
-		return A9(_user$project$PowerUtilities$quickPower, name, page, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$White, m);
+var _user$project$PowerUtilities$quickSpecial = F2(
+	function (name, m) {
+		return A8(_user$project$PowerUtilities$quickPower, name, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$White, m);
 	});
 var _user$project$PowerUtilities$powerChoiceField = F4(
 	function (m, name, key, list) {
@@ -9888,7 +9892,7 @@ var _user$project$Archer$specials = function (m) {
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A3(_user$project$PowerUtilities$quickSpecial, 'Sniper', 107, m)
+								A2(_user$project$PowerUtilities$quickSpecial, 'Sniper', m)
 							]),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
@@ -9896,18 +9900,18 @@ var _user$project$Archer$specials = function (m) {
 								_user$project$PowerUtilities$atLevel,
 								m,
 								5,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Steady Sniper', 107, m)),
+								A2(_user$project$PowerUtilities$quickSpecial, 'Steady Sniper', m)),
 							A3(
 								_user$project$PowerUtilities$atLevel,
 								m,
 								9,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Sharpshooting Sniper', 107, m))));
+								A2(_user$project$PowerUtilities$quickSpecial, 'Sharpshooting Sniper', m))));
 				case 'Blitzer':
 					return A2(
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A3(_user$project$PowerUtilities$quickSpecial, 'Blitzer', 107, m)
+								A2(_user$project$PowerUtilities$quickSpecial, 'Blitzer', m)
 							]),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
@@ -9915,18 +9919,18 @@ var _user$project$Archer$specials = function (m) {
 								_user$project$PowerUtilities$atLevel,
 								m,
 								5,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Bloody Blitzer', 107, m)),
+								A2(_user$project$PowerUtilities$quickSpecial, 'Bloody Blitzer', m)),
 							A3(
 								_user$project$PowerUtilities$atLevel,
 								m,
 								9,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Lightning Blitzer', 107, m))));
+								A2(_user$project$PowerUtilities$quickSpecial, 'Lightning Blitzer', m))));
 				case 'Sentinel':
 					return (_elm_lang$core$Native_Utils.cmp(
 						_user$project$ModelDB$getLevel(m),
 						5) < 0) ? _elm_lang$core$Native_List.fromArray(
 						[
-							A3(_user$project$PowerUtilities$quickSpecial, 'Sentinel', 107, m)
+							A2(_user$project$PowerUtilities$quickSpecial, 'Sentinel', m)
 						]) : A2(
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Native_List.fromArray(
@@ -9937,12 +9941,12 @@ var _user$project$Archer$specials = function (m) {
 								_user$project$PowerUtilities$atLevel,
 								m,
 								5,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Sharp Sentinel', 107, m)),
+								A2(_user$project$PowerUtilities$quickSpecial, 'Sharp Sentinel', m)),
 							A3(
 								_user$project$PowerUtilities$atLevel,
 								m,
 								9,
-								A3(_user$project$PowerUtilities$quickSpecial, 'Snapshot Sentinel', 107, m))));
+								A2(_user$project$PowerUtilities$quickSpecial, 'Snapshot Sentinel', m))));
 				default:
 					break _v0_3;
 			}
@@ -9953,50 +9957,48 @@ var _user$project$Archer$specials = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[]);
 };
-var _user$project$Archer$youCantHide = A8(_user$project$PowerUtilities$quickPower, 'You Can\'t Hide', 107, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Archer$splitTheirArrow = A8(_user$project$PowerUtilities$quickPower, 'Split Their Arrow', 107, _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$youCantHide = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Hide', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$splitTheirArrow = A7(_user$project$PowerUtilities$quickPower, 'Split Their Arrow', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
 var _user$project$Archer$extraTrickArrow = function (m) {
-	return A3(_user$project$PowerUtilities$quickSpecial, 'Extra Trick Arrow', 107, m);
+	return A2(_user$project$PowerUtilities$quickSpecial, 'Extra Trick Arrow', m);
 };
-var _user$project$Archer$bullseye = A8(_user$project$PowerUtilities$quickPower, 'Bullseye', 107, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Archer$aim = A8(_user$project$PowerUtilities$quickPower, 'Aim', 106, _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
-var _user$project$Archer$basicRangeRange = function (m) {
-	var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
-	if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
-		return 15;
-	} else {
-		return 5;
-	}
-};
+var _user$project$Archer$bullseye = A7(_user$project$PowerUtilities$quickPower, 'Bullseye', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Archer$aim = A7(_user$project$PowerUtilities$quickPower, 'Aim', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
 var _user$project$Archer$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : 3;
 };
-var _user$project$Archer$basicRangeDamage = function (m) {
-	return (_elm_lang$core$Native_Utils.cmp(
-		_user$project$ModelDB$getLevel(m),
-		5) < 0) ? 0 : 1;
-};
-var _user$project$Archer$basicMeleeDamage = function (m) {
-	return (_elm_lang$core$Native_Utils.cmp(
-		_user$project$ModelDB$getLevel(m),
-		5) < 0) ? 0 : 1;
-};
+var _user$project$Archer$archerBasicMelee = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Archer$atWillDamage(m)
+			});
+	});
 var _user$project$Archer$sniperDouble = F2(
 	function (m, i) {
-		var _p2 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
-		if ((_p2.ctor === 'Just') && (_p2._0 === 'Sniper')) {
+		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
+		if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
 			return i * 2;
 		} else {
 			return i;
 		}
 	});
+var _user$project$Archer$archerBasicRange = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Archer$atWillDamage(m),
+				range: A2(_user$project$Archer$sniperDouble, m, 10)
+			});
+	});
 var _user$project$Archer$flare = function (m) {
-	return A9(
+	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Flare',
-		106,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$AtWill,
 		A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10010,9 +10012,9 @@ var _user$project$Archer$pinDown = function (m) {
 		name: 'Pin Down',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'PinDown', 'See page 106.') : ((_elm_lang$core$Native_Utils.cmp(
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'PinDown') : ((_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'PinDown5+', 'See page 106.') : A3(_user$project$ModelDB$overtext, m, 'PinDown9+', 'See page 106.')),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'PinDown5+') : A2(_user$project$ModelDB$overtext, m, 'PinDown9+')),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10026,9 +10028,9 @@ var _user$project$Archer$areaDenial = function (m) {
 		name: 'Area Denial',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'AreaDenial', 'See page 106.') : ((_elm_lang$core$Native_Utils.cmp(
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'AreaDenial') : ((_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'AreaDenial5+', 'See page 106.') : A3(_user$project$ModelDB$overtext, m, 'AreaDenial9+', 'See page 106.')),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'AreaDenial5+') : A2(_user$project$ModelDB$overtext, m, 'AreaDenial9+')),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10038,10 +10040,9 @@ var _user$project$Archer$areaDenial = function (m) {
 	};
 };
 var _user$project$Archer$trickArrow = function (m) {
-	return A9(
+	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Trick Arrow',
-		106,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
 		A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10061,10 +10062,9 @@ var _user$project$Archer$l1encpower = function (m) {
 	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc1', _user$project$Archer$l1encounters);
 };
 var _user$project$Archer$legShot = function (m) {
-	return A9(
+	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Leg Shot',
-		107,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
 		A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10074,10 +10074,9 @@ var _user$project$Archer$legShot = function (m) {
 		m);
 };
 var _user$project$Archer$surprisingShot = function (m) {
-	return A9(
+	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Surprising Shot',
-		107,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
 		A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10097,10 +10096,9 @@ var _user$project$Archer$l3encpower = function (m) {
 	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc3', _user$project$Archer$l3encounters);
 };
 var _user$project$Archer$superTrickArrow = function (m) {
-	return A9(
+	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Super Trick Arrow',
-		107,
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
 		A2(_user$project$Archer$sniperDouble, m, 10),
@@ -10183,7 +10181,15 @@ var _user$project$Archer$forms = function (m) {
 						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc7', _user$project$Archer$l7encounters)))))
 		]);
 };
-var _user$project$Archer$classArcher = {name: 'Archer', classPowerList: _user$project$Archer$powers, classForms: _user$project$Archer$forms, modifyBasicMeleeDamage: _user$project$Archer$basicMeleeDamage, modifyBasicRangeDamage: _user$project$Archer$basicRangeDamage, modifyBasicRangeRange: _user$project$Archer$basicRangeRange};
+var _user$project$Archer$classArcher = {
+	name: 'Archer',
+	classPowerList: _user$project$Archer$powers,
+	classForms: _user$project$Archer$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Archer$archerBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Archer$archerBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
 
 var _user$project$Ports$download = _elm_lang$core$Native_Platform.outgoingPort(
 	'download',
@@ -10241,14 +10247,7 @@ var _user$project$Necromancer$giftPower = function (m) {
 			[
 				{
 				name: giftName,
-				text: A3(
-					_user$project$ModelDB$overtext,
-					m,
-					giftTextKey,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'See page ',
-						A2(_elm_lang$core$Basics_ops['++'], giftPage, '.'))),
+				text: A2(_user$project$ModelDB$overtext, m, giftTextKey),
 				slot: _user$project$ModelDB$Special,
 				freq: _user$project$ModelDB$None,
 				range: 0,
@@ -10262,7 +10261,7 @@ var _user$project$Necromancer$giftPower = function (m) {
 var _user$project$Necromancer$markOfDeath = function (m) {
 	return {
 		name: 'Mark of Death',
-		text: A3(_user$project$ModelDB$overtext, m, 'MarkOfDeath', 'See page 102.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'MarkOfDeath'),
 		slot: _user$project$ModelDB$Special,
 		freq: _user$project$ModelDB$None,
 		range: 0,
@@ -10274,7 +10273,7 @@ var _user$project$Necromancer$markOfDeath = function (m) {
 var _user$project$Necromancer$terror = function (m) {
 	return {
 		name: 'Terror',
-		text: A3(_user$project$ModelDB$overtext, m, 'Terror', 'See page 103.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'Terror'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: -5,
@@ -10286,7 +10285,7 @@ var _user$project$Necromancer$terror = function (m) {
 var _user$project$Necromancer$playDiceWithDeath = function (m) {
 	return {
 		name: 'Play Dice with Death',
-		text: A3(_user$project$ModelDB$overtext, m, 'PlayDiceWithDeath', 'See page 103.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'PlayDiceWithDeath'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
@@ -10298,7 +10297,7 @@ var _user$project$Necromancer$playDiceWithDeath = function (m) {
 var _user$project$Necromancer$armyOfSpecters = function (m) {
 	return {
 		name: 'Army of Specters',
-		text: A3(_user$project$ModelDB$overtext, m, 'ArmyOfSpecters', 'See page 103.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'ArmyOfSpecters'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
@@ -10310,7 +10309,7 @@ var _user$project$Necromancer$armyOfSpecters = function (m) {
 var _user$project$Necromancer$crudeDomination = function (m) {
 	return {
 		name: 'Crude Domination',
-		text: A3(_user$project$ModelDB$overtext, m, 'CrudeDomination', 'See page 103.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'CrudeDomination'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 5,
@@ -10332,7 +10331,7 @@ var _user$project$Necromancer$l7encpower = function (m) {
 var _user$project$Necromancer$healthSwap = function (m) {
 	return {
 		name: 'Health Swap',
-		text: A3(_user$project$ModelDB$overtext, m, 'HealthSwap', 'Free Action. See page 102.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'HealthSwap'),
 		slot: _user$project$ModelDB$Misc,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
@@ -10344,7 +10343,7 @@ var _user$project$Necromancer$healthSwap = function (m) {
 var _user$project$Necromancer$lichPact = function (m) {
 	return {
 		name: 'Lich Pact',
-		text: A3(_user$project$ModelDB$overtext, m, 'LichPact', 'Reaction. See page 102.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'LichPact'),
 		slot: _user$project$ModelDB$Reaction,
 		freq: _user$project$ModelDB$Encounter,
 		range: 0,
@@ -10359,9 +10358,9 @@ var _user$project$Necromancer$greaterMarkOfDeath = function (m) {
 		text: function () {
 			var _p4 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
 			if ((_p4.ctor === 'Just') && (_p4._0 === 'Undeath')) {
-				return A3(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeathWithUndeath', 'See page 102.');
+				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeathWithUndeath');
 			} else {
-				return A3(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeath', 'See page 102.');
+				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeath');
 			}
 		}(),
 		slot: _user$project$ModelDB$Attack,
@@ -10382,43 +10381,10 @@ var _user$project$Necromancer$l3encoptions = function (m) {
 var _user$project$Necromancer$l3encpower = function (m) {
 	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc3', _user$project$Necromancer$l3encoptions);
 };
-var _user$project$Necromancer$seedOfFear = A8(_user$project$PowerUtilities$quickPower, 'Seed Of Fear', 102, _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Necromancer$raiseAlly = function (m) {
-	return {
-		name: 'Raise Ally',
-		text: A3(_user$project$ModelDB$overtext, m, 'RaiseAlly', 'Free action. See page 102.'),
-		slot: _user$project$ModelDB$Misc,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$corpseExplosion = function (m) {
-	return {
-		name: 'Corpse Explosion',
-		text: A3(_user$project$ModelDB$overtext, m, 'CorpseExplosion', 'See page 102.'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$lifeDrain = function (m) {
-	return {
-		name: 'Life Drain',
-		text: A3(_user$project$ModelDB$overtext, m, 'LifeDrain', 'See page 102.'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 0,
-		damage: 2,
-		styl: _user$project$ModelDB$Purple
-	};
-};
+var _user$project$Necromancer$seedOfFear = A7(_user$project$PowerUtilities$quickPower, 'Seed Of Fear', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Necromancer$raiseAlly = A7(_user$project$PowerUtilities$quickPower, 'Raise Ally', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Necromancer$corpseExplosion = A7(_user$project$PowerUtilities$quickPower, 'Corpse Explosion', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Necromancer$lifeDrain = A7(_user$project$PowerUtilities$quickPower, 'Life Drain', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 2, _user$project$ModelDB$Purple);
 var _user$project$Necromancer$l1encoptions = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
@@ -10439,7 +10405,7 @@ var _user$project$Necromancer$deadlyPoison = function (m) {
 		name: 'Deadly Poison',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'DeadlyPoison', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'DeadlyPoison5+', 'See page 102 (increased ongoing damage).'),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison') : A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison5+'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: -5,
@@ -10451,7 +10417,7 @@ var _user$project$Necromancer$deadlyPoison = function (m) {
 var _user$project$Necromancer$phantasms = function (m) {
 	return {
 		name: 'Phantasms',
-		text: A3(_user$project$ModelDB$overtext, m, 'Phantasms', 'See page 102.'),
+		text: A2(_user$project$ModelDB$overtext, m, 'Phantasms'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: 5,
@@ -10465,7 +10431,7 @@ var _user$project$Necromancer$terrifyingVisage = function (m) {
 		name: 'Terrifying Visage',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A3(_user$project$ModelDB$overtext, m, 'TerrifyingVisage', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'TerrifyingVisage5+', 'See page 102 (improved).'),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage') : A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage5+'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
 		range: 5,
@@ -10569,7 +10535,7 @@ var _user$project$Necromancer$commandUndead = function (m) {
 		name: 'Command Undead',
 		text: (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? A3(_user$project$ModelDB$overtext, m, 'CommandUndead', 'See page 102.') : A3(_user$project$ModelDB$overtext, m, 'CommandUndead9+', 'See pages 102 and 103.'),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'CommandUndead') : A2(_user$project$ModelDB$overtext, m, 'CommandUndead9+'),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$Encounter,
 		range: 10,
@@ -10609,20 +10575,550 @@ var _user$project$Necromancer$necroPowers = function (m) {
 								7) > -1) ? _user$project$Necromancer$l7encpower(m) : _elm_lang$core$Native_List.fromArray(
 								[])))))));
 };
-var _user$project$Necromancer$basicRangeRange = function (m) {
-	return 0;
+var _user$project$Necromancer$necroBasicRange = F2(
+	function (m, p) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
+			p,
+			{damage: 3});
+	});
+var _user$project$Necromancer$necroBasicMelee = F2(
+	function (m, p) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
+			p,
+			{damage: 3});
+	});
+var _user$project$Necromancer$classNecro = {
+	name: 'Necromancer',
+	classPowerList: _user$project$Necromancer$necroPowers,
+	classForms: _user$project$Necromancer$necroForms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Necromancer$necroBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Necromancer$necroBasicRange),
+	modifyCharge: _elm_lang$core$Maybe$Nothing,
+	modifyRally: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Necromancer$necroBasicRangeDamage = function (m) {
+
+var _user$project$Duelist$focus = function (m) {
+	return {
+		name: 'Focus',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'Focus') : ((_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'Focus5+') : A2(_user$project$ModelDB$overtext, m, 'Focus9+')),
+		slot: _user$project$ModelDB$Special,
+		freq: _user$project$ModelDB$None,
+		damage: 0,
+		area: 0,
+		range: 0,
+		styl: _user$project$ModelDB$White
+	};
+};
+var _user$project$Duelist$specials = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'duelist-feature');
+	if (_p0.ctor === 'Just') {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(_user$project$PowerUtilities$quickSpecial, _p0._0, m)
+			]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	}
+};
+var _user$project$Duelist$ifollow = A7(_user$project$PowerUtilities$quickPower, 'Where You Go I Follow', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Duelist$takeThisOutside = A7(_user$project$PowerUtilities$quickPower, 'Let\'s Take This Outside', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Duelist$cantIgnoreMe = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Ignore Me', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Duelist$l7encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Duelist$cantIgnoreMe, _user$project$Duelist$takeThisOutside, _user$project$Duelist$ifollow]));
+};
+var _user$project$Duelist$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc7', _user$project$Duelist$l7encounters);
+};
+var _user$project$Duelist$stalker = A7(_user$project$PowerUtilities$quickPower, 'Stalker', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Duelist$takeTheOpening = A7(_user$project$PowerUtilities$quickPower, 'Take The Opening', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Duelist$l3encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Duelist$takeTheOpening, _user$project$Duelist$stalker]));
+};
+var _user$project$Duelist$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc3', _user$project$Duelist$l3encounters);
+};
+var _user$project$Duelist$perfectDefense = A7(_user$project$PowerUtilities$quickPower, 'Perfect Defense', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Duelist$noOneElse = A7(_user$project$PowerUtilities$quickPower, 'Ain\'t No One Else Around', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Duelist$l1encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Duelist$noOneElse, _user$project$Duelist$perfectDefense]));
+};
+var _user$project$Duelist$l1echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc1', _user$project$Duelist$l1encounters);
+};
+var _user$project$Duelist$chargeTarget = A7(_user$project$PowerUtilities$quickPower, 'Change Target', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
+var _user$project$Duelist$duel = function (m) {
+	return {
+		name: 'Duel',
+		slot: _user$project$ModelDB$Misc,
+		freq: _user$project$ModelDB$Encounter,
+		range: 0,
+		area: 0,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple,
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'Duel') : ((_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'Duel5+') : A2(_user$project$ModelDB$overtext, m, 'Duel9+'))
+	};
+};
+var _user$project$Duelist$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
-		5) < 0) ? 0 : 1;
+		5) < 0) ? 2 : 3;
 };
-var _user$project$Necromancer$necroBasicMeleeDamage = function (m) {
+var _user$project$Duelist$modifyBasicMelee = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Duelist$atWillDamage(m)
+			});
+	});
+var _user$project$Duelist$modifyBasicRange = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Duelist$atWillDamage(m)
+			});
+	});
+var _user$project$Duelist$getOverHere = function (m) {
+	return A8(
+		_user$project$PowerUtilities$quickPower,
+		'Get Over Here',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		5,
+		0,
+		_user$project$Duelist$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Duelist$noEscape = function (m) {
+	return A8(
+		_user$project$PowerUtilities$quickPower,
+		'No Escape',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		_user$project$Duelist$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Duelist$demandAttention = function (m) {
+	return A8(
+		_user$project$PowerUtilities$quickPower,
+		'Demand Attention',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		-5,
+		0,
+		_user$project$Duelist$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Duelist$exploitWeakness = function (m) {
+	return A8(
+		_user$project$PowerUtilities$quickPower,
+		'Exploit Weakness',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		_user$project$Duelist$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Duelist$guessingGame = function (m) {
+	return A8(
+		_user$project$PowerUtilities$quickPower,
+		'Guessing Game',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		_user$project$Duelist$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		m);
+};
+var _user$project$Duelist$l1atwills = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Duelist$getOverHere, _user$project$Duelist$noEscape, _user$project$Duelist$demandAttention, _user$project$Duelist$exploitWeakness, _user$project$Duelist$guessingGame]));
+};
+var _user$project$Duelist$l1awchosen = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw1', _user$project$Duelist$l1atwills),
+		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw2', _user$project$Duelist$l1atwills));
+};
+var _user$project$Duelist$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Duelist$focus(m)
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Duelist$specials(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Duelist$duel(m),
+						_user$project$Duelist$chargeTarget(m)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Duelist$l1awchosen(m),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$Duelist$l1echosen(m),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A3(
+								_user$project$PowerUtilities$atLevelList,
+								m,
+								3,
+								_user$project$Duelist$l3encpower(m)),
+							A3(
+								_user$project$PowerUtilities$atLevelList,
+								m,
+								7,
+								_user$project$Duelist$l7encpower(m))))))));
+};
+var _user$project$Duelist$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Duelist',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Feature',
+							del: false,
+							key: 'duelist-feature',
+							choices: _elm_lang$core$Native_List.fromArray(
+								['', 'Find an Opening', 'Throw off their Aim', 'Force their position'])
+						}),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw1', _user$project$Duelist$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw2', _user$project$Duelist$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc1', _user$project$Duelist$l1encounters)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						3,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc3', _user$project$Duelist$l3encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						7,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc7', _user$project$Duelist$l7encounters)))))
+		]);
+};
+var _user$project$Duelist$classDuelist = {
+	name: 'Duelist',
+	classPowerList: _user$project$Duelist$powers,
+	classForms: _user$project$Duelist$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Duelist$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Duelist$modifyBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
+var _user$project$MartialArtist$mamaster = function (m) {
+	return A2(_user$project$PowerUtilities$quickSpecial, 'Master Martial Artist', m);
+};
+var _user$project$MartialArtist$extraFocusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Extra Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$MartialArtist$martialFrenzy = A7(_user$project$PowerUtilities$quickPower, 'Martial Frenzy', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$MartialArtist$theFalseDeath = A7(_user$project$PowerUtilities$quickPower, 'The False Death', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$MartialArtist$decapitation = A7(_user$project$PowerUtilities$quickPower, 'Decapitation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$MartialArtist$l3encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$MartialArtist$extraFocusedAttack, _user$project$MartialArtist$decapitation, _user$project$MartialArtist$theFalseDeath]));
+};
+var _user$project$MartialArtist$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc3', _user$project$MartialArtist$l3encounters);
+};
+var _user$project$MartialArtist$l7encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$MartialArtist$extraFocusedAttack, _user$project$MartialArtist$decapitation, _user$project$MartialArtist$theFalseDeath, _user$project$MartialArtist$martialFrenzy]));
+};
+var _user$project$MartialArtist$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc7', _user$project$MartialArtist$l7encounters);
+};
+var _user$project$MartialArtist$stanceList = _elm_lang$core$Native_List.fromArray(
+	['Stone Wall', 'Weeping Willow', 'Tempest', 'Python', 'Scorpion', 'Flickering Flame', 'Mandala']);
+var _user$project$MartialArtist$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Martial Artist',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Stance:',
+							key: 'ma-s1',
+							choices: A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									['']),
+								_user$project$MartialArtist$stanceList),
+							del: false
+						}),
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Stance:',
+							key: 'ma-s2',
+							choices: A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									['']),
+								_user$project$MartialArtist$stanceList),
+							del: false
+						}),
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Stance:',
+							key: 'ma-s3',
+							choices: A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									['']),
+								_user$project$MartialArtist$stanceList),
+							del: false
+						})
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						3,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc3', _user$project$MartialArtist$l3encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						7,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc7', _user$project$MartialArtist$l7encounters)))))
+		]);
+};
+var _user$project$MartialArtist$quickStance = F2(
+	function (m, n) {
+		return A8(_user$project$PowerUtilities$quickPower, n, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$Yellow, m);
+	});
+var _user$project$MartialArtist$genStances = function (m) {
+	var allStances = function (x) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_user$project$MartialArtist$quickStance,
+				m,
+				A2(_elm_lang$core$Basics_ops['++'], x, ' Style')),
+				A2(
+				_user$project$MartialArtist$quickStance,
+				m,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Greater ',
+					A2(_elm_lang$core$Basics_ops['++'], x, ' Style'))),
+				A2(
+				_user$project$MartialArtist$quickStance,
+				m,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Supreme ',
+					A2(_elm_lang$core$Basics_ops['++'], x, ' Style')))
+			]);
+	};
+	var stanceChoices = A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$ModelDB$mayList(
+			A2(_user$project$ModelDB$getResponse, m, 'ma-s1')),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$ModelDB$mayList(
+				A2(_user$project$ModelDB$getResponse, m, 'ma-s2')),
+			_user$project$ModelDB$mayList(
+				A2(_user$project$ModelDB$getResponse, m, 'ma-s3'))));
+	return A2(_elm_lang$core$List$concatMap, allStances, stanceChoices);
+};
+var _user$project$MartialArtist$focusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$MartialArtist$changeStance = A7(_user$project$PowerUtilities$quickPower, 'Change Stance', _user$project$ModelDB$Special, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Yellow);
+var _user$project$MartialArtist$startStance = _user$project$PowerUtilities$quickSpecial('Stances');
+var _user$project$MartialArtist$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$MartialArtist$genStances(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$MartialArtist$startStance(m),
+					_user$project$MartialArtist$changeStance(m),
+					_user$project$MartialArtist$focusedAttack(m)
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_user$project$PowerUtilities$atLevelList,
+					m,
+					3,
+					_user$project$MartialArtist$l3encpower(m)),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevelList,
+						m,
+						7,
+						_user$project$MartialArtist$l7encpower(m)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						9,
+						_user$project$MartialArtist$mamaster(m))))));
+};
+var _user$project$MartialArtist$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
-		5) < 0) ? 0 : 1;
+		5) < 0) ? 2 : 3;
 };
-var _user$project$Necromancer$classNecro = {name: 'Necromancer', classPowerList: _user$project$Necromancer$necroPowers, classForms: _user$project$Necromancer$necroForms, modifyBasicMeleeDamage: _user$project$Necromancer$necroBasicMeleeDamage, modifyBasicRangeDamage: _user$project$Necromancer$necroBasicRangeDamage, modifyBasicRangeRange: _user$project$Necromancer$basicRangeRange};
+var _user$project$MartialArtist$modifyBasicMelee = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$MartialArtist$atWillDamage(m)
+			});
+	});
+var _user$project$MartialArtist$modifyBasicRange = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$MartialArtist$atWillDamage(m)
+			});
+	});
+var _user$project$MartialArtist$classMA = {
+	name: 'Duelist',
+	classPowerList: _user$project$MartialArtist$powers,
+	classForms: _user$project$MartialArtist$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$MartialArtist$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$MartialArtist$modifyBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
+var _user$project$TacticalModel$nullPowerModifier = F2(
+	function (_p0, p) {
+		return p;
+	});
+var _user$project$TacticalModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$Role, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Blue};
+var _user$project$TacticalModel$pRally = {name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow};
+var _user$project$TacticalModel$pcharge = {name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green};
+var _user$project$TacticalModel$prangedBasic = function (m) {
+	return {name: 'Ranged Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 5, area: 0, damage: 2, styl: _user$project$ModelDB$Green};
+};
+var _user$project$TacticalModel$pmeleeBasic = function (m) {
+	return {name: 'Melee Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 2, styl: _user$project$ModelDB$Green};
+};
+var _user$project$TacticalModel$basicPowers = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$TacticalModel$pmeleeBasic(m),
+			_user$project$TacticalModel$prangedBasic(m),
+			_user$project$TacticalModel$pcharge,
+			_user$project$TacticalModel$pRally,
+			_user$project$TacticalModel$pAssess
+		]);
+};
+var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Archer$classArcher},
+			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Duelist$classDuelist},
+			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$MartialArtist$classMA},
+			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro}
+		]));
+var _user$project$TacticalModel$classPowers = function (m) {
+	return A6(
+		_user$project$ModelDB$indirectLookup,
+		m,
+		'basics-class',
+		_user$project$TacticalModel$classes,
+		function (x) {
+			return x.classPowerList(m);
+		},
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+var _user$project$TacticalModel$getPowers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$TacticalModel$basicPowers(m),
+		_user$project$TacticalModel$classPowers(m));
+};
+var _user$project$TacticalModel$tacticalForms = function (m) {
+	return A6(
+		_user$project$ModelDB$indirectLookup,
+		m,
+		'basics-class',
+		_user$project$TacticalModel$classes,
+		function (x) {
+			return x.classForms(m);
+		},
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
 
 var _user$project$CharModel$encodeChar = function (model) {
 	return A2(
@@ -10655,9 +11151,6 @@ var _user$project$CharModel$updateExtendForm = F2(
 			return model;
 		}
 	});
-var _user$project$CharModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$Role, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Blue};
-var _user$project$CharModel$pRally = {name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow};
-var _user$project$CharModel$pcharge = {name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green};
 var _user$project$CharModel$levelForm = function (model) {
 	return A3(
 		_user$project$FormsModel$Form,
@@ -10714,6 +11207,52 @@ var _user$project$CharModel$levelForm = function (model) {
 							]) : _elm_lang$core$Native_List.fromArray(
 							[]))))));
 };
+var _user$project$CharModel$basicsForm = function (model) {
+	return A3(
+		_user$project$FormsModel$Form,
+		false,
+		'The Basics',
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$FormsModel$DropdownField(
+				{
+					name: 'Background',
+					del: false,
+					key: 'basics-bg',
+					choices: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							['<Custom>']),
+						_elm_lang$core$Dict$keys(model.database.backgrounds))
+				}),
+				_user$project$FormsModel$DropdownField(
+				{
+					name: 'Origin',
+					del: false,
+					key: 'basics-origin',
+					choices: _elm_lang$core$Dict$keys(model.database.origins)
+				}),
+				_user$project$FormsModel$NumberField(
+				{name: 'Level', del: false, key: 'basics-level', min: 1, max: 10}),
+				_user$project$FormsModel$DropdownField(
+				{
+					name: 'Class',
+					del: false,
+					key: 'basics-class',
+					choices: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							['']),
+						_elm_lang$core$Dict$keys(_user$project$TacticalModel$classes))
+				}),
+				_user$project$FormsModel$FreeformField(
+				{name: 'Custom Skill:', del: false, key: 'basics-skill'}),
+				_user$project$FormsModel$FreeformField(
+				{name: 'Custom Trick:', del: false, key: 'basics-trick'}),
+				_user$project$FormsModel$FreeformField(
+				{name: 'Complication:', del: false, key: 'basics-comp'})
+			]));
+};
 var _user$project$CharModel$learnedSkillEntry = F2(
 	function (m, x) {
 		return _user$project$FormsModel$FreeformField(
@@ -10766,6 +11305,85 @@ var _user$project$CharModel$killOutOfRange = F3(
 			}
 		}
 	});
+var _user$project$CharModel$customBackgroundForm = function (m) {
+	var _p8 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
+	if (_p8.ctor === 'Nothing') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		if (_p8._0 === '<Custom>') {
+			return _elm_lang$core$Maybe$Just(
+				A3(
+					_user$project$FormsModel$Form,
+					false,
+					'Custom background',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$FormsModel$FreeformField(
+								{name: 'Skill you need the most?', key: 'bg-custom-s1', del: false}),
+								_user$project$FormsModel$FreeformField(
+								{name: 'Supporting skill or knowledge?', key: 'bg-custom-s2', del: false}),
+								_user$project$FormsModel$FreeformField(
+								{name: 'Social/business skill?', key: 'bg-custom-s3', del: false}),
+								_user$project$FormsModel$DropdownField(
+								{
+									name: 'What helps when times are tough?',
+									del: false,
+									key: 'bg-custom-wos1',
+									choices: _elm_lang$core$Native_List.fromArray(
+										['', 'Wealth', 'People'])
+								})
+							]),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_user$project$ModelDB$mayList(
+								function () {
+									var _p9 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
+									if ((_p9.ctor === 'Just') && (_p9._0 === 'People')) {
+										return _elm_lang$core$Maybe$Just(
+											_user$project$FormsModel$FreeformField(
+												{name: 'Who?', del: false, key: 'bg-custom-wos1s'}));
+									} else {
+										return _elm_lang$core$Maybe$Nothing;
+									}
+								}()),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$FormsModel$DropdownField(
+										{
+											name: 'How do you get stuff?',
+											del: false,
+											key: 'bg-custom-wos2',
+											choices: _elm_lang$core$Native_List.fromArray(
+												['', 'Money', 'Skill'])
+										})
+									]),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_user$project$ModelDB$mayList(
+										function () {
+											var _p10 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
+											if ((_p10.ctor === 'Just') && (_p10._0 === 'Skill')) {
+												return _elm_lang$core$Maybe$Just(
+													_user$project$FormsModel$FreeformField(
+														{name: 'What skill?', del: false, key: 'bg-custom-wos2s'}));
+											} else {
+												return _elm_lang$core$Maybe$Nothing;
+											}
+										}()),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_user$project$FormsModel$FreeformField(
+											{name: 'Trick?', key: 'bg-custom-t', del: false})
+										])))))));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	}
+};
 var _user$project$CharModel$skillNameToSkill = F2(
 	function (source, name) {
 		return {name: name, source: source};
@@ -10822,21 +11440,21 @@ var _user$project$CharModel$originSkills = function (m) {
 			['Missing origin']));
 };
 var _user$project$CharModel$complexOriginForm = function (m) {
-	var _p8 = _user$project$CharModel$hasComplexOrigin(m);
-	if ((((_p8._0 === false) && (_p8._1 === false)) && (_p8._2 === false)) && (_p8._3 === false)) {
+	var _p11 = _user$project$CharModel$hasComplexOrigin(m);
+	if ((((_p11._0 === false) && (_p11._1 === false)) && (_p11._2 === false)) && (_p11._3 === false)) {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
 		var originName = function () {
-			var _p9 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
-			if (_p9.ctor === 'Just') {
-				return _p9._0;
+			var _p12 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
+			if (_p12.ctor === 'Just') {
+				return _p12._0;
 			} else {
 				return '(BUG) Origin complex but missing';
 			}
 		}();
 		var freeformComplicationPart = function () {
-			var _p10 = _p8._3;
-			if (_p10 === true) {
+			var _p13 = _p11._3;
+			if (_p13 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -10848,8 +11466,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var freeformSkillPart = function () {
-			var _p11 = _p8._2;
-			if (_p11 === true) {
+			var _p14 = _p11._2;
+			if (_p14 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -10861,8 +11479,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var complicationPart = function () {
-			var _p12 = _p8._1;
-			if (_p12 === true) {
+			var _p15 = _p11._1;
+			if (_p15 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -10883,8 +11501,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var skillPart = function () {
-			var _p13 = _p8._0;
-			if (_p13 === true) {
+			var _p16 = _p11._0;
+			if (_p16 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -10929,9 +11547,71 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 						A2(_elm_lang$core$Basics_ops['++'], freeformSkillPart, freeformComplicationPart)))));
 	}
 };
+var _user$project$CharModel$getForms = function (model) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$CharModel$basicsForm(model)
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$CharModel$learnedSkillsForm(model)
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				(_elm_lang$core$Native_Utils.cmp(
+					_user$project$ModelDB$getLevel(model),
+					2) > -1) ? _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$CharModel$levelForm(model)
+					]) : _elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$ModelDB$mayList(
+						_user$project$CharModel$complexOriginForm(model)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$ModelDB$mayList(
+							_user$project$CharModel$customBackgroundForm(model)),
+						_user$project$TacticalModel$tacticalForms(model))))));
+};
+var _user$project$CharModel$resolvedOriginSkills = function (m) {
+	var _p17 = _user$project$CharModel$hasComplexOrigin(m);
+	if (_p17._0 === false) {
+		if (_p17._2 === false) {
+			return _user$project$CharModel$originSkills(m);
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$CharModel$originSkills(m),
+				_user$project$ModelDB$mayList(
+					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
+		}
+	} else {
+		if (_p17._2 === false) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$ModelDB$mayList(
+					A2(_elm_lang$core$Dict$get, 'origin-s1', m.character)),
+				_user$project$ModelDB$mayList(
+					A2(_elm_lang$core$Dict$get, 'origin-s2', m.character)));
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$ModelDB$mayList(
+					A2(_elm_lang$core$Dict$get, 'origin-s1', m.character)),
+				_user$project$ModelDB$mayList(
+					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
+		}
+	}
+};
 var _user$project$CharModel$validateAlteredOrigin = function (m) {
-	var _p14 = _user$project$CharModel$hasComplexOrigin(m);
-	if (((((_p14.ctor === '_Tuple4') && (_p14._0 === false)) && (_p14._1 === false)) && (_p14._2 === false)) && (_p14._3 === false)) {
+	var _p18 = _user$project$CharModel$hasComplexOrigin(m);
+	if (((((_p18.ctor === '_Tuple4') && (_p18._0 === false)) && (_p18._1 === false)) && (_p18._2 === false)) && (_p18._3 === false)) {
 		return m;
 	} else {
 		return A3(
@@ -10951,8 +11631,8 @@ var _user$project$CharModel$validateAlteredOrigin = function (m) {
 };
 var _user$project$CharModel$fieldChanged = F2(
 	function (field, m) {
-		var _p15 = field;
-		switch (_p15) {
+		var _p19 = field;
+		switch (_p19) {
 			case 'basics-origin':
 				return _user$project$CharModel$validateAlteredOrigin(m);
 			case 'basics-level':
@@ -10970,18 +11650,18 @@ var _user$project$CharModel$updateFieldResponse = F3(
 	});
 var _user$project$CharModel$update = F2(
 	function (msg, model) {
-		var _p16 = msg;
-		switch (_p16.ctor) {
+		var _p20 = msg;
+		switch (_p20.ctor) {
 			case 'FormFieldUpdated':
 				return {
 					ctor: '_Tuple2',
-					_0: A3(_user$project$CharModel$updateFieldResponse, _p16._0, _p16._1, model),
+					_0: A3(_user$project$CharModel$updateFieldResponse, _p20._0, _p20._1, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FormAddClicked':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$CharModel$updateExtendForm, _p16._0, model),
+					_0: A2(_user$project$CharModel$updateExtendForm, _p20._0, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'DoSave':
@@ -11013,157 +11693,35 @@ var _user$project$CharModel$backgroundSkills = function (m) {
 		_elm_lang$core$Native_List.fromArray(
 			['Missing background']));
 };
-var _user$project$CharModel$mayList = function (x) {
-	var _p17 = x;
-	if (_p17.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		return _elm_lang$core$Native_List.fromArray(
-			[_p17._0]);
-	}
-};
-var _user$project$CharModel$resolvedOriginSkills = function (m) {
-	var _p18 = _user$project$CharModel$hasComplexOrigin(m);
-	if (_p18._0 === false) {
-		if (_p18._2 === false) {
-			return _user$project$CharModel$originSkills(m);
-		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				_user$project$CharModel$originSkills(m),
-				_user$project$CharModel$mayList(
-					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
-		}
-	} else {
-		if (_p18._2 === false) {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				_user$project$CharModel$mayList(
-					A2(_elm_lang$core$Dict$get, 'origin-s1', m.character)),
-				_user$project$CharModel$mayList(
-					A2(_elm_lang$core$Dict$get, 'origin-s2', m.character)));
-		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				_user$project$CharModel$mayList(
-					A2(_elm_lang$core$Dict$get, 'origin-s1', m.character)),
-				_user$project$CharModel$mayList(
-					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
-		}
-	}
-};
-var _user$project$CharModel$customBackgroundFields = function (m) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$FormsModel$FreeformField(
-				{name: 'Skill you need the most?', key: 'bg-custom-s1', del: false}),
-				_user$project$FormsModel$FreeformField(
-				{name: 'Supporting skill or knowledge?', key: 'bg-custom-s2', del: false}),
-				_user$project$FormsModel$FreeformField(
-				{name: 'Social/business skill?', key: 'bg-custom-s3', del: false}),
-				_user$project$FormsModel$DropdownField(
-				{
-					name: 'What helps when times are tough?',
-					del: false,
-					key: 'bg-custom-wos1',
-					choices: _elm_lang$core$Native_List.fromArray(
-						['', 'Wealth', 'People'])
-				})
-			]),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_user$project$CharModel$mayList(
-				function () {
-					var _p19 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
-					if ((_p19.ctor === 'Just') && (_p19._0 === 'People')) {
-						return _elm_lang$core$Maybe$Just(
-							_user$project$FormsModel$FreeformField(
-								{name: 'Who?', del: false, key: 'bg-custom-wos1s'}));
-					} else {
-						return _elm_lang$core$Maybe$Nothing;
-					}
-				}()),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$FormsModel$DropdownField(
-						{
-							name: 'How do you get stuff?',
-							del: false,
-							key: 'bg-custom-wos2',
-							choices: _elm_lang$core$Native_List.fromArray(
-								['', 'Money', 'Skill'])
-						})
-					]),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_user$project$CharModel$mayList(
-						function () {
-							var _p20 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
-							if ((_p20.ctor === 'Just') && (_p20._0 === 'Skill')) {
-								return _elm_lang$core$Maybe$Just(
-									_user$project$FormsModel$FreeformField(
-										{name: 'What skill?', del: false, key: 'bg-custom-wos2s'}));
-							} else {
-								return _elm_lang$core$Maybe$Nothing;
-							}
-						}()),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_user$project$FormsModel$FreeformField(
-							{name: 'Trick?', key: 'bg-custom-t', del: false})
-						])))));
-};
-var _user$project$CharModel$customBackgroundForm = function (m) {
+var _user$project$CharModel$resolvedBackgroundSkills = function (m) {
 	var _p21 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
 	if (_p21.ctor === 'Nothing') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		if (_p21._0 === '<Custom>') {
-			return _elm_lang$core$Maybe$Just(
-				A3(
-					_user$project$FormsModel$Form,
-					false,
-					'Custom background',
-					_user$project$CharModel$customBackgroundFields(m)));
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	}
-};
-var _user$project$CharModel$resolvedBackgroundSkills = function (m) {
-	var _p22 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
-	if (_p22.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
-		if (_p22._0 === '<Custom>') {
+		if (_p21._0 === '<Custom>') {
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
-				_user$project$CharModel$mayList(
+				_user$project$ModelDB$mayList(
 					A2(_user$project$ModelDB$getResponse, m, 'bg-custom-s1')),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_user$project$CharModel$mayList(
+					_user$project$ModelDB$mayList(
 						A2(_user$project$ModelDB$getResponse, m, 'bg-custom-s2')),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_user$project$CharModel$mayList(
+						_user$project$ModelDB$mayList(
 							A2(_user$project$ModelDB$getResponse, m, 'bg-custom-s3')),
 						_elm_lang$core$Native_Utils.eq(
 							A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1'),
-							_elm_lang$core$Maybe$Just('People')) ? _user$project$CharModel$mayList(
+							_elm_lang$core$Maybe$Just('People')) ? _user$project$ModelDB$mayList(
 							A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1s')) : A2(
 							_elm_lang$core$Basics_ops['++'],
 							_elm_lang$core$Native_List.fromArray(
 								[]),
 							_elm_lang$core$Native_Utils.eq(
 								A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2'),
-								_elm_lang$core$Maybe$Just('Skill')) ? _user$project$CharModel$mayList(
+								_elm_lang$core$Maybe$Just('Skill')) ? _user$project$ModelDB$mayList(
 								A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2s')) : _elm_lang$core$Native_List.fromArray(
 								[])))));
 		} else {
@@ -11184,7 +11742,7 @@ var _user$project$CharModel$getSkills = function (m) {
 				_elm_lang$core$List$map,
 				_user$project$CharModel$skillNameToSkill(1),
 				_user$project$CharModel$resolvedOriginSkills(m)),
-			_user$project$CharModel$mayList(
+			_user$project$ModelDB$mayList(
 				A2(
 					_elm_lang$core$Maybe$map,
 					_user$project$CharModel$skillNameToSkill(2),
@@ -11194,199 +11752,6 @@ var _user$project$CharModel$init = {
 	ctor: '_Tuple2',
 	_0: {character: _user$project$ModelDB$blankCharacter, database: _user$project$ModelDB$blankDatabase},
 	_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/backgrounds.json', _user$project$ModelDB$BackgroundsLoaded)
-};
-var _user$project$CharModel$classes = _elm_lang$core$Dict$fromList(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro},
-			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Archer$classArcher}
-		]));
-var _user$project$CharModel$basicsForm = function (model) {
-	return A3(
-		_user$project$FormsModel$Form,
-		false,
-		'The Basics',
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$FormsModel$DropdownField(
-				{
-					name: 'Background',
-					del: false,
-					key: 'basics-bg',
-					choices: A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Native_List.fromArray(
-							['<Custom>']),
-						_elm_lang$core$Dict$keys(model.database.backgrounds))
-				}),
-				_user$project$FormsModel$DropdownField(
-				{
-					name: 'Origin',
-					del: false,
-					key: 'basics-origin',
-					choices: _elm_lang$core$Dict$keys(model.database.origins)
-				}),
-				_user$project$FormsModel$NumberField(
-				{name: 'Level', del: false, key: 'basics-level', min: 1, max: 10}),
-				_user$project$FormsModel$DropdownField(
-				{
-					name: 'Class',
-					del: false,
-					key: 'basics-class',
-					choices: A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Native_List.fromArray(
-							['']),
-						_elm_lang$core$Dict$keys(_user$project$CharModel$classes))
-				}),
-				_user$project$FormsModel$FreeformField(
-				{name: 'Custom Skill:', del: false, key: 'basics-skill'}),
-				_user$project$FormsModel$FreeformField(
-				{name: 'Custom Trick:', del: false, key: 'basics-trick'}),
-				_user$project$FormsModel$FreeformField(
-				{name: 'Complication:', del: false, key: 'basics-comp'})
-			]));
-};
-var _user$project$CharModel$basicMeleeDamageModifier = function (m) {
-	var _p23 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p23.ctor === 'Nothing') {
-		return 0;
-	} else {
-		var _p24 = A2(_elm_lang$core$Dict$get, _p23._0, _user$project$CharModel$classes);
-		if (_p24.ctor === 'Nothing') {
-			return 0;
-		} else {
-			return _p24._0.modifyBasicMeleeDamage(m);
-		}
-	}
-};
-var _user$project$CharModel$pmeleeBasic = function (m) {
-	return {
-		name: 'Melee Basic Attack',
-		text: 'No effect.',
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 0,
-		area: 0,
-		damage: 2 + _user$project$CharModel$basicMeleeDamageModifier(m),
-		styl: _user$project$ModelDB$Green
-	};
-};
-var _user$project$CharModel$basicRangeDamageModifier = function (m) {
-	var _p25 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p25.ctor === 'Nothing') {
-		return 0;
-	} else {
-		var _p26 = A2(_elm_lang$core$Dict$get, _p25._0, _user$project$CharModel$classes);
-		if (_p26.ctor === 'Nothing') {
-			return 0;
-		} else {
-			return _p26._0.modifyBasicRangeDamage(m);
-		}
-	}
-};
-var _user$project$CharModel$basicRangeRangeModifier = function (m) {
-	var _p27 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p27.ctor === 'Nothing') {
-		return 0;
-	} else {
-		var _p28 = A2(_elm_lang$core$Dict$get, _p27._0, _user$project$CharModel$classes);
-		if (_p28.ctor === 'Nothing') {
-			return 0;
-		} else {
-			return _p28._0.modifyBasicRangeRange(m);
-		}
-	}
-};
-var _user$project$CharModel$prangedBasic = function (m) {
-	return {
-		name: 'Ranged Basic Attack',
-		text: 'No effect.',
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 5 + _user$project$CharModel$basicRangeRangeModifier(m),
-		area: 0,
-		damage: 2 + _user$project$CharModel$basicRangeDamageModifier(m),
-		styl: _user$project$ModelDB$Green
-	};
-};
-var _user$project$CharModel$basicPowers = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$CharModel$pmeleeBasic(m),
-			_user$project$CharModel$prangedBasic(m),
-			_user$project$CharModel$pcharge,
-			_user$project$CharModel$pRally,
-			_user$project$CharModel$pAssess
-		]);
-};
-var _user$project$CharModel$classPowers = function (m) {
-	var _p29 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p29.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		var _p30 = A2(_elm_lang$core$Dict$get, _p29._0, _user$project$CharModel$classes);
-		if (_p30.ctor === 'Nothing') {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
-		} else {
-			return _p30._0.classPowerList(m);
-		}
-	}
-};
-var _user$project$CharModel$getPowers = function (m) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_user$project$CharModel$basicPowers(m),
-		_user$project$CharModel$classPowers(m));
-};
-var _user$project$CharModel$classForms = function (m) {
-	var _p31 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
-	if (_p31.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		var _p32 = A2(_elm_lang$core$Dict$get, _p31._0, _user$project$CharModel$classes);
-		if (_p32.ctor === 'Nothing') {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
-		} else {
-			return _p32._0.classForms(m);
-		}
-	}
-};
-var _user$project$CharModel$getForms = function (model) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$CharModel$basicsForm(model)
-			]),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$CharModel$learnedSkillsForm(model)
-				]),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				(_elm_lang$core$Native_Utils.cmp(
-					_user$project$ModelDB$getLevel(model),
-					2) > -1) ? _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$CharModel$levelForm(model)
-					]) : _elm_lang$core$Native_List.fromArray(
-					[]),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_user$project$CharModel$mayList(
-						_user$project$CharModel$complexOriginForm(model)),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_user$project$CharModel$mayList(
-							_user$project$CharModel$customBackgroundForm(model)),
-						_user$project$CharModel$classForms(model))))));
 };
 
 var _user$project$View$fileops = A2(
@@ -11672,7 +12037,7 @@ var _user$project$View$powerCards = function (model) {
 			A2(
 				_elm_lang$core$List$sortBy,
 				_user$project$View$powerOrder,
-				_user$project$CharModel$getPowers(model))));
+				_user$project$TacticalModel$getPowers(model))));
 };
 var _user$project$View$useIcon = F2(
 	function (icon, size) {

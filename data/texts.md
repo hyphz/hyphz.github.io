@@ -264,4 +264,248 @@ Monster. An Elite takes 3 rounds, a Champion or Titan takes 5.
 
 **Special:** When you roll a 2 on your Super Trick Arrow power,
 you must treat it as though you rolled a 5, but you have run out of
-that kind of ammo. Cross the effect off the list. 
+that kind of ammo. Cross the effect off the list.
+@@Duel
+Target one creature within 10 squares. Until the end of the encounter, when you
+attack the target, any 2s on your dice are treated as though they were 4s.
+
+**Special:** This power recharges when its target is Taken Out.
+@@Duel5+
+Target one creature within 10 squares. Until the end of the encounter, when you
+attack the target, any 2s on your dice are treated as though they were 6s.
+
+**Special:** This power recharges when its target is Taken Out.
+@@Duel9+
+Target one creature within 10 squares. Until the end of the encounter, when you
+attack the target, any 2s on your dice are treated as though they were 6s and
+you deal 1 extra damage if you hit.
+
+**Special:** This power recharges when its target is Taken Out.
+@@ChangeTarget
+Make a Basic Attack against a creature. Then change the target of Duel to that
+creature. The original target loses all points of Focus and associated
+Statuses. You may only ever have one target of Duel. If you make this attack
+multiple times at once, choose one target to change your Duel to after resolving
+the attacks.
+@@Focus
+Whenever you start your turn, the target of your Duel takes one
+Focus. Then for each point of Focus the enemy has, pick one
+effect from the list below. It has all the Statuses you chose until the end
+of its next turn.
+
+* Harried.
+* Cannot benefit from positive effects from its allies’ powers.
+* Cannot take advantage of Opportunities.
+* Cannot benefit from positive effects from its own powers.
+* Cannot use Interrupts or Reactions.
+
+The target may ignore your “Cannots” but it grants you an Opportunity
+if it does. If you spend a point of Focus on a power, remove one of
+the accumulated Statuses. If you are Incapacitated, remove all your Focus.
+@@Focus5+
+Whenever you start your turn, the target of your Duel takes one
+Focus. Then for each point of Focus the enemy has, pick one
+effect from the list below. It has all the Statuses you chose until the end
+of its next turn.
+
+* Harried.
+* Cannot benefit from positive effects from its allies’ powers.
+* Cannot take advantage of Opportunities.
+* Cannot benefit from positive effects from its own powers.
+* Cannot use Interrupts or Reactions.
+
+The target may ignore your “Cannots” but it grants you an Opportunity
+if it does and the Opportunity deals 1 extra damage. If you spend a point of
+Focus on a power, remove one of the accumulated Statuses. If you are Incapacitated,
+remove all your Focus.
+@@Focus9+
+Whenever you start your turn, the target of your Duel takes one
+Focus. Then for each point of Focus the enemy has, pick one
+effect from the list below. It has all the Statuses you chose until the end
+of its next turn.
+
+* Harried.
+* Cannot benefit from positive effects from its allies’ powers.
+* Cannot take advantage of Opportunities.
+* Cannot benefit from positive effects from its own powers.
+* Cannot use Interrupts or Reactions.
+
+The target may ignore your “Cannots” but it grants you an Opportunity
+if it does and the Opportunity deals 2 extra damage. If you spend a point of
+Focus on a power, remove one of the accumulated Statuses but treat the
+power as if you had spent 2 points. If you are Incapacitated,
+remove all your Focus.
+@@FindanOpening
+When you attack the target of your Duel, you may spend any number of points
+of its Focus. If you hit, increase your damage by 1 per point spent.
+@@ThrowofftheirAim
+When the target of your Duel hits your ally with an attack, you may spend
+any number of points of its Focus to reduce the damage by one per point
+spent.
+@@Forcetheirposition
+When the target of your Duel ends its turn, you may spend any number of
+points of its Focus to slide it one square per point spent.
+@@GetOverHere
+**Effect:** Target is pulled to an adjacent square.
+@@NoEscape
+**Effect:** Target is Slowed (save ends).
+@@DemandAttention
+**Effect:** Target takes 1 point of Focus if it's the target of your Duel.
+@@ExploitWeakness
+**Effect:** Target is Vulnerable 1 to all damage with you as the source
+until the end of the encounter. This does not stack with itself.
+@@GuessingGame
+**Effect:** Set up a die where the GM can't see. If you set it to 1-3, the
+target is Marked until the end of its next turn. If you set it to 4-6,
+until the end of the target's next turn you are guarded against its
+attacks and if it attacks you it grants you an Opportunity. Reveal the die
+when you need to prove what it was.
+@@Ain'tNoOneElseAround
+**Effect:** 3 damage if neither you nor the target have any other creatures
+adjacent.
+@@PerfectDefense
+**Effect:** Target has Disadvantage to attack you. It makes a Saving Throw
+against this status each time it hits you with an attack.
+@@TakeTheOpening
+**Effect:** Damage equal to the number of points of Focus the target has.
+@@Stalker
+**Effect:** While the target is the target of your Duel, it takes one point
+of Focus whenever you end your turn adjacent to it.
+@@YouCan'tIgnoreMe
+**Effect:** Target cannot make attacks that do not include you as a target
+(save ends).
+@@Let'sTakeThisOutside
+**Effect:** You and the target are teleported to an empty 10x10 room. Neither
+of you can affect or be affected by any creatures not in the room. You and
+the target remain there until either you are Taken Out or you are the only
+creature in the room that is not Taken Out. Then, all creatures in the room
+are teleported back to their previous locations.
+@@WhereYouGoIFollow
+**Effect:** Until the end of the encounter, when the target leaves a square
+adjacent to you, after it finishes its move you may shift up to your speed + 4
+to a square adjacent the target.
+@@Stances
+You may start an encounter in any Stance you have access to.
+@@ChangeStance
+Free action, once per turn. Change your selected stance.
+@@StoneWallStyle
+Stance. **Melee Effect:** Target has disadvantage to attack you with melee attacks
+on its next turn.
+
+**Continuous:** Each turn you may pick a cardinal or intercardinal direction.
+Until the start of your next turn you Resist 1 against ranged attacks in that half-plane.
+@@GreaterStoneWallStyle
+Stance. **Melee Effect:** Target's melee atttacks against you on its next turn automatically
+miss.
+
+**Continuous:** Each turn you may pick a cardinal or intercardinal direction.
+Until the start of your next turn you Resist 2 against ranged attacks in that half-plane.
+@@SupremeStoneWallStyle
+Stance. **Melee Effect:** All target's melee attacks on its next turn automatically miss.
+
+**Continuous:** Resist 2 against ranged attacks.
+@@WeepingWillowStyle
+Stance. **Melee Effect:** Slide target 2 squares.
+
+**Continuous:** You have Reach 2.
+@@GreaterWeepingWillowStyle
+Stance. **Melee Effect:** Slide target 4 squares.
+
+**Continuous:** You have Reach 3.
+@@SupremeWeepingWillowStyle
+Stance. **Melee Effect:** Slide target 4 squares and knock it Prone.
+
+**Continuous:** You have Reach 4.
+@@TempestStyle
+Stance. **Melee Effect:** Deal 2 damage to an enemy adjacent the target.
+
+**Continuous:** Enemies that end their turn adjacent to you take 1 damage.
+@@GreaterTempestStyle
+Stance. **Melee Effect:** Deal 2 damage to each enemy adjacent the target.
+
+**Continuous:** Enemies that end their turn adjacent to you or move adjacent take 1 damage.
+@@SupremeTempestStyle
+Stance. **Melee Effect:** Deal 3 damage to each enemy adjacent the target, and to each enemy adjacent
+you other than the target.
+
+**Continuous:** Enemies that end their turn adjacent to you or move adjacent take 2 damage.
+@@PythonStyle
+Stance. **Melee Effect:** Grab the target.
+
+**Continuous:** If an attack misses you while you have an enemy Grabbed, the Grabbed enemy takes 2
+damage.
+@@GreaterPythonStyle
+Stance. **Melee Effect:** Grab the target. While Grabbed, it has Disadvantage to attack anyone
+other than you.
+
+**Continuous:** If an attack misses you while you have an enemy Grabbed, the attack hits the
+Grabbed enemy as if the attacker had rolled a 4.
+@@SupremePythonStyle
+Stance. **Melee Effect:** Grab the target. It is Restrained until it escapes.
+
+**Continuous:** If an attack misses you while you have an enemy Grabbed, the attack hits the
+Grabbed enemy as if the attacker had rolled a 6.
+@@ScorpionStyle
+Stance. **Melee Effect:** Target takes 1 ongoing damage (save ends).
+
+**Continuous:** Add 1 damage to your Opportunities.
+@@GreaterScorpionStyle
+Stance. **Melee Effect:** Target takes 2 ongoing damage (save ends).
+
+**Continuous:** Add 1 ongoing damage (save ends) to your Opportunities.
+@@SupremeScorpionStyle
+Stance. **Melee Effect:** Target takes 2 ongoing damage until the end of the encounter.
+
+**Continuous:** Add 2 ongoing damage (save ends) to your Opportunities.
+@@FlickeringFlameStyle
+Stance. **Melee Effect:** Shift 2 squares.
+
+**Continuous:** You may shift 2 squares as a move action.
+@@GreaterFlickeringFlameStyle
+Stance. **Melee Effect:** Teleport 3 squares.
+
+**Continuous:** You may teleport 3 squares as a move action.
+@@SupremeFlickeringFlameStyle
+Stance. **Melee Effect:** Teleport 5 squares and if you end in cover or concealment from all
+enemies, you are Hidden.
+
+**Continuous:** You may teleport your speed as a move action.
+@@MandalaStyle
+Stance. **Melee Effect:** Target is Distracted (save ends).
+
+**Continuous:** Enemies adjacent to you cannot take advantage of Opportunities granted by your
+allies.
+@@GreaterMandalaStyle
+Stance. **Melee Effect:** Target is Distracted and Slowed (save ends).
+
+**Continuous:** Enemies within 3 squares of you cannot take advantage of Opportunities granted by your
+allies.
+@@SupremeMandalaStyle
+Stance. **Melee Effect:** Target is Dazed (save ends).
+
+**Continuous:** Enemies who can see you cannot take advantage of Opportunities granted by your
+allies.
+@@OppanGangnamStyle
+Well, those were a pain in the ass to type. Also, we voted to leave the EU today. I think
+we are all quite possibly screwed.
+@@FocusedAttack
+On your next attack, treat your stances although they were one tier higher for the effect and
+add one to the damage line of the attack. Until the start of your next turn, treat all your
+stances as though they were one tier higher for the passive effect. This action may stack
+with itself to increase damage and tier multiple times.
+@@MasterMartialArtist
+When you take a stance, you may also take a secondary stance you know at Basic level. When
+you change stance you may change both.
+@@Decapitation
+**Effect:** Target must make a Saving Throw. If it fails, it is immediately Taken Out. Only
+one target of this power may be subject to the effect. If this power somehow gains
+additional targets, they suffer 3 additional damage instead.
+@@TheFalseDeath
+When you are Taken Out, or at or below 0 HP, on your next Initiative count you may stand
+up and re-enter the fight with 1HP.
+@@MartialFrenzy
+You drop all stances and lose the ability to take on stances or to use Focused attack.
+You have two Attack Actions per round. Save ends all. This Saving Throw cannot be
+manipulated or modified in any way.
+@@ExtraFocusedAttack
+You can use Focused Attack an additional time per encounter.
