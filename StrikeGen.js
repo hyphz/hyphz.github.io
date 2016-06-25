@@ -9706,6 +9706,10 @@ var _user$project$ModelDB$Class = F7(
 	function (a, b, c, d, e, f, g) {
 		return {name: a, classPowerList: b, classForms: c, modifyBasicMelee: d, modifyBasicRange: e, modifyCharge: f, modifyRally: g};
 	});
+var _user$project$ModelDB$Role = F3(
+	function (a, b, c) {
+		return {name: a, rolePowerList: b, roleForms: c};
+	});
 var _user$project$ModelDB$DoSave = {ctor: 'DoSave'};
 var _user$project$ModelDB$TextsLoaded = function (a) {
 	return {ctor: 'TextsLoaded', _0: a};
@@ -9780,7 +9784,7 @@ var _user$project$ModelDB$Reaction = {ctor: 'Reaction'};
 var _user$project$ModelDB$Special = {ctor: 'Special'};
 var _user$project$ModelDB$Misc = {ctor: 'Misc'};
 var _user$project$ModelDB$Attack = {ctor: 'Attack'};
-var _user$project$ModelDB$Role = {ctor: 'Role'};
+var _user$project$ModelDB$RoleSlot = {ctor: 'RoleSlot'};
 var _user$project$ModelDB$None = {ctor: 'None'};
 var _user$project$ModelDB$Encounter = {ctor: 'Encounter'};
 var _user$project$ModelDB$AtWill = {ctor: 'AtWill'};
@@ -11054,37 +11058,202 @@ var _user$project$MartialArtist$classMA = {
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
+var _user$project$Simplified$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Simplified Class',
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$FormsModel$DropdownField(
+					{
+						name: 'Specialization',
+						del: false,
+						key: 'simple-type',
+						choices: _elm_lang$core$Native_List.fromArray(
+							['', 'None', 'Melee', 'Ranged'])
+					})
+				]))
+		]);
+};
+var _user$project$Simplified$meleeSpecial = '\n\n**Special**: Treat any 2s rolled on the dice as though they were 5s.';
+var _user$project$Simplified$simpleDamageValue = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : ((_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		9) < 0) ? 3 : 4);
+};
+var _user$project$Simplified$simpleDamageEffect = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		3) < 0) ? '**Effect**: 1 damage.' : ((_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		7) < 0) ? '**Effect**: 2 damage.' : '**Effect**: 3 damage.');
+};
+var _user$project$Simplified$simpleBasicMelee = F2(
+	function (m, p) {
+		var _p0 = A2(_user$project$ModelDB$getResponse, m, 'simple-type');
+		_v0_2:
+		do {
+			if (_p0.ctor === 'Just') {
+				switch (_p0._0) {
+					case 'Melee':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: A2(
+									_elm_lang$core$Basics_ops['++'],
+									_user$project$Simplified$simpleDamageEffect(m),
+									_user$project$Simplified$meleeSpecial),
+								damage: _user$project$Simplified$simpleDamageValue(m)
+							});
+					case 'None':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: _user$project$Simplified$simpleDamageEffect(m),
+								damage: _user$project$Simplified$simpleDamageValue(m)
+							});
+					default:
+						break _v0_2;
+				}
+			} else {
+				break _v0_2;
+			}
+		} while(false);
+		return p;
+	});
+var _user$project$Simplified$simpleBasicRange = F2(
+	function (m, p) {
+		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'simple-type');
+		_v1_2:
+		do {
+			if (_p1.ctor === 'Just') {
+				switch (_p1._0) {
+					case 'Ranged':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: _user$project$Simplified$simpleDamageEffect(m),
+								damage: _user$project$Simplified$simpleDamageValue(m),
+								range: 20
+							});
+					case 'None':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: _user$project$Simplified$simpleDamageEffect(m),
+								damage: _user$project$Simplified$simpleDamageValue(m),
+								range: 10
+							});
+					default:
+						break _v1_2;
+				}
+			} else {
+				break _v1_2;
+			}
+		} while(false);
+		return p;
+	});
+var _user$project$Simplified$powers = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[]);
+};
+var _user$project$Simplified$classSimplified = {
+	name: 'Simplified Class',
+	classPowerList: _user$project$Simplified$powers,
+	classForms: _user$project$Simplified$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Simplified$simpleBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Simplified$simpleBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
 var _user$project$TacticalModel$nullPowerModifier = F2(
 	function (_p0, p) {
 		return p;
 	});
-var _user$project$TacticalModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$Role, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Blue};
-var _user$project$TacticalModel$pRally = {name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow};
-var _user$project$TacticalModel$pcharge = {name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green};
-var _user$project$TacticalModel$prangedBasic = function (m) {
-	return {name: 'Ranged Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 5, area: 0, damage: 2, styl: _user$project$ModelDB$Green};
-};
-var _user$project$TacticalModel$pmeleeBasic = function (m) {
-	return {name: 'Melee Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 2, styl: _user$project$ModelDB$Green};
-};
-var _user$project$TacticalModel$basicPowers = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$TacticalModel$pmeleeBasic(m),
-			_user$project$TacticalModel$prangedBasic(m),
-			_user$project$TacticalModel$pcharge,
-			_user$project$TacticalModel$pRally,
-			_user$project$TacticalModel$pAssess
-		]);
-};
+var _user$project$TacticalModel$pAssess = {name: 'Assess', text: 'Roll a die and ask the GM that many questions as listed on page 90.', slot: _user$project$ModelDB$RoleSlot, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Blue};
+var _user$project$TacticalModel$roles = _elm_lang$core$Dict$fromList(
+	_elm_lang$core$Native_List.fromArray(
+		[]));
 var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
 			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Archer$classArcher},
 			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Duelist$classDuelist},
 			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$MartialArtist$classMA},
-			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro}
+			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro},
+			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Simplified$classSimplified}
 		]));
+var _user$project$TacticalModel$applyClassModifier = F3(
+	function (m, extractor, value) {
+		var c = A6(
+			_user$project$ModelDB$indirectLookup,
+			m,
+			'basics-class',
+			_user$project$TacticalModel$classes,
+			function (x) {
+				return extractor(x);
+			},
+			_elm_lang$core$Maybe$Nothing,
+			_elm_lang$core$Maybe$Nothing);
+		var _p1 = c;
+		if (_p1.ctor === 'Nothing') {
+			return value;
+		} else {
+			return A2(_p1._0, m, value);
+		}
+	});
+var _user$project$TacticalModel$pmeleeBasic = function (m) {
+	return A3(
+		_user$project$TacticalModel$applyClassModifier,
+		m,
+		function (_) {
+			return _.modifyBasicMelee;
+		},
+		{name: 'Melee Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 2, styl: _user$project$ModelDB$Green});
+};
+var _user$project$TacticalModel$prangedBasic = function (m) {
+	return A3(
+		_user$project$TacticalModel$applyClassModifier,
+		m,
+		function (_) {
+			return _.modifyBasicRange;
+		},
+		{name: 'Ranged Basic Attack', text: 'No effect.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 5, area: 0, damage: 2, styl: _user$project$ModelDB$Green});
+};
+var _user$project$TacticalModel$pcharge = function (m) {
+	return A3(
+		_user$project$TacticalModel$applyClassModifier,
+		m,
+		function (_) {
+			return _.modifyCharge;
+		},
+		{name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green});
+};
+var _user$project$TacticalModel$pRally = function (m) {
+	return A3(
+		_user$project$TacticalModel$applyClassModifier,
+		m,
+		function (_) {
+			return _.modifyRally;
+		},
+		{name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow});
+};
+var _user$project$TacticalModel$basicPowers = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$TacticalModel$pmeleeBasic(m),
+			_user$project$TacticalModel$prangedBasic(m),
+			_user$project$TacticalModel$pcharge(m),
+			_user$project$TacticalModel$pRally(m),
+			_user$project$TacticalModel$pAssess
+		]);
+};
 var _user$project$TacticalModel$classPowers = function (m) {
 	return A6(
 		_user$project$ModelDB$indirectLookup,
@@ -11244,6 +11413,17 @@ var _user$project$CharModel$basicsForm = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							['']),
 						_elm_lang$core$Dict$keys(_user$project$TacticalModel$classes))
+				}),
+				_user$project$FormsModel$DropdownField(
+				{
+					name: 'Role',
+					del: false,
+					key: 'basics-role',
+					choices: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Native_List.fromArray(
+							['']),
+						_elm_lang$core$Dict$keys(_user$project$TacticalModel$roles))
 				}),
 				_user$project$FormsModel$FreeformField(
 				{name: 'Custom Skill:', del: false, key: 'basics-skill'}),
@@ -11915,7 +12095,7 @@ var _user$project$View$powerCard = function (power) {
 		switch (_p6.ctor) {
 			case 'Attack':
 				return 'attack.svg';
-			case 'Role':
+			case 'RoleSlot':
 				return 'role.svg';
 			case 'Misc':
 				return 'circle.svg';
