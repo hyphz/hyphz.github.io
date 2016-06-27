@@ -9404,6 +9404,38 @@ var _user$project$FormsModel$DropdownField = function (a) {
 	return {ctor: 'DropdownField', _0: a};
 };
 
+var _user$project$Ports$download = _elm_lang$core$Native_Platform.outgoingPort(
+	'download',
+	function (v) {
+		return [v._0, v._1];
+	});
+var _user$project$Ports$saveURL = _elm_lang$core$Native_Platform.outgoingPort(
+	'saveURL',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$dbLoaded = _elm_lang$core$Native_Platform.outgoingPort(
+	'dbLoaded',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$doUpload = _elm_lang$core$Native_Platform.outgoingPort(
+	'doUpload',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$alert = _elm_lang$core$Native_Platform.outgoingPort(
+	'alert',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$resetFileMenu = _elm_lang$core$Native_Platform.outgoingPort(
+	'resetFileMenu',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$loadJson = _elm_lang$core$Native_Platform.incomingPort('loadJson', _elm_lang$core$Json_Decode$string);
+
 var _user$project$ModelDB$splitTexts = function (str) {
 	var extractParaKey = function (s) {
 		var theHead = A2(
@@ -9710,7 +9742,12 @@ var _user$project$ModelDB$Role = F3(
 	function (a, b, c) {
 		return {name: a, rolePowerList: b, roleForms: c};
 	});
-var _user$project$ModelDB$DoSave = {ctor: 'DoSave'};
+var _user$project$ModelDB$LoadJson = function (a) {
+	return {ctor: 'LoadJson', _0: a};
+};
+var _user$project$ModelDB$FileCommand = function (a) {
+	return {ctor: 'FileCommand', _0: a};
+};
 var _user$project$ModelDB$TextsLoaded = function (a) {
 	return {ctor: 'TextsLoaded', _0: a};
 };
@@ -9743,7 +9780,7 @@ var _user$project$ModelDB$dbUpdate = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: _user$project$ModelDB$httpError(model),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_1: _user$project$Ports$alert('Database load error! Check internet or local data/ path.')
 				};
 			case 'BackgroundsLoaded':
 				return {
@@ -9761,7 +9798,7 @@ var _user$project$ModelDB$dbUpdate = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: A2(_user$project$ModelDB$unpackTexts, _p5._0, model),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_1: _user$project$Ports$dbLoaded(0)
 				};
 			default:
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -10194,12 +10231,6 @@ var _user$project$Archer$classArcher = {
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
-
-var _user$project$Ports$download = _elm_lang$core$Native_Platform.outgoingPort(
-	'download',
-	function (v) {
-		return [v._0, v._1];
-	});
 
 var _user$project$Necromancer$giftPower = function (m) {
 	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
@@ -11233,7 +11264,16 @@ var _user$project$TacticalModel$pcharge = function (m) {
 		function (_) {
 			return _.modifyCharge;
 		},
-		{name: 'Charge', text: 'Move up to your speed to a square adjacent a creature, and make a Melee Basic\n                       Attack against it. Each square of movement must bring you closer to the target.\n                       You cannot Charge through Difficult Terrain.', slot: _user$project$ModelDB$Attack, freq: _user$project$ModelDB$AtWill, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Green});
+		{
+			name: 'Charge',
+			text: A2(_user$project$ModelDB$overtext, m, 'GlobalCharge'),
+			slot: _user$project$ModelDB$Attack,
+			freq: _user$project$ModelDB$AtWill,
+			range: 0,
+			area: 0,
+			damage: 0,
+			styl: _user$project$ModelDB$Green
+		});
 };
 var _user$project$TacticalModel$pRally = function (m) {
 	return A3(
@@ -11242,7 +11282,16 @@ var _user$project$TacticalModel$pRally = function (m) {
 		function (_) {
 			return _.modifyRally;
 		},
-		{name: 'Rally', text: 'No action. You may only use this on your turn, but you may use at any point\n               in your turn, even while Incapacitated, Dominated, or under any other Status. Spend\n               an Action Point. Regain 4 Hit Points and regain the use of one Encounter Power from your\n               Class (not a Role Action) you have expended.', slot: _user$project$ModelDB$Misc, freq: _user$project$ModelDB$Encounter, range: 0, area: 0, damage: 0, styl: _user$project$ModelDB$Yellow});
+		{
+			name: 'Rally',
+			text: A2(_user$project$ModelDB$overtext, m, 'GlobalRally'),
+			slot: _user$project$ModelDB$Misc,
+			freq: _user$project$ModelDB$Encounter,
+			range: 0,
+			area: 0,
+			damage: 0,
+			styl: _user$project$ModelDB$Yellow
+		});
 };
 var _user$project$TacticalModel$basicPowers = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
@@ -11289,6 +11338,274 @@ var _user$project$TacticalModel$tacticalForms = function (m) {
 			[]));
 };
 
+var _user$project$CharModel$unSlice = F3(
+	function (start, end, str) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_elm_lang$core$String$slice, 0, start, str),
+			A3(_elm_lang$core$String$slice, end, -1, str));
+	});
+var _user$project$CharModel$tidyEdges = function (s) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		A2(_elm_lang$core$String$split, '\n', s));
+};
+var _user$project$CharModel$textExtract = F2(
+	function (section, text) {
+		var offset = _elm_lang$core$String$length(section) + 5;
+		var possEnds = A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_elm_lang$core$String$indexes, '\n\n', text),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_elm_lang$core$String$indexes, '\r\n\r\n', text),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$core$String$length(text)
+					])));
+		var start = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$String$indexes,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'**',
+					A2(_elm_lang$core$Basics_ops['++'], section, ':**')),
+				text));
+		var realEnd = function () {
+			var _p0 = start;
+			if (_p0.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$filter,
+						function (x) {
+							return _elm_lang$core$Native_Utils.cmp(x, _p0._0) > 0;
+						},
+						possEnds));
+			}
+		}();
+		var _p1 = start;
+		if (_p1.ctor === 'Nothing') {
+			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: text};
+		} else {
+			var _p4 = _p1._0;
+			var _p2 = realEnd;
+			if (_p2.ctor === 'Nothing') {
+				return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: text};
+			} else {
+				var _p3 = _p2._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Maybe$Just(
+						_user$project$CharModel$tidyEdges(
+							A3(_elm_lang$core$String$slice, _p4 + offset, _p3, text))),
+					_1: A3(_user$project$CharModel$unSlice, _p4, _p3, text)
+				};
+			}
+		}
+	});
+var _user$project$CharModel$extractToMacroPart = F2(
+	function (name, string) {
+		var _p5 = A2(_user$project$CharModel$textExtract, name, string);
+		if (_p5._0.ctor === 'Nothing') {
+			return {ctor: '_Tuple2', _0: '', _1: _p5._1};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(
+					_elm_lang$core$Basics_ops['++'],
+					'{{',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						name,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'=',
+							A2(_elm_lang$core$Basics_ops['++'], _p5._0._0, '}}')))),
+				_1: _p5._1
+			};
+		}
+	});
+var _user$project$CharModel$powerMacro = function (power) {
+	var _p6 = A2(_user$project$CharModel$extractToMacroPart, 'Trigger', power.text);
+	var triggerDesc = _p6._0;
+	var triggerRest = _p6._1;
+	var _p7 = A2(_user$project$CharModel$extractToMacroPart, 'Effect', triggerRest);
+	var effectDesc = _p7._0;
+	var effectRest = _p7._1;
+	var _p8 = A2(_user$project$CharModel$extractToMacroPart, 'Special', effectRest);
+	var specialDesc = _p8._0;
+	var specialRest = _p8._1;
+	var _p9 = A2(_user$project$CharModel$extractToMacroPart, 'Melee Effect', specialRest);
+	var martialDesc = _p9._0;
+	var martialRest = _p9._1;
+	var _p10 = A2(_user$project$CharModel$extractToMacroPart, 'Continuous', martialRest);
+	var marconDesc = _p10._0;
+	var marconRest = _p10._1;
+	var restText = (!_elm_lang$core$Native_Utils.eq(effectRest, '')) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'{{Text=',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$CharModel$tidyEdges(marconRest),
+			'}}')) : '';
+	var damageDesc = function () {
+		var _p11 = power.damage;
+		switch (_p11) {
+			case 0:
+				return '';
+			case -1:
+				return '{{Damage=Support}}';
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'{{Damage=',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(power.damage),
+						'}}'));
+		}
+	}();
+	var areaDesc = function () {
+		var _p12 = power.area;
+		if (_p12 === 0) {
+			return '';
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{{Area=',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(power.area),
+					'}}'));
+		}
+	}();
+	var attackRoll = function () {
+		var _p13 = power.slot;
+		if (_p13.ctor === 'Attack') {
+			return '{{Attack=[[1d6]]}}';
+		} else {
+			return '';
+		}
+	}();
+	var typeDesc = function () {
+		var _p14 = power.slot;
+		switch (_p14.ctor) {
+			case 'Attack':
+				return '{{Type=Attack}}';
+			case 'RoleSlot':
+				return '{{Type=Role}}';
+			case 'Reaction':
+				return '{{Type=Reaction}}';
+			default:
+				return '';
+		}
+	}();
+	var rangeDesc = function () {
+		var _p15 = power.slot;
+		if (_p15.ctor === 'Attack') {
+			return _elm_lang$core$Native_Utils.eq(power.range, 0) ? '{{Range=Melee}}' : ((_elm_lang$core$Native_Utils.cmp(power.range, 0) > 0) ? A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{{Range=Ranged ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(power.range),
+					'}}')) : A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{{Range=Melee or Ranged ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(power.range),
+					'}}')));
+		} else {
+			return (_elm_lang$core$Native_Utils.cmp(power.range, 0) > 0) ? A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{{Range=Ranged ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(power.range),
+					'}}')) : ((_elm_lang$core$Native_Utils.cmp(power.range, 0) < 0) ? A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{{Range=Adjacent or ranged ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(power.range),
+					'}}')) : '');
+		}
+	}();
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'&{template:default}{{name=',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			power.name,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'}}',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					typeDesc,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						rangeDesc,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							areaDesc,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								attackRoll,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									damageDesc,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										triggerDesc,
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											effectDesc,
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												specialDesc,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													martialDesc,
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														marconDesc,
+														A2(_elm_lang$core$Basics_ops['++'], restText, '\r\n\r\n'))))))))))))));
+};
+var _user$project$CharModel$powerMacros = function (model) {
+	return _elm_lang$core$String$concat(
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$CharModel$powerMacro,
+			_user$project$TacticalModel$getPowers(model)));
+};
+var _user$project$CharModel$importChar = F2(
+	function (x, m) {
+		var newChar = A2(
+			_elm_lang$core$Json_Decode$decodeString,
+			_elm_lang$core$Json_Decode$dict(_elm_lang$core$Json_Decode$string),
+			x);
+		var _p16 = newChar;
+		if (_p16.ctor === 'Ok') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					m,
+					{character: _p16._0}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: m,
+				_1: _user$project$Ports$alert('Error decoding character file.')
+			};
+		}
+	});
 var _user$project$CharModel$encodeChar = function (model) {
 	return A2(
 		_elm_lang$core$Json_Encode$encode,
@@ -11296,20 +11613,79 @@ var _user$project$CharModel$encodeChar = function (model) {
 		_elm_lang$core$Json_Encode$object(
 			A2(
 				_elm_lang$core$List$map,
-				function (_p0) {
-					var _p1 = _p0;
+				function (_p17) {
+					var _p18 = _p17;
 					return {
 						ctor: '_Tuple2',
-						_0: _p1._0,
-						_1: _elm_lang$core$Json_Encode$string(_p1._1)
+						_0: _p18._0,
+						_1: _elm_lang$core$Json_Encode$string(_p18._1)
 					};
 				},
 				_elm_lang$core$Dict$toList(model.character))));
 };
+var _user$project$CharModel$handleFileCommand = F2(
+	function (x, m) {
+		var _p19 = x;
+		switch (_p19) {
+			case 'download':
+				return {
+					ctor: '_Tuple2',
+					_0: m,
+					_1: _user$project$Ports$download(
+						{
+							ctor: '_Tuple2',
+							_0: 'character.json',
+							_1: _user$project$CharModel$encodeChar(m)
+						})
+				};
+			case 'upload':
+				return {
+					ctor: '_Tuple2',
+					_0: m,
+					_1: _user$project$Ports$doUpload(0)
+				};
+			case 'seturl':
+				return {
+					ctor: '_Tuple2',
+					_0: m,
+					_1: _user$project$Ports$saveURL(
+						_user$project$CharModel$encodeChar(m))
+				};
+			case 'reset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						m,
+						{character: _user$project$ModelDB$blankCharacter}),
+					_1: _user$project$Ports$resetFileMenu(0)
+				};
+			case 'roll20':
+				return {
+					ctor: '_Tuple2',
+					_0: m,
+					_1: _user$project$Ports$download(
+						{
+							ctor: '_Tuple2',
+							_0: 'macros.txt',
+							_1: _user$project$CharModel$powerMacros(m)
+						})
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: m,
+					_1: _user$project$Ports$alert(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'Invalid message ',
+							A2(_elm_lang$core$Basics_ops['++'], x, ' from file menu')))
+				};
+		}
+	});
 var _user$project$CharModel$updateExtendForm = F2(
 	function (key, model) {
-		var _p2 = key;
-		if (_p2 === 'Learned Skills') {
+		var _p20 = key;
+		if (_p20 === 'Learned Skills') {
 			return A3(
 				_user$project$ModelDB$setResponse,
 				model,
@@ -11458,27 +11834,27 @@ var _user$project$CharModel$learnedSkillsForm = function (m) {
 				A3(_user$project$ModelDB$getResponseInt, m, 'ls-count', 0))));
 };
 var _user$project$CharModel$validateLevel = function (m) {
-	var _p3 = A2(_user$project$ModelDB$getResponse, m, 'basics-level');
-	if (_p3.ctor === 'Nothing') {
+	var _p21 = A2(_user$project$ModelDB$getResponse, m, 'basics-level');
+	if (_p21.ctor === 'Nothing') {
 		return A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1');
 	} else {
-		var _p4 = _elm_lang$core$String$toInt(_p3._0);
-		if (_p4.ctor === 'Err') {
+		var _p22 = _elm_lang$core$String$toInt(_p21._0);
+		if (_p22.ctor === 'Err') {
 			return A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1');
 		} else {
-			var _p5 = _p4._0;
-			return (_elm_lang$core$Native_Utils.cmp(_p5, 1) < 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1') : ((_elm_lang$core$Native_Utils.cmp(_p5, 10) > 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '10') : m);
+			var _p23 = _p22._0;
+			return (_elm_lang$core$Native_Utils.cmp(_p23, 1) < 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1') : ((_elm_lang$core$Native_Utils.cmp(_p23, 10) > 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '10') : m);
 		}
 	}
 };
 var _user$project$CharModel$killOutOfRange = F3(
 	function (field, list, model) {
-		var _p6 = A2(_user$project$ModelDB$getResponse, model, field);
-		if (_p6.ctor === 'Nothing') {
+		var _p24 = A2(_user$project$ModelDB$getResponse, model, field);
+		if (_p24.ctor === 'Nothing') {
 			return model;
 		} else {
-			var _p7 = A2(_elm_lang$core$List$member, _p6._0, list);
-			if (_p7 === true) {
+			var _p25 = A2(_elm_lang$core$List$member, _p24._0, list);
+			if (_p25 === true) {
 				return model;
 			} else {
 				return A2(_user$project$ModelDB$killResponse, model, field);
@@ -11486,11 +11862,11 @@ var _user$project$CharModel$killOutOfRange = F3(
 		}
 	});
 var _user$project$CharModel$customBackgroundForm = function (m) {
-	var _p8 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
-	if (_p8.ctor === 'Nothing') {
+	var _p26 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
+	if (_p26.ctor === 'Nothing') {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
-		if (_p8._0 === '<Custom>') {
+		if (_p26._0 === '<Custom>') {
 			return _elm_lang$core$Maybe$Just(
 				A3(
 					_user$project$FormsModel$Form,
@@ -11519,8 +11895,8 @@ var _user$project$CharModel$customBackgroundForm = function (m) {
 							_elm_lang$core$Basics_ops['++'],
 							_user$project$ModelDB$mayList(
 								function () {
-									var _p9 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
-									if ((_p9.ctor === 'Just') && (_p9._0 === 'People')) {
+									var _p27 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
+									if ((_p27.ctor === 'Just') && (_p27._0 === 'People')) {
 										return _elm_lang$core$Maybe$Just(
 											_user$project$FormsModel$FreeformField(
 												{name: 'Who?', del: false, key: 'bg-custom-wos1s'}));
@@ -11545,8 +11921,8 @@ var _user$project$CharModel$customBackgroundForm = function (m) {
 									_elm_lang$core$Basics_ops['++'],
 									_user$project$ModelDB$mayList(
 										function () {
-											var _p10 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
-											if ((_p10.ctor === 'Just') && (_p10._0 === 'Skill')) {
+											var _p28 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
+											if ((_p28.ctor === 'Just') && (_p28._0 === 'Skill')) {
 												return _elm_lang$core$Maybe$Just(
 													_user$project$FormsModel$FreeformField(
 														{name: 'What skill?', del: false, key: 'bg-custom-wos2s'}));
@@ -11620,21 +11996,21 @@ var _user$project$CharModel$originSkills = function (m) {
 			['Missing origin']));
 };
 var _user$project$CharModel$complexOriginForm = function (m) {
-	var _p11 = _user$project$CharModel$hasComplexOrigin(m);
-	if ((((_p11._0 === false) && (_p11._1 === false)) && (_p11._2 === false)) && (_p11._3 === false)) {
+	var _p29 = _user$project$CharModel$hasComplexOrigin(m);
+	if ((((_p29._0 === false) && (_p29._1 === false)) && (_p29._2 === false)) && (_p29._3 === false)) {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
 		var originName = function () {
-			var _p12 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
-			if (_p12.ctor === 'Just') {
-				return _p12._0;
+			var _p30 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
+			if (_p30.ctor === 'Just') {
+				return _p30._0;
 			} else {
 				return '(BUG) Origin complex but missing';
 			}
 		}();
 		var freeformComplicationPart = function () {
-			var _p13 = _p11._3;
-			if (_p13 === true) {
+			var _p31 = _p29._3;
+			if (_p31 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -11646,8 +12022,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var freeformSkillPart = function () {
-			var _p14 = _p11._2;
-			if (_p14 === true) {
+			var _p32 = _p29._2;
+			if (_p32 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -11659,8 +12035,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var complicationPart = function () {
-			var _p15 = _p11._1;
-			if (_p15 === true) {
+			var _p33 = _p29._1;
+			if (_p33 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -11681,8 +12057,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var skillPart = function () {
-			var _p16 = _p11._0;
-			if (_p16 === true) {
+			var _p34 = _p29._0;
+			if (_p34 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -11760,9 +12136,9 @@ var _user$project$CharModel$getForms = function (model) {
 						_user$project$TacticalModel$tacticalForms(model))))));
 };
 var _user$project$CharModel$resolvedOriginSkills = function (m) {
-	var _p17 = _user$project$CharModel$hasComplexOrigin(m);
-	if (_p17._0 === false) {
-		if (_p17._2 === false) {
+	var _p35 = _user$project$CharModel$hasComplexOrigin(m);
+	if (_p35._0 === false) {
+		if (_p35._2 === false) {
 			return _user$project$CharModel$originSkills(m);
 		} else {
 			return A2(
@@ -11772,7 +12148,7 @@ var _user$project$CharModel$resolvedOriginSkills = function (m) {
 					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
 		}
 	} else {
-		if (_p17._2 === false) {
+		if (_p35._2 === false) {
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				_user$project$ModelDB$mayList(
@@ -11790,8 +12166,8 @@ var _user$project$CharModel$resolvedOriginSkills = function (m) {
 	}
 };
 var _user$project$CharModel$validateAlteredOrigin = function (m) {
-	var _p18 = _user$project$CharModel$hasComplexOrigin(m);
-	if (((((_p18.ctor === '_Tuple4') && (_p18._0 === false)) && (_p18._1 === false)) && (_p18._2 === false)) && (_p18._3 === false)) {
+	var _p36 = _user$project$CharModel$hasComplexOrigin(m);
+	if (((((_p36.ctor === '_Tuple4') && (_p36._0 === false)) && (_p36._1 === false)) && (_p36._2 === false)) && (_p36._3 === false)) {
 		return m;
 	} else {
 		return A3(
@@ -11811,8 +12187,8 @@ var _user$project$CharModel$validateAlteredOrigin = function (m) {
 };
 var _user$project$CharModel$fieldChanged = F2(
 	function (field, m) {
-		var _p19 = field;
-		switch (_p19) {
+		var _p37 = field;
+		switch (_p37) {
 			case 'basics-origin':
 				return _user$project$CharModel$validateAlteredOrigin(m);
 			case 'basics-level':
@@ -11830,31 +12206,24 @@ var _user$project$CharModel$updateFieldResponse = F3(
 	});
 var _user$project$CharModel$update = F2(
 	function (msg, model) {
-		var _p20 = msg;
-		switch (_p20.ctor) {
+		var _p38 = msg;
+		switch (_p38.ctor) {
 			case 'FormFieldUpdated':
 				return {
 					ctor: '_Tuple2',
-					_0: A3(_user$project$CharModel$updateFieldResponse, _p20._0, _p20._1, model),
+					_0: A3(_user$project$CharModel$updateFieldResponse, _p38._0, _p38._1, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FormAddClicked':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$CharModel$updateExtendForm, _p20._0, model),
+					_0: A2(_user$project$CharModel$updateExtendForm, _p38._0, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'DoSave':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Ports$download(
-						{
-							ctor: '_Tuple2',
-							_0: 'character.json',
-							_1: _user$project$CharModel$encodeChar(model)
-						})
-				};
+			case 'FileCommand':
+				return A2(_user$project$CharModel$handleFileCommand, _p38._0, model);
+			case 'LoadJson':
+				return A2(_user$project$CharModel$importChar, _p38._0, model);
 			default:
 				return A2(_user$project$ModelDB$dbUpdate, msg, model);
 		}
@@ -11874,12 +12243,12 @@ var _user$project$CharModel$backgroundSkills = function (m) {
 			['Missing background']));
 };
 var _user$project$CharModel$resolvedBackgroundSkills = function (m) {
-	var _p21 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
-	if (_p21.ctor === 'Nothing') {
+	var _p39 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
+	if (_p39.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
-		if (_p21._0 === '<Custom>') {
+		if (_p39._0 === '<Custom>') {
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				_user$project$ModelDB$mayList(
@@ -11934,16 +12303,6 @@ var _user$project$CharModel$init = {
 	_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/backgrounds.json', _user$project$ModelDB$BackgroundsLoaded)
 };
 
-var _user$project$View$fileops = A2(
-	_elm_lang$html$Html$button,
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$html$Html_Events$onClick(_user$project$ModelDB$DoSave)
-		]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$html$Html$text('Download')
-		]));
 var _user$project$View$powerOrder = function (power) {
 	var _p0 = power.styl;
 	switch (_p0.ctor) {
@@ -12512,6 +12871,85 @@ var _user$project$View$formDisplay = F2(
 						form.fields))
 				]));
 	});
+var _user$project$View$fileops = A2(
+	_elm_lang$html$Html$select,
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html_Events$on,
+			'change',
+			_user$project$View$targetAndWrap(_user$project$ModelDB$FileCommand)),
+			_elm_lang$html$Html_Attributes$id('fileops')
+		]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(true),
+					_elm_lang$html$Html_Attributes$value('nil')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('File...')
+				])),
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(false),
+					_elm_lang$html$Html_Attributes$value('download')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Download to local file')
+				])),
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(false),
+					_elm_lang$html$Html_Attributes$value('upload')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Upload from local file')
+				])),
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(false),
+					_elm_lang$html$Html_Attributes$value('seturl')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Save to URL (bookmark to store)')
+				])),
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(false),
+					_elm_lang$html$Html_Attributes$value('roll20')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Export Roll20 macros (text file)')
+				])),
+			A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$selected(false),
+					_elm_lang$html$Html_Attributes$value('reset')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Clear character (no confirm - save first!)')
+				]))
+		]));
 var _user$project$View$formsDisplay = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -12644,7 +13082,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Main$subscriptions = function (_p0) {
-	return _elm_lang$core$Platform_Sub$none;
+	return _user$project$Ports$loadJson(_user$project$ModelDB$LoadJson);
 };
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
