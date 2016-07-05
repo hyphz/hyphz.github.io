@@ -9500,7 +9500,10 @@ var _user$project$ModelDB$overtext = F2(
 	function (model, key) {
 		return A2(
 			_elm_lang$core$Maybe$withDefault,
-			'(Text not available)',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'(Text not available ',
+				A2(_elm_lang$core$Basics_ops['++'], key, ')')),
 			A2(_elm_lang$core$Dict$get, key, model.database.texts));
 	});
 var _user$project$ModelDB$getResponseInt = F3(
@@ -9567,14 +9570,27 @@ var _user$project$ModelDB$setResponse = F3(
 				character: A3(_elm_lang$core$Dict$insert, key, value, $char)
 			});
 	});
+var _user$project$ModelDB$moveResponse = F3(
+	function (m, src, dest) {
+		var _p4 = A2(_user$project$ModelDB$getResponse, m, src);
+		if (_p4.ctor === 'Nothing') {
+			return A2(_user$project$ModelDB$killResponse, m, dest);
+		} else {
+			return A3(
+				_user$project$ModelDB$setResponse,
+				A2(_user$project$ModelDB$killResponse, m, src),
+				dest,
+				_p4._0);
+		}
+	});
 var _user$project$ModelDB$mayList = function (x) {
-	var _p4 = x;
-	if (_p4.ctor === 'Nothing') {
+	var _p5 = x;
+	if (_p5.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
 		return _elm_lang$core$Native_List.fromArray(
-			[_p4._0]);
+			[_p5._0]);
 	}
 };
 var _user$project$ModelDB$blankDatabase = {backgrounds: _elm_lang$core$Dict$empty, origins: _elm_lang$core$Dict$empty, texts: _elm_lang$core$Dict$empty};
@@ -9742,6 +9758,9 @@ var _user$project$ModelDB$Role = F3(
 	function (a, b, c) {
 		return {name: a, rolePowerList: b, roleForms: c};
 	});
+var _user$project$ModelDB$FieldDeleteClicked = function (a) {
+	return {ctor: 'FieldDeleteClicked', _0: a};
+};
 var _user$project$ModelDB$LoadJson = function (a) {
 	return {ctor: 'LoadJson', _0: a};
 };
@@ -9774,8 +9793,8 @@ var _user$project$ModelDB$OriginsLoaded = function (a) {
 };
 var _user$project$ModelDB$dbUpdate = F2(
 	function (msg, model) {
-		var _p5 = msg;
-		switch (_p5.ctor) {
+		var _p6 = msg;
+		switch (_p6.ctor) {
 			case 'HTTPLoadError':
 				return {
 					ctor: '_Tuple2',
@@ -9785,19 +9804,19 @@ var _user$project$ModelDB$dbUpdate = F2(
 			case 'BackgroundsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackBackgrounds, _p5._0, model),
+					_0: A2(_user$project$ModelDB$unpackBackgrounds, _p6._0, model),
 					_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/origins.json', _user$project$ModelDB$OriginsLoaded)
 				};
 			case 'OriginsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackOrigins, _p5._0, model),
+					_0: A2(_user$project$ModelDB$unpackOrigins, _p6._0, model),
 					_1: A2(_user$project$ModelDB$getJsonFileCommand, 'data/texts.md', _user$project$ModelDB$TextsLoaded)
 				};
 			case 'TextsLoaded':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$ModelDB$unpackTexts, _p5._0, model),
+					_0: A2(_user$project$ModelDB$unpackTexts, _p6._0, model),
 					_1: _user$project$Ports$dbLoaded(0)
 				};
 			default:
@@ -9847,6 +9866,72 @@ var _user$project$PowerUtilities$atLevel = F3(
 			[ab]) : _elm_lang$core$Native_List.fromArray(
 			[]);
 	});
+var _user$project$PowerUtilities$variableTextPower = F9(
+	function (name, slot, freq, range, area, damage, col, textfunc, m) {
+		return {
+			name: name,
+			text: textfunc(m),
+			slot: slot,
+			freq: freq,
+			range: range,
+			area: area,
+			damage: damage,
+			styl: col
+		};
+	});
+var _user$project$PowerUtilities$levelTextPower = F9(
+	function (name, slot, freq, range, area, damage, col, thresholds, model) {
+		var levelLookUp = function (m) {
+			var charLevel = _user$project$ModelDB$getLevel(m);
+			var findThreshold = F2(
+				function (t, l) {
+					findThreshold:
+					while (true) {
+						var _p0 = _elm_lang$core$List$head(t);
+						if (_p0.ctor === 'Nothing') {
+							return l;
+						} else {
+							var _p2 = _p0._0;
+							if (_elm_lang$core$Native_Utils.cmp(charLevel, _p2) > -1) {
+								var _p1 = _elm_lang$core$List$tail(t);
+								if (_p1.ctor === 'Nothing') {
+									return l;
+								} else {
+									var _v2 = _p1._0,
+										_v3 = _p2;
+									t = _v2;
+									l = _v3;
+									continue findThreshold;
+								}
+							} else {
+								return l;
+							}
+						}
+					}
+				});
+			var nearestThreshold = A2(findThreshold, thresholds, 1);
+			var textKey = A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$String$filter,
+					function (x) {
+						return !_elm_lang$core$Native_Utils.eq(
+							x,
+							_elm_lang$core$Native_Utils.chr(' '));
+					},
+					name),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(nearestThreshold),
+					'+'));
+			return A2(_user$project$ModelDB$overtext, m, textKey);
+		};
+		return A9(_user$project$PowerUtilities$variableTextPower, name, slot, freq, range, area, damage, col, levelLookUp, model);
+	});
+var _user$project$PowerUtilities$levelTextSpecial = F3(
+	function (name, thresholds, m) {
+		return A9(_user$project$PowerUtilities$levelTextPower, name, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$White, thresholds, m);
+	});
 var _user$project$PowerUtilities$quickPower = F8(
 	function (name, slot, freq, range, area, damage, col, m) {
 		return {
@@ -9891,21 +9976,21 @@ var _user$project$PowerUtilities$powerChoiceField = F4(
 	});
 var _user$project$PowerUtilities$powerlookup = F3(
 	function (m, key, list) {
-		var _p0 = A2(_user$project$ModelDB$getResponse, m, key);
-		if (_p0.ctor === 'Nothing') {
+		var _p3 = A2(_user$project$ModelDB$getResponse, m, key);
+		if (_p3.ctor === 'Nothing') {
 			return _elm_lang$core$Native_List.fromArray(
 				[]);
 		} else {
-			var _p1 = A2(
+			var _p4 = A2(
 				_elm_lang$core$Dict$get,
-				_p0._0,
+				_p3._0,
 				list(m));
-			if (_p1.ctor === 'Nothing') {
+			if (_p4.ctor === 'Nothing') {
 				return _elm_lang$core$Native_List.fromArray(
 					[]);
 			} else {
 				return _elm_lang$core$Native_List.fromArray(
-					[_p1._0]);
+					[_p4._0]);
 			}
 		}
 	});
@@ -11203,6 +11288,283 @@ var _user$project$Simplified$classSimplified = {
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
+var _user$project$Warlord$ultimatum = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Ultimatum', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$alwaysInPosition = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Always in Position', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$leadCharge = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Lead The Charge', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$biggerBag = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Bigger Punching Bag', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, -5, 0, -1, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$l7encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Warlord$biggerBag, _user$project$Warlord$leadCharge, _user$project$Warlord$alwaysInPosition, _user$project$Warlord$ultimatum]));
+};
+var _user$project$Warlord$l7echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc7', _user$project$Warlord$l7encounters);
+};
+var _user$project$Warlord$battlecry = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'warlord-special');
+	if (_p0.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_user$project$PowerUtilities$quickSpecial,
+				A2(_elm_lang$core$Basics_ops['++'], _p0._0, ' Battlecry'),
+				m)
+			]);
+	}
+};
+var _user$project$Warlord$leaveHimExposed = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Leave Him Exposed', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, -5, 0, 3, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$chanceToRecover = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Chance to Recover', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$neverSurrender = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Never Surrender', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$l3encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Warlord$neverSurrender, _user$project$Warlord$chanceToRecover, _user$project$Warlord$leaveHimExposed]));
+};
+var _user$project$Warlord$l3echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc3', _user$project$Warlord$l3encounters);
+};
+var _user$project$Warlord$dontGiveUp = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Don\'t Give Up', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$defensiveTac = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'Defensive Tactics', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$perfectChance = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'The Perfect Chance', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$myGrandma = function (m) {
+	return A8(_user$project$PowerUtilities$quickPower, 'You Hit Like My Grandmother', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple, m);
+};
+var _user$project$Warlord$l1encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Warlord$myGrandma, _user$project$Warlord$perfectChance, _user$project$Warlord$defensiveTac, _user$project$Warlord$dontGiveUp]));
+};
+var _user$project$Warlord$l1echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc1', _user$project$Warlord$l1encounters);
+};
+var _user$project$Warlord$comeHelpMe = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Come Help Me With This Guy',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		0,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9]),
+		m);
+};
+var _user$project$Warlord$offBalance = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Knock Him Off Balance',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		-5,
+		0,
+		2,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 9]),
+		m);
+};
+var _user$project$Warlord$enumerate = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Enumerate its Weaknesses',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		-5,
+		0,
+		2,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 9]),
+		m);
+};
+var _user$project$Warlord$punchingBag = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Morale-Boosting Punching Bag',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		-5,
+		0,
+		-1,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9]),
+		m);
+};
+var _user$project$Warlord$alleyOop = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Alley-Oop',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		-1,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9]),
+		m);
+};
+var _user$project$Warlord$hitThisGuy = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Hit This Guy',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		0,
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9]),
+		m);
+};
+var _user$project$Warlord$l1atwills = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Warlord$hitThisGuy, _user$project$Warlord$alleyOop, _user$project$Warlord$punchingBag, _user$project$Warlord$enumerate, _user$project$Warlord$offBalance, _user$project$Warlord$comeHelpMe]));
+};
+var _user$project$Warlord$l1awchosen = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw1', _user$project$Warlord$l1atwills),
+		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw2', _user$project$Warlord$l1atwills));
+};
+var _user$project$Warlord$incisive = _user$project$PowerUtilities$quickSpecial('Incisive');
+var _user$project$Warlord$enabling = _user$project$PowerUtilities$quickSpecial('Enabling');
+var _user$project$Warlord$rousing = _user$project$PowerUtilities$quickSpecial('Rousing');
+var _user$project$Warlord$specials = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Warlord$rousing, _user$project$Warlord$enabling, _user$project$Warlord$incisive]));
+};
+var _user$project$Warlord$cspecial = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-special', _user$project$Warlord$specials);
+};
+var _user$project$Warlord$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Warlord',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Feature:', 'warlord-special', _user$project$Warlord$specials),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw1', _user$project$Warlord$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw2', _user$project$Warlord$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc1', _user$project$Warlord$l1encounters)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						3,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc3', _user$project$Warlord$l3encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						7,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc7', _user$project$Warlord$l7encounters)))))
+		]);
+};
+var _user$project$Warlord$support = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Support Tokens',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5, 9]));
+var _user$project$Warlord$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Warlord$support(m)
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Warlord$cspecial(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Warlord$l1awchosen(m),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Warlord$l1echosen(m),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						A3(
+							_user$project$PowerUtilities$atLevelList,
+							m,
+							3,
+							_user$project$Warlord$l3echosen(m)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A3(
+								_user$project$PowerUtilities$atLevelList,
+								m,
+								5,
+								_user$project$Warlord$battlecry(m)),
+							A3(
+								_user$project$PowerUtilities$atLevelList,
+								m,
+								7,
+								_user$project$Warlord$l7echosen(m))))))));
+};
+var _user$project$Warlord$modifyBasicRange = F2(
+	function (m, p) {
+		return p;
+	});
+var _user$project$Warlord$modifyBasicMelee = F2(
+	function (m, p) {
+		return p;
+	});
+var _user$project$Warlord$classWarlord = {
+	name: 'Warlord',
+	classPowerList: _user$project$Warlord$powers,
+	classForms: _user$project$Warlord$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Warlord$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Warlord$modifyBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
 var _user$project$TacticalModel$nullPowerModifier = F2(
 	function (_p0, p) {
 		return p;
@@ -11218,7 +11580,8 @@ var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
 			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Duelist$classDuelist},
 			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$MartialArtist$classMA},
 			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro},
-			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Simplified$classSimplified}
+			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Simplified$classSimplified},
+			{ctor: '_Tuple2', _0: 'Warlord', _1: _user$project$Warlord$classWarlord}
 		]));
 var _user$project$TacticalModel$applyClassModifier = F3(
 	function (m, extractor, value) {
@@ -11531,7 +11894,7 @@ var _user$project$CharModel$powerMacro = function (power) {
 				'{{Range=Adjacent or ranged ',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(power.range),
+					_elm_lang$core$Basics$toString(0 - power.range),
 					'}}')) : '');
 		}
 	}();
@@ -11682,16 +12045,161 @@ var _user$project$CharModel$handleFileCommand = F2(
 				};
 		}
 	});
+var _user$project$CharModel$closeGaps$ = F4(
+	function (prefix, current, total, m) {
+		closeGaps$:
+		while (true) {
+			var addPrefix = function (t) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					prefix,
+					_elm_lang$core$Basics$toString(t));
+			};
+			if (_elm_lang$core$Native_Utils.cmp(current, total) > 0) {
+				return m;
+			} else {
+				var _p20 = A2(
+					_elm_lang$core$Dict$get,
+					addPrefix(current),
+					m.character);
+				if (_p20.ctor === 'Just') {
+					var _v13 = prefix,
+						_v14 = current + 1,
+						_v15 = total,
+						_v16 = m;
+					prefix = _v13;
+					current = _v14;
+					total = _v15;
+					m = _v16;
+					continue closeGaps$;
+				} else {
+					var _p21 = A2(
+						_elm_lang$core$Dict$get,
+						addPrefix(current + 1),
+						m.character);
+					if (_p21.ctor === 'Just') {
+						var _v18 = prefix,
+							_v19 = current,
+							_v20 = total,
+							_v21 = A3(
+							_user$project$ModelDB$moveResponse,
+							m,
+							addPrefix(current + 1),
+							addPrefix(current));
+						prefix = _v18;
+						current = _v19;
+						total = _v20;
+						m = _v21;
+						continue closeGaps$;
+					} else {
+						return _elm_lang$core$Native_Utils.crashCase(
+							'CharModel',
+							{
+								start: {line: 262, column: 20},
+								end: {line: 264, column: 163}
+							},
+							_p21)(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Two missing items in CLosegaps\', current is ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(current),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'prefix is',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											prefix,
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'total is',
+												_elm_lang$core$Basics$toString(total)))))));
+					}
+				}
+			}
+		}
+	});
+var _user$project$CharModel$closeGaps = F3(
+	function (prefix, total, m) {
+		return A4(_user$project$CharModel$closeGaps$, prefix, 1, total, m);
+	});
+var _user$project$CharModel$updateDeleteField = F2(
+	function (key, model) {
+		var removeResponse = A2(_user$project$ModelDB$killResponse, model, key);
+		var checkResponseRemoved = function () {
+			var _p23 = A2(_elm_lang$core$Dict$get, key, removeResponse.character);
+			if (_p23.ctor === 'Nothing') {
+				return removeResponse;
+			} else {
+				return _elm_lang$core$Native_Utils.crashCase(
+					'CharModel',
+					{
+						start: {line: 280, column: 28},
+						end: {line: 282, column: 63}
+					},
+					_p23)('RemoveResponse didn\'t work!???');
+			}
+		}();
+		var keyhyphenindex = A2(_elm_lang$core$String$indexes, '-', key);
+		var realKeyHyphenIndex = function () {
+			var _p25 = _elm_lang$core$List$head(keyhyphenindex);
+			if (_p25.ctor === 'Nothing') {
+				return _elm_lang$core$Native_Utils.crashCase(
+					'CharModel',
+					{
+						start: {line: 274, column: 26},
+						end: {line: 276, column: 18}
+					},
+					_p25)('Missing hyphen in expandable form deletion process');
+			} else {
+				return _p25._0;
+			}
+		}();
+		var keyPrehyphen = A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_elm_lang$core$String$slice, 0, realKeyHyphenIndex, key),
+			'-');
+		var countName = A2(
+			_elm_lang$core$Debug$log,
+			'name of the count variable:',
+			A2(_elm_lang$core$Basics_ops['++'], keyPrehyphen, 'count'));
+		var reduceCount = A2(
+			_elm_lang$core$Debug$log,
+			'reduce the count:',
+			A3(
+				_user$project$ModelDB$setResponse,
+				checkResponseRemoved,
+				countName,
+				_elm_lang$core$Basics$toString(
+					A3(_user$project$ModelDB$getResponseInt, checkResponseRemoved, countName, 0) - 1)));
+		return A3(
+			_user$project$CharModel$closeGaps,
+			keyPrehyphen,
+			A3(_user$project$ModelDB$getResponseInt, reduceCount, countName, 0),
+			reduceCount);
+	});
+var _user$project$CharModel$extendForm = F2(
+	function (prefix, model) {
+		var oldCount = A3(
+			_user$project$ModelDB$getResponseInt,
+			model,
+			A2(_elm_lang$core$Basics_ops['++'], prefix, 'count'),
+			0);
+		var newCount = _elm_lang$core$Basics$toString(oldCount + 1);
+		var countUpdated = A3(
+			_user$project$ModelDB$setResponse,
+			model,
+			A2(_elm_lang$core$Basics_ops['++'], prefix, 'count'),
+			newCount);
+		var newMemberKey = A2(_elm_lang$core$Basics_ops['++'], prefix, newCount);
+		return A3(_user$project$ModelDB$setResponse, countUpdated, newMemberKey, '');
+	});
 var _user$project$CharModel$updateExtendForm = F2(
 	function (key, model) {
-		var _p20 = key;
-		if (_p20 === 'Learned Skills') {
-			return A3(
-				_user$project$ModelDB$setResponse,
-				model,
-				'ls-count',
-				_elm_lang$core$Basics$toString(
-					A3(_user$project$ModelDB$getResponseInt, model, 'ls-count', 0) + 1));
+		var _p27 = key;
+		if (_p27 === 'Learned Skills') {
+			return A2(_user$project$CharModel$extendForm, 'ls-', model);
 		} else {
 			return model;
 		}
@@ -11834,27 +12342,27 @@ var _user$project$CharModel$learnedSkillsForm = function (m) {
 				A3(_user$project$ModelDB$getResponseInt, m, 'ls-count', 0))));
 };
 var _user$project$CharModel$validateLevel = function (m) {
-	var _p21 = A2(_user$project$ModelDB$getResponse, m, 'basics-level');
-	if (_p21.ctor === 'Nothing') {
+	var _p28 = A2(_user$project$ModelDB$getResponse, m, 'basics-level');
+	if (_p28.ctor === 'Nothing') {
 		return A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1');
 	} else {
-		var _p22 = _elm_lang$core$String$toInt(_p21._0);
-		if (_p22.ctor === 'Err') {
+		var _p29 = _elm_lang$core$String$toInt(_p28._0);
+		if (_p29.ctor === 'Err') {
 			return A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1');
 		} else {
-			var _p23 = _p22._0;
-			return (_elm_lang$core$Native_Utils.cmp(_p23, 1) < 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1') : ((_elm_lang$core$Native_Utils.cmp(_p23, 10) > 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '10') : m);
+			var _p30 = _p29._0;
+			return (_elm_lang$core$Native_Utils.cmp(_p30, 1) < 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '1') : ((_elm_lang$core$Native_Utils.cmp(_p30, 10) > 0) ? A3(_user$project$ModelDB$setResponse, m, 'basics-level', '10') : m);
 		}
 	}
 };
 var _user$project$CharModel$killOutOfRange = F3(
 	function (field, list, model) {
-		var _p24 = A2(_user$project$ModelDB$getResponse, model, field);
-		if (_p24.ctor === 'Nothing') {
+		var _p31 = A2(_user$project$ModelDB$getResponse, model, field);
+		if (_p31.ctor === 'Nothing') {
 			return model;
 		} else {
-			var _p25 = A2(_elm_lang$core$List$member, _p24._0, list);
-			if (_p25 === true) {
+			var _p32 = A2(_elm_lang$core$List$member, _p31._0, list);
+			if (_p32 === true) {
 				return model;
 			} else {
 				return A2(_user$project$ModelDB$killResponse, model, field);
@@ -11862,11 +12370,11 @@ var _user$project$CharModel$killOutOfRange = F3(
 		}
 	});
 var _user$project$CharModel$customBackgroundForm = function (m) {
-	var _p26 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
-	if (_p26.ctor === 'Nothing') {
+	var _p33 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
+	if (_p33.ctor === 'Nothing') {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
-		if (_p26._0 === '<Custom>') {
+		if (_p33._0 === '<Custom>') {
 			return _elm_lang$core$Maybe$Just(
 				A3(
 					_user$project$FormsModel$Form,
@@ -11895,8 +12403,8 @@ var _user$project$CharModel$customBackgroundForm = function (m) {
 							_elm_lang$core$Basics_ops['++'],
 							_user$project$ModelDB$mayList(
 								function () {
-									var _p27 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
-									if ((_p27.ctor === 'Just') && (_p27._0 === 'People')) {
+									var _p34 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos1');
+									if ((_p34.ctor === 'Just') && (_p34._0 === 'People')) {
 										return _elm_lang$core$Maybe$Just(
 											_user$project$FormsModel$FreeformField(
 												{name: 'Who?', del: false, key: 'bg-custom-wos1s'}));
@@ -11921,8 +12429,8 @@ var _user$project$CharModel$customBackgroundForm = function (m) {
 									_elm_lang$core$Basics_ops['++'],
 									_user$project$ModelDB$mayList(
 										function () {
-											var _p28 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
-											if ((_p28.ctor === 'Just') && (_p28._0 === 'Skill')) {
+											var _p35 = A2(_user$project$ModelDB$getResponse, m, 'bg-custom-wos2');
+											if ((_p35.ctor === 'Just') && (_p35._0 === 'Skill')) {
 												return _elm_lang$core$Maybe$Just(
 													_user$project$FormsModel$FreeformField(
 														{name: 'What skill?', del: false, key: 'bg-custom-wos2s'}));
@@ -11996,21 +12504,21 @@ var _user$project$CharModel$originSkills = function (m) {
 			['Missing origin']));
 };
 var _user$project$CharModel$complexOriginForm = function (m) {
-	var _p29 = _user$project$CharModel$hasComplexOrigin(m);
-	if ((((_p29._0 === false) && (_p29._1 === false)) && (_p29._2 === false)) && (_p29._3 === false)) {
+	var _p36 = _user$project$CharModel$hasComplexOrigin(m);
+	if ((((_p36._0 === false) && (_p36._1 === false)) && (_p36._2 === false)) && (_p36._3 === false)) {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
 		var originName = function () {
-			var _p30 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
-			if (_p30.ctor === 'Just') {
-				return _p30._0;
+			var _p37 = A2(_user$project$ModelDB$getResponse, m, 'basics-origin');
+			if (_p37.ctor === 'Just') {
+				return _p37._0;
 			} else {
 				return '(BUG) Origin complex but missing';
 			}
 		}();
 		var freeformComplicationPart = function () {
-			var _p31 = _p29._3;
-			if (_p31 === true) {
+			var _p38 = _p36._3;
+			if (_p38 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -12022,8 +12530,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var freeformSkillPart = function () {
-			var _p32 = _p29._2;
-			if (_p32 === true) {
+			var _p39 = _p36._2;
+			if (_p39 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$FreeformField(
@@ -12035,8 +12543,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var complicationPart = function () {
-			var _p33 = _p29._1;
-			if (_p33 === true) {
+			var _p40 = _p36._1;
+			if (_p40 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -12057,8 +12565,8 @@ var _user$project$CharModel$complexOriginForm = function (m) {
 			}
 		}();
 		var skillPart = function () {
-			var _p34 = _p29._0;
-			if (_p34 === true) {
+			var _p41 = _p36._0;
+			if (_p41 === true) {
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$FormsModel$DropdownField(
@@ -12136,9 +12644,9 @@ var _user$project$CharModel$getForms = function (model) {
 						_user$project$TacticalModel$tacticalForms(model))))));
 };
 var _user$project$CharModel$resolvedOriginSkills = function (m) {
-	var _p35 = _user$project$CharModel$hasComplexOrigin(m);
-	if (_p35._0 === false) {
-		if (_p35._2 === false) {
+	var _p42 = _user$project$CharModel$hasComplexOrigin(m);
+	if (_p42._0 === false) {
+		if (_p42._2 === false) {
 			return _user$project$CharModel$originSkills(m);
 		} else {
 			return A2(
@@ -12148,7 +12656,7 @@ var _user$project$CharModel$resolvedOriginSkills = function (m) {
 					A2(_elm_lang$core$Dict$get, 'origin-cs', m.character)));
 		}
 	} else {
-		if (_p35._2 === false) {
+		if (_p42._2 === false) {
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				_user$project$ModelDB$mayList(
@@ -12166,8 +12674,8 @@ var _user$project$CharModel$resolvedOriginSkills = function (m) {
 	}
 };
 var _user$project$CharModel$validateAlteredOrigin = function (m) {
-	var _p36 = _user$project$CharModel$hasComplexOrigin(m);
-	if (((((_p36.ctor === '_Tuple4') && (_p36._0 === false)) && (_p36._1 === false)) && (_p36._2 === false)) && (_p36._3 === false)) {
+	var _p43 = _user$project$CharModel$hasComplexOrigin(m);
+	if (((((_p43.ctor === '_Tuple4') && (_p43._0 === false)) && (_p43._1 === false)) && (_p43._2 === false)) && (_p43._3 === false)) {
 		return m;
 	} else {
 		return A3(
@@ -12187,8 +12695,8 @@ var _user$project$CharModel$validateAlteredOrigin = function (m) {
 };
 var _user$project$CharModel$fieldChanged = F2(
 	function (field, m) {
-		var _p37 = field;
-		switch (_p37) {
+		var _p44 = field;
+		switch (_p44) {
 			case 'basics-origin':
 				return _user$project$CharModel$validateAlteredOrigin(m);
 			case 'basics-level':
@@ -12206,24 +12714,30 @@ var _user$project$CharModel$updateFieldResponse = F3(
 	});
 var _user$project$CharModel$update = F2(
 	function (msg, model) {
-		var _p38 = msg;
-		switch (_p38.ctor) {
+		var _p45 = msg;
+		switch (_p45.ctor) {
 			case 'FormFieldUpdated':
 				return {
 					ctor: '_Tuple2',
-					_0: A3(_user$project$CharModel$updateFieldResponse, _p38._0, _p38._1, model),
+					_0: A3(_user$project$CharModel$updateFieldResponse, _p45._0, _p45._1, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FormAddClicked':
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$CharModel$updateExtendForm, _p38._0, model),
+					_0: A2(_user$project$CharModel$updateExtendForm, _p45._0, model),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'FieldDeleteClicked':
+				return {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$CharModel$updateDeleteField, _p45._0, model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FileCommand':
-				return A2(_user$project$CharModel$handleFileCommand, _p38._0, model);
+				return A2(_user$project$CharModel$handleFileCommand, _p45._0, model);
 			case 'LoadJson':
-				return A2(_user$project$CharModel$importChar, _p38._0, model);
+				return A2(_user$project$CharModel$importChar, _p45._0, model);
 			default:
 				return A2(_user$project$ModelDB$dbUpdate, msg, model);
 		}
@@ -12243,12 +12757,12 @@ var _user$project$CharModel$backgroundSkills = function (m) {
 			['Missing background']));
 };
 var _user$project$CharModel$resolvedBackgroundSkills = function (m) {
-	var _p39 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
-	if (_p39.ctor === 'Nothing') {
+	var _p46 = A2(_user$project$ModelDB$getResponse, m, 'basics-bg');
+	if (_p46.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
-		if (_p39._0 === '<Custom>') {
+		if (_p46._0 === '<Custom>') {
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				_user$project$ModelDB$mayList(
@@ -12324,25 +12838,41 @@ var _user$project$View$mdOptions = {githubFlavored: _elm_lang$core$Maybe$Nothing
 var _user$project$View$powerCard = function (power) {
 	var damageIcon = function () {
 		var _p1 = power.damage;
-		if (_p1 === 0) {
-			return _elm_lang$core$Native_List.fromArray(
-				[]);
-		} else {
-			return _elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$img,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$src('icons/damage.svg'),
-							_elm_lang$html$Html_Attributes$height(16),
-							_elm_lang$html$Html_Attributes$width(16)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[])),
-					_elm_lang$html$Html$text(
-					_elm_lang$core$Basics$toString(power.damage))
-				]);
+		switch (_p1) {
+			case 0:
+				return _elm_lang$core$Native_List.fromArray(
+					[]);
+			case -1:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$img,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$src('icons/damage.svg'),
+								_elm_lang$html$Html_Attributes$height(16),
+								_elm_lang$html$Html_Attributes$width(16)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text('S')
+					]);
+			default:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$img,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$src('icons/damage.svg'),
+								_elm_lang$html$Html_Attributes$height(16),
+								_elm_lang$html$Html_Attributes$width(16)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(power.damage))
+					]);
 		}
 	}();
 	var areaIcon = function () {
@@ -12629,7 +13159,10 @@ var _user$project$View$formFieldDisplay = F2(
 						_elm_lang$html$Html$td,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$width(20)
+								_elm_lang$html$Html_Attributes$width(20),
+								_elm_lang$html$Html_Events$onClick(
+								_user$project$ModelDB$FieldDeleteClicked(
+									_user$project$FormsModel$fieldKey(field)))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
