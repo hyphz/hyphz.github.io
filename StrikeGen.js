@@ -12718,7 +12718,7 @@ var _user$project$Defender$forms = function (m) {
 			A3(
 			_user$project$FormsModel$Form,
 			false,
-			'Leader',
+			'Defender',
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				A3(
