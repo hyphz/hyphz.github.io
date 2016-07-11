@@ -11838,6 +11838,14 @@ var _user$project$Classes_Magician$prismatic = A8(
 	_user$project$ModelDB$Green,
 	_elm_lang$core$Native_List.fromArray(
 		[1, 5]));
+var _user$project$Classes_Magician$modifyRally = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				text: A2(_user$project$ModelDB$overtext, m, 'MagicianRally')
+			});
+	});
 var _user$project$Classes_Magician$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
@@ -12163,7 +12171,7 @@ var _user$project$Classes_Magician$classMagician = {
 	classForms: _user$project$Classes_Magician$forms,
 	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Magician$modifyBasicMelee),
 	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Magician$modifyBasicRange),
-	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyRally: _elm_lang$core$Maybe$Just(_user$project$Classes_Magician$modifyRally),
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
@@ -12464,6 +12472,423 @@ var _user$project$Classes_Bombardier$classBombardier = {
 	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Bombardier$modifyBasicMelee),
 	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Bombardier$modifyBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
+var _user$project$Classes_Shapechanger$modifyRally = F2(
+	function (m, p) {
+		var _p0 = A2(_user$project$ModelDB$getResponse, m, 'shaper-type');
+		_v0_2:
+		do {
+			if (_p0.ctor === 'Just') {
+				switch (_p0._0) {
+					case 'One-Form':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: A2(_user$project$ModelDB$overtext, m, 'OneFormShaperRally')
+							});
+					case 'Multi-Form':
+						return _elm_lang$core$Native_Utils.update(
+							p,
+							{
+								text: A2(_user$project$ModelDB$overtext, m, 'MultiFormShaperRally')
+							});
+					default:
+						break _v0_2;
+				}
+			} else {
+				break _v0_2;
+			}
+		} while(false);
+		return p;
+	});
+var _user$project$Classes_Shapechanger$shapeChoiceField = F4(
+	function (m, name, key, list) {
+		return _user$project$FormsModel$DropdownField(
+			{
+				name: name,
+				del: false,
+				key: key,
+				choices: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Native_List.fromArray(
+						['']),
+					_elm_lang$core$Dict$keys(list))
+			});
+	});
+var _user$project$Classes_Shapechanger$atWillDamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : 3;
+};
+var _user$project$Classes_Shapechanger$modifyBasicMelee = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Classes_Shapechanger$atWillDamage(m)
+			});
+	});
+var _user$project$Classes_Shapechanger$modifyBasicRange = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Classes_Shapechanger$atWillDamage(m)
+			});
+	});
+var _user$project$Classes_Shapechanger$Shape = F7(
+	function (a, b, c, d, e, f, g) {
+		return {name: a, transform: b, special: c, atwill1: d, atwill2: e, l3enc: f, l7enc: g};
+	});
+var _user$project$Classes_Shapechanger$tortoise = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Tortoise',
+	A7(_user$project$PowerUtilities$quickPower, 'Tortoise\'s Transformation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Tortoise',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9])),
+	A7(_user$project$PowerUtilities$quickPower, 'Total Defense', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Shield',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Perfect Fortress', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Shield For All', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$bull = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Bull',
+	A7(_user$project$PowerUtilities$quickPower, 'Bull\'s Transformation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Bull',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9])),
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Bull Rush',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Nimble Charge', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+	A7(_user$project$PowerUtilities$quickPower, 'Shove and Follow', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Crash Test', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$hawk = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Hawk',
+	A7(_user$project$PowerUtilities$quickPower, 'Hawk\'s Transformation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Hawk',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9])),
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Fly',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Diving Feint',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Dust Bath', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Live Bomb', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$mammoth = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Mammoth',
+	A8(
+		_user$project$PowerUtilities$levelTextPower,
+		'Mammoth\'s Transformation',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$Encounter,
+		0,
+		0,
+		3,
+		_user$project$ModelDB$Purple,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 9])),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Mammoth',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5])),
+	function (m) {
+		return A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Pushy',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 5, 9]),
+			m);
+	},
+	function (m) {
+		return A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Stompy',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 5, 9]),
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Fastball Special', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Fastball Deluxe', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$viper = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Viper',
+	A7(_user$project$PowerUtilities$quickPower, 'Viper\'s Transformation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Viper',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9])),
+	function (m) {
+		return A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Venom',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 5]),
+			m);
+	},
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Enervation',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Spit Poison', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Inescapable Venom', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$kraken = A7(
+	_user$project$Classes_Shapechanger$Shape,
+	'Kraken',
+	A7(_user$project$PowerUtilities$quickPower, 'Kraken\'s Transformation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple),
+	A2(
+		_user$project$PowerUtilities$levelTextSpecial,
+		'Form of the Kraken',
+		_elm_lang$core$Native_List.fromArray(
+			[1, 5, 9])),
+	function (m) {
+		return A8(
+			_user$project$PowerUtilities$quickPower,
+			'Grab',
+			_user$project$ModelDB$Attack,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			_user$project$Classes_Shapechanger$atWillDamage(m),
+			_user$project$ModelDB$Green,
+			m);
+	},
+	A7(_user$project$PowerUtilities$quickPower, 'Crush', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+	A7(_user$project$PowerUtilities$quickPower, 'Choke Out', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple),
+	A7(_user$project$PowerUtilities$quickPower, 'Death Grip', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple));
+var _user$project$Classes_Shapechanger$shapes = function () {
+	var shapepair = function (s) {
+		return {ctor: '_Tuple2', _0: s.name, _1: s};
+	};
+	return _elm_lang$core$Dict$fromList(
+		A2(
+			_elm_lang$core$List$map,
+			shapepair,
+			_elm_lang$core$Native_List.fromArray(
+				[_user$project$Classes_Shapechanger$tortoise, _user$project$Classes_Shapechanger$bull, _user$project$Classes_Shapechanger$hawk, _user$project$Classes_Shapechanger$mammoth, _user$project$Classes_Shapechanger$viper, _user$project$Classes_Shapechanger$kraken])));
+}();
+var _user$project$Classes_Shapechanger$shapePowers = F2(
+	function (m, k) {
+		var _p1 = A2(_user$project$ModelDB$getResponse, m, k);
+		if (_p1.ctor === 'Nothing') {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		} else {
+			var _p2 = A2(_elm_lang$core$Dict$get, _p1._0, _user$project$Classes_Shapechanger$shapes);
+			if (_p2.ctor === 'Nothing') {
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A2(_user$project$PowerUtilities$quickSpecial, 'Undefined Shape??', m)
+					]);
+			} else {
+				var _p3 = _p2._0;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_p3.transform(m),
+							_p3.special(m),
+							_p3.atwill1(m),
+							_p3.atwill2(m)
+						]),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						A3(
+							_user$project$PowerUtilities$atLevel,
+							m,
+							3,
+							_p3.l3enc(m)),
+						A3(
+							_user$project$PowerUtilities$atLevel,
+							m,
+							7,
+							_p3.l7enc(m))));
+			}
+		}
+	});
+var _user$project$Classes_Shapechanger$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A8(_user$project$PowerUtilities$quickPower, 'Blurred Form', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 2, _user$project$ModelDB$Green, m),
+				A8(_user$project$PowerUtilities$quickPower, 'Primal Compulsion', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 10, 0, 2, _user$project$ModelDB$Green, m)
+			]),
+		function () {
+			var _p4 = A2(_user$project$ModelDB$getResponse, m, 'shaper-type');
+			_v3_2:
+			do {
+				if (_p4.ctor === 'Just') {
+					switch (_p4._0) {
+						case 'One-Form':
+							return A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(_user$project$PowerUtilities$quickSpecial, 'One Form Shaper', m)
+									]),
+								A2(_user$project$Classes_Shapechanger$shapePowers, m, 'shaper-shape1'));
+						case 'Multi-Form':
+							return A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(_user$project$PowerUtilities$quickSpecial, 'Multi Form Shaper', m)
+									]),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(_user$project$Classes_Shapechanger$shapePowers, m, 'shaper-shape1'),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										A2(_user$project$Classes_Shapechanger$shapePowers, m, 'shaper-shape2'),
+										A2(_user$project$Classes_Shapechanger$shapePowers, m, 'shaper-shape3'))));
+						default:
+							break _v3_2;
+					}
+				} else {
+					break _v3_2;
+				}
+			} while(false);
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		}());
+};
+var _user$project$Classes_Shapechanger$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Shapechanger',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Type:',
+							key: 'shaper-type',
+							del: false,
+							choices: _elm_lang$core$Native_List.fromArray(
+								['', 'Multi-Form', 'One-Form'])
+						})
+					]),
+				function () {
+					var _p5 = A2(_user$project$ModelDB$getResponse, m, 'shaper-type');
+					_v4_2:
+					do {
+						if (_p5.ctor === 'Just') {
+							switch (_p5._0) {
+								case 'Multi-Form':
+									return _elm_lang$core$Native_List.fromArray(
+										[
+											A4(_user$project$Classes_Shapechanger$shapeChoiceField, m, 'Form:', 'shaper-shape1', _user$project$Classes_Shapechanger$shapes),
+											A4(_user$project$Classes_Shapechanger$shapeChoiceField, m, 'Form:', 'shaper-shape2', _user$project$Classes_Shapechanger$shapes),
+											A4(_user$project$Classes_Shapechanger$shapeChoiceField, m, 'Form:', 'shaper-shape3', _user$project$Classes_Shapechanger$shapes)
+										]);
+								case 'One-Form':
+									return _elm_lang$core$Native_List.fromArray(
+										[
+											A4(_user$project$Classes_Shapechanger$shapeChoiceField, m, 'Form:', 'shaper-shape1', _user$project$Classes_Shapechanger$shapes)
+										]);
+								default:
+									break _v4_2;
+							}
+						} else {
+							break _v4_2;
+						}
+					} while(false);
+					return _elm_lang$core$Native_List.fromArray(
+						[]);
+				}()))
+		]);
+};
+var _user$project$Classes_Shapechanger$classShapechanger = {
+	name: 'Bombardier',
+	classPowerList: _user$project$Classes_Shapechanger$powers,
+	classForms: _user$project$Classes_Shapechanger$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Shapechanger$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Shapechanger$modifyBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Just(_user$project$Classes_Shapechanger$modifyRally),
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
@@ -13606,6 +14031,7 @@ var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
 			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$Classes_MartialArtist$classMA},
 			{ctor: '_Tuple2', _0: 'Magician', _1: _user$project$Classes_Magician$classMagician},
 			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Classes_Necromancer$classNecro},
+			{ctor: '_Tuple2', _0: 'Shapechanger', _1: _user$project$Classes_Shapechanger$classShapechanger},
 			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Classes_Simplified$classSimplified},
 			{ctor: '_Tuple2', _0: 'Warlord', _1: _user$project$Classes_Warlord$classWarlord}
 		]));
@@ -14138,8 +14564,8 @@ var _user$project$CharModel$closeGaps$ = F4(
 						return _elm_lang$core$Native_Utils.crashCase(
 							'CharModel',
 							{
-								start: {line: 258, column: 20},
-								end: {line: 260, column: 163}
+								start: {line: 260, column: 20},
+								end: {line: 262, column: 163}
 							},
 							_p21)(
 							A2(
@@ -14178,8 +14604,8 @@ var _user$project$CharModel$updateDeleteField = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'CharModel',
 					{
-						start: {line: 276, column: 28},
-						end: {line: 278, column: 63}
+						start: {line: 278, column: 28},
+						end: {line: 280, column: 63}
 					},
 					_p23)('RemoveResponse didn\'t work!???');
 			}
@@ -14191,8 +14617,8 @@ var _user$project$CharModel$updateDeleteField = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'CharModel',
 					{
-						start: {line: 270, column: 26},
-						end: {line: 272, column: 18}
+						start: {line: 272, column: 26},
+						end: {line: 274, column: 18}
 					},
 					_p25)('Missing hyphen in expandable form deletion process');
 			} else {
@@ -14203,19 +14629,13 @@ var _user$project$CharModel$updateDeleteField = F2(
 			_elm_lang$core$Basics_ops['++'],
 			A3(_elm_lang$core$String$slice, 0, realKeyHyphenIndex, key),
 			'-');
-		var countName = A2(
-			_elm_lang$core$Debug$log,
-			'name of the count variable:',
-			A2(_elm_lang$core$Basics_ops['++'], keyPrehyphen, 'count'));
-		var reduceCount = A2(
-			_elm_lang$core$Debug$log,
-			'reduce the count:',
-			A3(
-				_user$project$ModelDB$setResponse,
-				checkResponseRemoved,
-				countName,
-				_elm_lang$core$Basics$toString(
-					A3(_user$project$ModelDB$getResponseInt, checkResponseRemoved, countName, 0) - 1)));
+		var countName = A2(_elm_lang$core$Basics_ops['++'], keyPrehyphen, 'count');
+		var reduceCount = A3(
+			_user$project$ModelDB$setResponse,
+			checkResponseRemoved,
+			countName,
+			_elm_lang$core$Basics$toString(
+				A3(_user$project$ModelDB$getResponseInt, checkResponseRemoved, countName, 0) - 1));
 		return A3(
 			_user$project$CharModel$closeGaps,
 			keyPrehyphen,
