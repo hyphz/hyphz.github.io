@@ -10007,7 +10007,411 @@ var _user$project$PowerUtilities$powerDict = F2(
 			A2(_elm_lang$core$List$map, toTuple, l));
 	});
 
-var _user$project$Archer$specials = function (m) {
+var _user$project$Classes_Necromancer$giftPower = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
+	if (_p0.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		var _p3 = _p0._0;
+		var giftLevel = (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? 1 : ((_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? 2 : 3);
+		var giftLevelDesc = function () {
+			var _p1 = giftLevel;
+			switch (_p1) {
+				case 1:
+					return 'Lesser';
+				case 2:
+					return '';
+				case 3:
+					return 'Greater';
+				default:
+					return 'Broken';
+			}
+		}();
+		var giftTextKey = A2(
+			_elm_lang$core$Basics_ops['++'],
+			giftLevelDesc,
+			A2(_elm_lang$core$Basics_ops['++'], 'GiftOf', _p3));
+		var giftName = A2(
+			_elm_lang$core$Basics_ops['++'],
+			giftLevelDesc,
+			A2(_elm_lang$core$Basics_ops['++'], ' Gift Of ', _p3));
+		var giftPage = function () {
+			var _p2 = giftLevel;
+			switch (_p2) {
+				case 1:
+					return '102';
+				case 2:
+					return '102';
+				case 3:
+					return '103';
+				default:
+					return 'XX';
+			}
+		}();
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				{
+				name: giftName,
+				text: A2(_user$project$ModelDB$overtext, m, giftTextKey),
+				slot: _user$project$ModelDB$Special,
+				freq: _user$project$ModelDB$None,
+				range: 0,
+				area: 0,
+				damage: 0,
+				styl: _user$project$ModelDB$White
+			}
+			]);
+	}
+};
+var _user$project$Classes_Necromancer$markOfDeath = function (m) {
+	return {
+		name: 'Mark of Death',
+		text: A2(_user$project$ModelDB$overtext, m, 'MarkOfDeath'),
+		slot: _user$project$ModelDB$Special,
+		freq: _user$project$ModelDB$None,
+		range: 0,
+		area: 0,
+		damage: 0,
+		styl: _user$project$ModelDB$White
+	};
+};
+var _user$project$Classes_Necromancer$terror = function (m) {
+	return {
+		name: 'Terror',
+		text: A2(_user$project$ModelDB$overtext, m, 'Terror'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: -5,
+		area: 0,
+		damage: 4,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$playDiceWithDeath = function (m) {
+	return {
+		name: 'Play Dice with Death',
+		text: A2(_user$project$ModelDB$overtext, m, 'PlayDiceWithDeath'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: 0,
+		area: 10,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$armyOfSpecters = function (m) {
+	return {
+		name: 'Army of Specters',
+		text: A2(_user$project$ModelDB$overtext, m, 'ArmyOfSpecters'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: 0,
+		area: 10,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$crudeDomination = function (m) {
+	return {
+		name: 'Crude Domination',
+		text: A2(_user$project$ModelDB$overtext, m, 'CrudeDomination'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: 5,
+		area: 0,
+		damage: 4,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$l7encoptions = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Classes_Necromancer$crudeDomination, _user$project$Classes_Necromancer$armyOfSpecters, _user$project$Classes_Necromancer$playDiceWithDeath, _user$project$Classes_Necromancer$terror]));
+};
+var _user$project$Classes_Necromancer$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc7', _user$project$Classes_Necromancer$l7encoptions);
+};
+var _user$project$Classes_Necromancer$healthSwap = function (m) {
+	return {
+		name: 'Health Swap',
+		text: A2(_user$project$ModelDB$overtext, m, 'HealthSwap'),
+		slot: _user$project$ModelDB$Misc,
+		freq: _user$project$ModelDB$Encounter,
+		range: 0,
+		area: 0,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$lichPact = function (m) {
+	return {
+		name: 'Lich Pact',
+		text: A2(_user$project$ModelDB$overtext, m, 'LichPact'),
+		slot: _user$project$ModelDB$Reaction,
+		freq: _user$project$ModelDB$Encounter,
+		range: 0,
+		area: 0,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$greaterMarkOfDeath = function (m) {
+	return {
+		name: 'Greater Mark Of Death',
+		text: function () {
+			var _p4 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
+			if ((_p4.ctor === 'Just') && (_p4._0 === 'Undeath')) {
+				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeathWithUndeath');
+			} else {
+				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeath');
+			}
+		}(),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: -5,
+		area: 0,
+		damage: 3,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$l3encoptions = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Classes_Necromancer$greaterMarkOfDeath, _user$project$Classes_Necromancer$lichPact, _user$project$Classes_Necromancer$healthSwap]));
+};
+var _user$project$Classes_Necromancer$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc3', _user$project$Classes_Necromancer$l3encoptions);
+};
+var _user$project$Classes_Necromancer$seedOfFear = A7(_user$project$PowerUtilities$quickPower, 'Seed Of Fear', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Necromancer$raiseAlly = A7(_user$project$PowerUtilities$quickPower, 'Raise Ally', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Necromancer$corpseExplosion = A7(_user$project$PowerUtilities$quickPower, 'Corpse Explosion', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Necromancer$lifeDrain = A7(_user$project$PowerUtilities$quickPower, 'Life Drain', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 2, _user$project$ModelDB$Purple);
+var _user$project$Classes_Necromancer$l1encoptions = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Classes_Necromancer$lifeDrain, _user$project$Classes_Necromancer$corpseExplosion, _user$project$Classes_Necromancer$raiseAlly, _user$project$Classes_Necromancer$seedOfFear]));
+};
+var _user$project$Classes_Necromancer$l1encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc', _user$project$Classes_Necromancer$l1encoptions);
+};
+var _user$project$Classes_Necromancer$atwilldamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : 3;
+};
+var _user$project$Classes_Necromancer$deadlyPoison = function (m) {
+	return {
+		name: 'Deadly Poison',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison') : A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison5+'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: -5,
+		area: 0,
+		damage: _user$project$Classes_Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
+	};
+};
+var _user$project$Classes_Necromancer$phantasms = function (m) {
+	return {
+		name: 'Phantasms',
+		text: A2(_user$project$ModelDB$overtext, m, 'Phantasms'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: 5,
+		area: 0,
+		damage: _user$project$Classes_Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
+	};
+};
+var _user$project$Classes_Necromancer$terrifyingVisage = function (m) {
+	return {
+		name: 'Terrifying Visage',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage') : A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage5+'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$AtWill,
+		range: 5,
+		area: 0,
+		damage: _user$project$Classes_Necromancer$atwilldamage(m),
+		styl: _user$project$ModelDB$Green
+	};
+};
+var _user$project$Classes_Necromancer$l1atwills = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Classes_Necromancer$deadlyPoison, _user$project$Classes_Necromancer$phantasms, _user$project$Classes_Necromancer$terrifyingVisage]));
+};
+var _user$project$Classes_Necromancer$l1atwillpower1 = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw1', _user$project$Classes_Necromancer$l1atwills);
+};
+var _user$project$Classes_Necromancer$l1atwillpower2 = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw2', _user$project$Classes_Necromancer$l1atwills);
+};
+var _user$project$Classes_Necromancer$necroForm = function (m) {
+	return A3(
+		_user$project$FormsModel$Form,
+		false,
+		'Necromancer',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$FormsModel$DropdownField(
+					{
+						name: 'Gift',
+						del: false,
+						key: 'necro-gift',
+						choices: _elm_lang$core$Native_List.fromArray(
+							['', 'Undeath', 'Terror', 'Vampirism'])
+					}),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw1', _user$project$Classes_Necromancer$l1atwills),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw2', _user$project$Classes_Necromancer$l1atwills),
+					_user$project$FormsModel$DropdownField(
+					{
+						name: 'Encounter Power:',
+						del: false,
+						key: 'necro-enc',
+						choices: A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Native_List.fromArray(
+								['']),
+							_elm_lang$core$Dict$keys(
+								_user$project$Classes_Necromancer$l1encoptions(m)))
+					})
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				(_elm_lang$core$Native_Utils.cmp(
+					_user$project$ModelDB$getLevel(m),
+					3) > -1) ? _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Encounter Power:',
+							del: false,
+							key: 'necro-enc3',
+							choices: A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									['']),
+								_elm_lang$core$Dict$keys(
+									_user$project$Classes_Necromancer$l3encoptions(m)))
+						})
+					]) : _elm_lang$core$Native_List.fromArray(
+					[]),
+				(_elm_lang$core$Native_Utils.cmp(
+					_user$project$ModelDB$getLevel(m),
+					7) > -1) ? _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$FormsModel$DropdownField(
+						{
+							name: 'Encounter Power:',
+							del: false,
+							key: 'necro-enc7',
+							choices: A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									['']),
+								_elm_lang$core$Dict$keys(
+									_user$project$Classes_Necromancer$l7encoptions(m)))
+						})
+					]) : _elm_lang$core$Native_List.fromArray(
+					[]))));
+};
+var _user$project$Classes_Necromancer$necroForms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Classes_Necromancer$necroForm(m)
+		]);
+};
+var _user$project$Classes_Necromancer$commandUndead = function (m) {
+	return {
+		name: 'Command Undead',
+		text: (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'CommandUndead') : A2(_user$project$ModelDB$overtext, m, 'CommandUndead9+'),
+		slot: _user$project$ModelDB$Attack,
+		freq: _user$project$ModelDB$Encounter,
+		range: 10,
+		area: 0,
+		damage: 0,
+		styl: _user$project$ModelDB$Purple
+	};
+};
+var _user$project$Classes_Necromancer$necroPowers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Classes_Necromancer$commandUndead(m),
+				_user$project$Classes_Necromancer$markOfDeath(m)
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Classes_Necromancer$giftPower(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Classes_Necromancer$l1atwillpower1(m),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Classes_Necromancer$l1atwillpower2(m),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$Classes_Necromancer$l1encpower(m),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							(_elm_lang$core$Native_Utils.cmp(
+								_user$project$ModelDB$getLevel(m),
+								3) > -1) ? _user$project$Classes_Necromancer$l3encpower(m) : _elm_lang$core$Native_List.fromArray(
+								[]),
+							(_elm_lang$core$Native_Utils.cmp(
+								_user$project$ModelDB$getLevel(m),
+								7) > -1) ? _user$project$Classes_Necromancer$l7encpower(m) : _elm_lang$core$Native_List.fromArray(
+								[])))))));
+};
+var _user$project$Classes_Necromancer$necroBasicRange = F2(
+	function (m, p) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
+			p,
+			{damage: 3});
+	});
+var _user$project$Classes_Necromancer$necroBasicMelee = F2(
+	function (m, p) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
+			p,
+			{damage: 3});
+	});
+var _user$project$Classes_Necromancer$classNecro = {
+	name: 'Necromancer',
+	classPowerList: _user$project$Classes_Necromancer$necroPowers,
+	classForms: _user$project$Classes_Necromancer$necroForms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Necromancer$necroBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Necromancer$necroBasicRange),
+	modifyCharge: _elm_lang$core$Maybe$Nothing,
+	modifyRally: _elm_lang$core$Maybe$Nothing
+};
+
+var _user$project$Classes_Archer$specials = function (m) {
 	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
 	_v0_3:
 	do {
@@ -10083,27 +10487,27 @@ var _user$project$Archer$specials = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[]);
 };
-var _user$project$Archer$youCantHide = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Hide', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Archer$splitTheirArrow = A7(_user$project$PowerUtilities$quickPower, 'Split Their Arrow', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Archer$extraTrickArrow = function (m) {
+var _user$project$Classes_Archer$youCantHide = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Hide', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Archer$splitTheirArrow = A7(_user$project$PowerUtilities$quickPower, 'Split Their Arrow', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Archer$extraTrickArrow = function (m) {
 	return A2(_user$project$PowerUtilities$quickSpecial, 'Extra Trick Arrow', m);
 };
-var _user$project$Archer$bullseye = A7(_user$project$PowerUtilities$quickPower, 'Bullseye', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Archer$aim = A7(_user$project$PowerUtilities$quickPower, 'Aim', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
-var _user$project$Archer$atWillDamage = function (m) {
+var _user$project$Classes_Archer$bullseye = A7(_user$project$PowerUtilities$quickPower, 'Bullseye', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Archer$aim = A7(_user$project$PowerUtilities$quickPower, 'Aim', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
+var _user$project$Classes_Archer$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : 3;
 };
-var _user$project$Archer$archerBasicMelee = F2(
+var _user$project$Classes_Archer$archerBasicMelee = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Archer$atWillDamage(m)
+				damage: _user$project$Classes_Archer$atWillDamage(m)
 			});
 	});
-var _user$project$Archer$sniperDouble = F2(
+var _user$project$Classes_Archer$sniperDouble = F2(
 	function (m, i) {
 		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'archer-feature');
 		if ((_p1.ctor === 'Just') && (_p1._0 === 'Sniper')) {
@@ -10112,28 +10516,28 @@ var _user$project$Archer$sniperDouble = F2(
 			return i;
 		}
 	});
-var _user$project$Archer$archerBasicRange = F2(
+var _user$project$Classes_Archer$archerBasicRange = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Archer$atWillDamage(m),
-				range: A2(_user$project$Archer$sniperDouble, m, 10)
+				damage: _user$project$Classes_Archer$atWillDamage(m),
+				range: A2(_user$project$Classes_Archer$sniperDouble, m, 10)
 			});
 	});
-var _user$project$Archer$flare = function (m) {
+var _user$project$Classes_Archer$flare = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Flare',
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$AtWill,
-		A2(_user$project$Archer$sniperDouble, m, 10),
+		A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		0,
-		_user$project$Archer$atWillDamage(m),
+		_user$project$Classes_Archer$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Archer$pinDown = function (m) {
+var _user$project$Classes_Archer$pinDown = function (m) {
 	return {
 		name: 'Pin Down',
 		text: (_elm_lang$core$Native_Utils.cmp(
@@ -10143,13 +10547,13 @@ var _user$project$Archer$pinDown = function (m) {
 			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'PinDown5+') : A2(_user$project$ModelDB$overtext, m, 'PinDown9+')),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
-		range: A2(_user$project$Archer$sniperDouble, m, 10),
+		range: A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		area: 0,
-		damage: _user$project$Archer$atWillDamage(m),
+		damage: _user$project$Classes_Archer$atWillDamage(m),
 		styl: _user$project$ModelDB$Green
 	};
 };
-var _user$project$Archer$areaDenial = function (m) {
+var _user$project$Classes_Archer$areaDenial = function (m) {
 	return {
 		name: 'Area Denial',
 		text: (_elm_lang$core$Native_Utils.cmp(
@@ -10159,120 +10563,120 @@ var _user$project$Archer$areaDenial = function (m) {
 			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'AreaDenial5+') : A2(_user$project$ModelDB$overtext, m, 'AreaDenial9+')),
 		slot: _user$project$ModelDB$Attack,
 		freq: _user$project$ModelDB$AtWill,
-		range: A2(_user$project$Archer$sniperDouble, m, 10),
+		range: A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		area: 0,
-		damage: _user$project$Archer$atWillDamage(m),
+		damage: _user$project$Classes_Archer$atWillDamage(m),
 		styl: _user$project$ModelDB$Green
 	};
 };
-var _user$project$Archer$trickArrow = function (m) {
+var _user$project$Classes_Archer$trickArrow = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Trick Arrow',
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
-		A2(_user$project$Archer$sniperDouble, m, 10),
+		A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		0,
 		3,
 		_user$project$ModelDB$Purple,
 		m);
 };
-var _user$project$Archer$l1encounters = function (m) {
+var _user$project$Classes_Archer$l1encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Archer$trickArrow, _user$project$Archer$bullseye]));
+			[_user$project$Classes_Archer$trickArrow, _user$project$Classes_Archer$bullseye]));
 };
-var _user$project$Archer$l1encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc1', _user$project$Archer$l1encounters);
+var _user$project$Classes_Archer$l1encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc1', _user$project$Classes_Archer$l1encounters);
 };
-var _user$project$Archer$legShot = function (m) {
+var _user$project$Classes_Archer$legShot = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Leg Shot',
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
-		A2(_user$project$Archer$sniperDouble, m, 10),
+		A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		0,
 		3,
 		_user$project$ModelDB$Purple,
 		m);
 };
-var _user$project$Archer$surprisingShot = function (m) {
+var _user$project$Classes_Archer$surprisingShot = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Surprising Shot',
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
-		A2(_user$project$Archer$sniperDouble, m, 10),
+		A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		0,
 		3,
 		_user$project$ModelDB$Purple,
 		m);
 };
-var _user$project$Archer$l3encounters = function (m) {
+var _user$project$Classes_Archer$l3encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Archer$extraTrickArrow, _user$project$Archer$legShot, _user$project$Archer$surprisingShot, _user$project$Archer$splitTheirArrow]));
+			[_user$project$Classes_Archer$extraTrickArrow, _user$project$Classes_Archer$legShot, _user$project$Classes_Archer$surprisingShot, _user$project$Classes_Archer$splitTheirArrow]));
 };
-var _user$project$Archer$l3encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc3', _user$project$Archer$l3encounters);
+var _user$project$Classes_Archer$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc3', _user$project$Classes_Archer$l3encounters);
 };
-var _user$project$Archer$superTrickArrow = function (m) {
+var _user$project$Classes_Archer$superTrickArrow = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Super Trick Arrow',
 		_user$project$ModelDB$Attack,
 		_user$project$ModelDB$Encounter,
-		A2(_user$project$Archer$sniperDouble, m, 10),
+		A2(_user$project$Classes_Archer$sniperDouble, m, 10),
 		0,
 		4,
 		_user$project$ModelDB$Purple,
 		m);
 };
-var _user$project$Archer$l7encounters = function (m) {
+var _user$project$Classes_Archer$l7encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Archer$youCantHide, _user$project$Archer$superTrickArrow]));
+			[_user$project$Classes_Archer$youCantHide, _user$project$Classes_Archer$superTrickArrow]));
 };
-var _user$project$Archer$l7encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc7', _user$project$Archer$l7encounters);
+var _user$project$Classes_Archer$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'archer-enc7', _user$project$Classes_Archer$l7encounters);
 };
-var _user$project$Archer$powers = function (m) {
+var _user$project$Classes_Archer$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Archer$specials(m),
+		_user$project$Classes_Archer$specials(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_user$project$Archer$aim(m),
-					_user$project$Archer$flare(m),
-					_user$project$Archer$pinDown(m),
-					_user$project$Archer$areaDenial(m)
+					_user$project$Classes_Archer$aim(m),
+					_user$project$Classes_Archer$flare(m),
+					_user$project$Classes_Archer$pinDown(m),
+					_user$project$Classes_Archer$areaDenial(m)
 				]),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				_user$project$Archer$l1encpower(m),
+				_user$project$Classes_Archer$l1encpower(m),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
 						_user$project$PowerUtilities$atLevelList,
 						m,
 						3,
-						_user$project$Archer$l3encpower(m)),
+						_user$project$Classes_Archer$l3encpower(m)),
 					A3(
 						_user$project$PowerUtilities$atLevelList,
 						m,
 						7,
-						_user$project$Archer$l7encpower(m))))));
+						_user$project$Classes_Archer$l7encpower(m))))));
 };
-var _user$project$Archer$forms = function (m) {
+var _user$project$Classes_Archer$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -10291,7 +10695,7 @@ var _user$project$Archer$forms = function (m) {
 							choices: _elm_lang$core$Native_List.fromArray(
 								['', 'Sniper', 'Blitzer', 'Sentinel'])
 						}),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc1', _user$project$Archer$l1encounters)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc1', _user$project$Classes_Archer$l1encounters)
 					]),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -10299,429 +10703,25 @@ var _user$project$Archer$forms = function (m) {
 						_user$project$PowerUtilities$atLevel,
 						m,
 						3,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc3', _user$project$Archer$l3encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc3', _user$project$Classes_Archer$l3encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						7,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc7', _user$project$Archer$l7encounters)))))
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'archer-enc7', _user$project$Classes_Archer$l7encounters)))))
 		]);
 };
-var _user$project$Archer$classArcher = {
+var _user$project$Classes_Archer$classArcher = {
 	name: 'Archer',
-	classPowerList: _user$project$Archer$powers,
-	classForms: _user$project$Archer$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Archer$archerBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Archer$archerBasicRange),
+	classPowerList: _user$project$Classes_Archer$powers,
+	classForms: _user$project$Classes_Archer$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Archer$archerBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Archer$archerBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$Necromancer$giftPower = function (m) {
-	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
-	if (_p0.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		var _p3 = _p0._0;
-		var giftLevel = (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? 1 : ((_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? 2 : 3);
-		var giftLevelDesc = function () {
-			var _p1 = giftLevel;
-			switch (_p1) {
-				case 1:
-					return 'Lesser';
-				case 2:
-					return '';
-				case 3:
-					return 'Greater';
-				default:
-					return 'Broken';
-			}
-		}();
-		var giftTextKey = A2(
-			_elm_lang$core$Basics_ops['++'],
-			giftLevelDesc,
-			A2(_elm_lang$core$Basics_ops['++'], 'GiftOf', _p3));
-		var giftName = A2(
-			_elm_lang$core$Basics_ops['++'],
-			giftLevelDesc,
-			A2(_elm_lang$core$Basics_ops['++'], ' Gift Of ', _p3));
-		var giftPage = function () {
-			var _p2 = giftLevel;
-			switch (_p2) {
-				case 1:
-					return '102';
-				case 2:
-					return '102';
-				case 3:
-					return '103';
-				default:
-					return 'XX';
-			}
-		}();
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				{
-				name: giftName,
-				text: A2(_user$project$ModelDB$overtext, m, giftTextKey),
-				slot: _user$project$ModelDB$Special,
-				freq: _user$project$ModelDB$None,
-				range: 0,
-				area: 0,
-				damage: 0,
-				styl: _user$project$ModelDB$White
-			}
-			]);
-	}
-};
-var _user$project$Necromancer$markOfDeath = function (m) {
-	return {
-		name: 'Mark of Death',
-		text: A2(_user$project$ModelDB$overtext, m, 'MarkOfDeath'),
-		slot: _user$project$ModelDB$Special,
-		freq: _user$project$ModelDB$None,
-		range: 0,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$White
-	};
-};
-var _user$project$Necromancer$terror = function (m) {
-	return {
-		name: 'Terror',
-		text: A2(_user$project$ModelDB$overtext, m, 'Terror'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: -5,
-		area: 0,
-		damage: 4,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$playDiceWithDeath = function (m) {
-	return {
-		name: 'Play Dice with Death',
-		text: A2(_user$project$ModelDB$overtext, m, 'PlayDiceWithDeath'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 10,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$armyOfSpecters = function (m) {
-	return {
-		name: 'Army of Specters',
-		text: A2(_user$project$ModelDB$overtext, m, 'ArmyOfSpecters'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 10,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$crudeDomination = function (m) {
-	return {
-		name: 'Crude Domination',
-		text: A2(_user$project$ModelDB$overtext, m, 'CrudeDomination'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 5,
-		area: 0,
-		damage: 4,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$l7encoptions = function (m) {
-	return A2(
-		_user$project$PowerUtilities$powerDict,
-		m,
-		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Necromancer$crudeDomination, _user$project$Necromancer$armyOfSpecters, _user$project$Necromancer$playDiceWithDeath, _user$project$Necromancer$terror]));
-};
-var _user$project$Necromancer$l7encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc7', _user$project$Necromancer$l7encoptions);
-};
-var _user$project$Necromancer$healthSwap = function (m) {
-	return {
-		name: 'Health Swap',
-		text: A2(_user$project$ModelDB$overtext, m, 'HealthSwap'),
-		slot: _user$project$ModelDB$Misc,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$lichPact = function (m) {
-	return {
-		name: 'Lich Pact',
-		text: A2(_user$project$ModelDB$overtext, m, 'LichPact'),
-		slot: _user$project$ModelDB$Reaction,
-		freq: _user$project$ModelDB$Encounter,
-		range: 0,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$greaterMarkOfDeath = function (m) {
-	return {
-		name: 'Greater Mark Of Death',
-		text: function () {
-			var _p4 = A2(_user$project$ModelDB$getResponse, m, 'necro-gift');
-			if ((_p4.ctor === 'Just') && (_p4._0 === 'Undeath')) {
-				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeathWithUndeath');
-			} else {
-				return A2(_user$project$ModelDB$overtext, m, 'GreaterMarkOfDeath');
-			}
-		}(),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: -5,
-		area: 0,
-		damage: 3,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$l3encoptions = function (m) {
-	return A2(
-		_user$project$PowerUtilities$powerDict,
-		m,
-		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Necromancer$greaterMarkOfDeath, _user$project$Necromancer$lichPact, _user$project$Necromancer$healthSwap]));
-};
-var _user$project$Necromancer$l3encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc3', _user$project$Necromancer$l3encoptions);
-};
-var _user$project$Necromancer$seedOfFear = A7(_user$project$PowerUtilities$quickPower, 'Seed Of Fear', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 5, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Necromancer$raiseAlly = A7(_user$project$PowerUtilities$quickPower, 'Raise Ally', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Necromancer$corpseExplosion = A7(_user$project$PowerUtilities$quickPower, 'Corpse Explosion', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Necromancer$lifeDrain = A7(_user$project$PowerUtilities$quickPower, 'Life Drain', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 2, _user$project$ModelDB$Purple);
-var _user$project$Necromancer$l1encoptions = function (m) {
-	return A2(
-		_user$project$PowerUtilities$powerDict,
-		m,
-		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Necromancer$lifeDrain, _user$project$Necromancer$corpseExplosion, _user$project$Necromancer$raiseAlly, _user$project$Necromancer$seedOfFear]));
-};
-var _user$project$Necromancer$l1encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-enc', _user$project$Necromancer$l1encoptions);
-};
-var _user$project$Necromancer$atwilldamage = function (m) {
-	return (_elm_lang$core$Native_Utils.cmp(
-		_user$project$ModelDB$getLevel(m),
-		5) < 0) ? 2 : 3;
-};
-var _user$project$Necromancer$deadlyPoison = function (m) {
-	return {
-		name: 'Deadly Poison',
-		text: (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison') : A2(_user$project$ModelDB$overtext, m, 'DeadlyPoison5+'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: -5,
-		area: 0,
-		damage: _user$project$Necromancer$atwilldamage(m),
-		styl: _user$project$ModelDB$Green
-	};
-};
-var _user$project$Necromancer$phantasms = function (m) {
-	return {
-		name: 'Phantasms',
-		text: A2(_user$project$ModelDB$overtext, m, 'Phantasms'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 5,
-		area: 0,
-		damage: _user$project$Necromancer$atwilldamage(m),
-		styl: _user$project$ModelDB$Green
-	};
-};
-var _user$project$Necromancer$terrifyingVisage = function (m) {
-	return {
-		name: 'Terrifying Visage',
-		text: (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage') : A2(_user$project$ModelDB$overtext, m, 'TerrifyingVisage5+'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$AtWill,
-		range: 5,
-		area: 0,
-		damage: _user$project$Necromancer$atwilldamage(m),
-		styl: _user$project$ModelDB$Green
-	};
-};
-var _user$project$Necromancer$l1atwills = function (m) {
-	return A2(
-		_user$project$PowerUtilities$powerDict,
-		m,
-		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Necromancer$deadlyPoison, _user$project$Necromancer$phantasms, _user$project$Necromancer$terrifyingVisage]));
-};
-var _user$project$Necromancer$l1atwillpower1 = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw1', _user$project$Necromancer$l1atwills);
-};
-var _user$project$Necromancer$l1atwillpower2 = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'necro-aw2', _user$project$Necromancer$l1atwills);
-};
-var _user$project$Necromancer$necroForm = function (m) {
-	return A3(
-		_user$project$FormsModel$Form,
-		false,
-		'Necromancer',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$FormsModel$DropdownField(
-					{
-						name: 'Gift',
-						del: false,
-						key: 'necro-gift',
-						choices: _elm_lang$core$Native_List.fromArray(
-							['', 'Undeath', 'Terror', 'Vampirism'])
-					}),
-					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw1', _user$project$Necromancer$l1atwills),
-					A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'necro-aw2', _user$project$Necromancer$l1atwills),
-					_user$project$FormsModel$DropdownField(
-					{
-						name: 'Encounter Power:',
-						del: false,
-						key: 'necro-enc',
-						choices: A2(
-							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Native_List.fromArray(
-								['']),
-							_elm_lang$core$Dict$keys(
-								_user$project$Necromancer$l1encoptions(m)))
-					})
-				]),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				(_elm_lang$core$Native_Utils.cmp(
-					_user$project$ModelDB$getLevel(m),
-					3) > -1) ? _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$FormsModel$DropdownField(
-						{
-							name: 'Encounter Power:',
-							del: false,
-							key: 'necro-enc3',
-							choices: A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Native_List.fromArray(
-									['']),
-								_elm_lang$core$Dict$keys(
-									_user$project$Necromancer$l3encoptions(m)))
-						})
-					]) : _elm_lang$core$Native_List.fromArray(
-					[]),
-				(_elm_lang$core$Native_Utils.cmp(
-					_user$project$ModelDB$getLevel(m),
-					7) > -1) ? _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$FormsModel$DropdownField(
-						{
-							name: 'Encounter Power:',
-							del: false,
-							key: 'necro-enc7',
-							choices: A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Native_List.fromArray(
-									['']),
-								_elm_lang$core$Dict$keys(
-									_user$project$Necromancer$l7encoptions(m)))
-						})
-					]) : _elm_lang$core$Native_List.fromArray(
-					[]))));
-};
-var _user$project$Necromancer$necroForms = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$Necromancer$necroForm(m)
-		]);
-};
-var _user$project$Necromancer$commandUndead = function (m) {
-	return {
-		name: 'Command Undead',
-		text: (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'CommandUndead') : A2(_user$project$ModelDB$overtext, m, 'CommandUndead9+'),
-		slot: _user$project$ModelDB$Attack,
-		freq: _user$project$ModelDB$Encounter,
-		range: 10,
-		area: 0,
-		damage: 0,
-		styl: _user$project$ModelDB$Purple
-	};
-};
-var _user$project$Necromancer$necroPowers = function (m) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$Necromancer$commandUndead(m),
-				_user$project$Necromancer$markOfDeath(m)
-			]),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_user$project$Necromancer$giftPower(m),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_user$project$Necromancer$l1atwillpower1(m),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_user$project$Necromancer$l1atwillpower2(m),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_user$project$Necromancer$l1encpower(m),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							(_elm_lang$core$Native_Utils.cmp(
-								_user$project$ModelDB$getLevel(m),
-								3) > -1) ? _user$project$Necromancer$l3encpower(m) : _elm_lang$core$Native_List.fromArray(
-								[]),
-							(_elm_lang$core$Native_Utils.cmp(
-								_user$project$ModelDB$getLevel(m),
-								7) > -1) ? _user$project$Necromancer$l7encpower(m) : _elm_lang$core$Native_List.fromArray(
-								[])))))));
-};
-var _user$project$Necromancer$necroBasicRange = F2(
-	function (m, p) {
-		return (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
-			p,
-			{damage: 3});
-	});
-var _user$project$Necromancer$necroBasicMelee = F2(
-	function (m, p) {
-		return (_elm_lang$core$Native_Utils.cmp(
-			_user$project$ModelDB$getLevel(m),
-			5) < 0) ? p : _elm_lang$core$Native_Utils.update(
-			p,
-			{damage: 3});
-	});
-var _user$project$Necromancer$classNecro = {
-	name: 'Necromancer',
-	classPowerList: _user$project$Necromancer$necroPowers,
-	classForms: _user$project$Necromancer$necroForms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Necromancer$necroBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Necromancer$necroBasicRange),
-	modifyCharge: _elm_lang$core$Maybe$Nothing,
-	modifyRally: _elm_lang$core$Maybe$Nothing
-};
-
-var _user$project$Duelist$focus = function (m) {
+var _user$project$Classes_Duelist$focus = function (m) {
 	return {
 		name: 'Focus',
 		text: (_elm_lang$core$Native_Utils.cmp(
@@ -10737,7 +10737,7 @@ var _user$project$Duelist$focus = function (m) {
 		styl: _user$project$ModelDB$White
 	};
 };
-var _user$project$Duelist$specials = function (m) {
+var _user$project$Classes_Duelist$specials = function (m) {
 	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'duelist-feature');
 	if (_p0.ctor === 'Just') {
 		return _elm_lang$core$Native_List.fromArray(
@@ -10749,45 +10749,45 @@ var _user$project$Duelist$specials = function (m) {
 			[]);
 	}
 };
-var _user$project$Duelist$ifollow = A7(_user$project$PowerUtilities$quickPower, 'Where You Go I Follow', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
-var _user$project$Duelist$takeThisOutside = A7(_user$project$PowerUtilities$quickPower, 'Let\'s Take This Outside', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
-var _user$project$Duelist$cantIgnoreMe = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Ignore Me', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
-var _user$project$Duelist$l7encounters = function (m) {
+var _user$project$Classes_Duelist$ifollow = A7(_user$project$PowerUtilities$quickPower, 'Where You Go I Follow', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$takeThisOutside = A7(_user$project$PowerUtilities$quickPower, 'Let\'s Take This Outside', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$cantIgnoreMe = A7(_user$project$PowerUtilities$quickPower, 'You Can\'t Ignore Me', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$l7encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Duelist$cantIgnoreMe, _user$project$Duelist$takeThisOutside, _user$project$Duelist$ifollow]));
+			[_user$project$Classes_Duelist$cantIgnoreMe, _user$project$Classes_Duelist$takeThisOutside, _user$project$Classes_Duelist$ifollow]));
 };
-var _user$project$Duelist$l7encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc7', _user$project$Duelist$l7encounters);
+var _user$project$Classes_Duelist$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc7', _user$project$Classes_Duelist$l7encounters);
 };
-var _user$project$Duelist$stalker = A7(_user$project$PowerUtilities$quickPower, 'Stalker', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Duelist$takeTheOpening = A7(_user$project$PowerUtilities$quickPower, 'Take The Opening', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Duelist$l3encounters = function (m) {
+var _user$project$Classes_Duelist$stalker = A7(_user$project$PowerUtilities$quickPower, 'Stalker', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$takeTheOpening = A7(_user$project$PowerUtilities$quickPower, 'Take The Opening', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$l3encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Duelist$takeTheOpening, _user$project$Duelist$stalker]));
+			[_user$project$Classes_Duelist$takeTheOpening, _user$project$Classes_Duelist$stalker]));
 };
-var _user$project$Duelist$l3encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc3', _user$project$Duelist$l3encounters);
+var _user$project$Classes_Duelist$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc3', _user$project$Classes_Duelist$l3encounters);
 };
-var _user$project$Duelist$perfectDefense = A7(_user$project$PowerUtilities$quickPower, 'Perfect Defense', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Duelist$noOneElse = A7(_user$project$PowerUtilities$quickPower, 'Ain\'t No One Else Around', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Duelist$l1encounters = function (m) {
+var _user$project$Classes_Duelist$perfectDefense = A7(_user$project$PowerUtilities$quickPower, 'Perfect Defense', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$noOneElse = A7(_user$project$PowerUtilities$quickPower, 'Ain\'t No One Else Around', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Duelist$l1encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Duelist$noOneElse, _user$project$Duelist$perfectDefense]));
+			[_user$project$Classes_Duelist$noOneElse, _user$project$Classes_Duelist$perfectDefense]));
 };
-var _user$project$Duelist$l1echosen = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc1', _user$project$Duelist$l1encounters);
+var _user$project$Classes_Duelist$l1echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-enc1', _user$project$Classes_Duelist$l1encounters);
 };
-var _user$project$Duelist$chargeTarget = A7(_user$project$PowerUtilities$quickPower, 'Change Target', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
-var _user$project$Duelist$duel = function (m) {
+var _user$project$Classes_Duelist$chargeTarget = A7(_user$project$PowerUtilities$quickPower, 'Change Target', _user$project$ModelDB$Attack, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green);
+var _user$project$Classes_Duelist$duel = function (m) {
 	return {
 		name: 'Duel',
 		slot: _user$project$ModelDB$Misc,
@@ -10803,28 +10803,28 @@ var _user$project$Duelist$duel = function (m) {
 			9) < 0) ? A2(_user$project$ModelDB$overtext, m, 'Duel5+') : A2(_user$project$ModelDB$overtext, m, 'Duel9+'))
 	};
 };
-var _user$project$Duelist$atWillDamage = function (m) {
+var _user$project$Classes_Duelist$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : 3;
 };
-var _user$project$Duelist$modifyBasicMelee = F2(
+var _user$project$Classes_Duelist$modifyBasicMelee = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Duelist$atWillDamage(m)
+				damage: _user$project$Classes_Duelist$atWillDamage(m)
 			});
 	});
-var _user$project$Duelist$modifyBasicRange = F2(
+var _user$project$Classes_Duelist$modifyBasicRange = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Duelist$atWillDamage(m)
+				damage: _user$project$Classes_Duelist$atWillDamage(m)
 			});
 	});
-var _user$project$Duelist$getOverHere = function (m) {
+var _user$project$Classes_Duelist$getOverHere = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Get Over Here',
@@ -10832,11 +10832,11 @@ var _user$project$Duelist$getOverHere = function (m) {
 		_user$project$ModelDB$AtWill,
 		5,
 		0,
-		_user$project$Duelist$atWillDamage(m),
+		_user$project$Classes_Duelist$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Duelist$noEscape = function (m) {
+var _user$project$Classes_Duelist$noEscape = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'No Escape',
@@ -10844,11 +10844,11 @@ var _user$project$Duelist$noEscape = function (m) {
 		_user$project$ModelDB$AtWill,
 		0,
 		0,
-		_user$project$Duelist$atWillDamage(m),
+		_user$project$Classes_Duelist$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Duelist$demandAttention = function (m) {
+var _user$project$Classes_Duelist$demandAttention = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Demand Attention',
@@ -10856,11 +10856,11 @@ var _user$project$Duelist$demandAttention = function (m) {
 		_user$project$ModelDB$AtWill,
 		-5,
 		0,
-		_user$project$Duelist$atWillDamage(m),
+		_user$project$Classes_Duelist$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Duelist$exploitWeakness = function (m) {
+var _user$project$Classes_Duelist$exploitWeakness = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Exploit Weakness',
@@ -10868,11 +10868,11 @@ var _user$project$Duelist$exploitWeakness = function (m) {
 		_user$project$ModelDB$AtWill,
 		0,
 		0,
-		_user$project$Duelist$atWillDamage(m),
+		_user$project$Classes_Duelist$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Duelist$guessingGame = function (m) {
+var _user$project$Classes_Duelist$guessingGame = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Guessing Game',
@@ -10880,60 +10880,60 @@ var _user$project$Duelist$guessingGame = function (m) {
 		_user$project$ModelDB$AtWill,
 		0,
 		0,
-		_user$project$Duelist$atWillDamage(m),
+		_user$project$Classes_Duelist$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Duelist$l1atwills = function (m) {
+var _user$project$Classes_Duelist$l1atwills = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Duelist$getOverHere, _user$project$Duelist$noEscape, _user$project$Duelist$demandAttention, _user$project$Duelist$exploitWeakness, _user$project$Duelist$guessingGame]));
+			[_user$project$Classes_Duelist$getOverHere, _user$project$Classes_Duelist$noEscape, _user$project$Classes_Duelist$demandAttention, _user$project$Classes_Duelist$exploitWeakness, _user$project$Classes_Duelist$guessingGame]));
 };
-var _user$project$Duelist$l1awchosen = function (m) {
+var _user$project$Classes_Duelist$l1awchosen = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw1', _user$project$Duelist$l1atwills),
-		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw2', _user$project$Duelist$l1atwills));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw1', _user$project$Classes_Duelist$l1atwills),
+		A3(_user$project$PowerUtilities$powerlookup, m, 'duelist-aw2', _user$project$Classes_Duelist$l1atwills));
 };
-var _user$project$Duelist$powers = function (m) {
+var _user$project$Classes_Duelist$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Duelist$focus(m)
+				_user$project$Classes_Duelist$focus(m)
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Duelist$specials(m),
+			_user$project$Classes_Duelist$specials(m),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$Duelist$duel(m),
-						_user$project$Duelist$chargeTarget(m)
+						_user$project$Classes_Duelist$duel(m),
+						_user$project$Classes_Duelist$chargeTarget(m)
 					]),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_user$project$Duelist$l1awchosen(m),
+					_user$project$Classes_Duelist$l1awchosen(m),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_user$project$Duelist$l1echosen(m),
+						_user$project$Classes_Duelist$l1echosen(m),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							A3(
 								_user$project$PowerUtilities$atLevelList,
 								m,
 								3,
-								_user$project$Duelist$l3encpower(m)),
+								_user$project$Classes_Duelist$l3encpower(m)),
 							A3(
 								_user$project$PowerUtilities$atLevelList,
 								m,
 								7,
-								_user$project$Duelist$l7encpower(m))))))));
+								_user$project$Classes_Duelist$l7encpower(m))))))));
 };
-var _user$project$Duelist$forms = function (m) {
+var _user$project$Classes_Duelist$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -10952,9 +10952,9 @@ var _user$project$Duelist$forms = function (m) {
 							choices: _elm_lang$core$Native_List.fromArray(
 								['', 'Find an Opening', 'Throw off their Aim', 'Force their position'])
 						}),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw1', _user$project$Duelist$l1atwills),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw2', _user$project$Duelist$l1atwills),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc1', _user$project$Duelist$l1encounters)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw1', _user$project$Classes_Duelist$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'duelist-aw2', _user$project$Classes_Duelist$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc1', _user$project$Classes_Duelist$l1encounters)
 					]),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -10962,54 +10962,54 @@ var _user$project$Duelist$forms = function (m) {
 						_user$project$PowerUtilities$atLevel,
 						m,
 						3,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc3', _user$project$Duelist$l3encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc3', _user$project$Classes_Duelist$l3encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						7,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc7', _user$project$Duelist$l7encounters)))))
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'duelist-enc7', _user$project$Classes_Duelist$l7encounters)))))
 		]);
 };
-var _user$project$Duelist$classDuelist = {
+var _user$project$Classes_Duelist$classDuelist = {
 	name: 'Duelist',
-	classPowerList: _user$project$Duelist$powers,
-	classForms: _user$project$Duelist$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Duelist$modifyBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Duelist$modifyBasicRange),
+	classPowerList: _user$project$Classes_Duelist$powers,
+	classForms: _user$project$Classes_Duelist$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Duelist$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Duelist$modifyBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$MartialArtist$mamaster = function (m) {
+var _user$project$Classes_MartialArtist$mamaster = function (m) {
 	return A2(_user$project$PowerUtilities$quickSpecial, 'Master Martial Artist', m);
 };
-var _user$project$MartialArtist$extraFocusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Extra Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$MartialArtist$martialFrenzy = A7(_user$project$PowerUtilities$quickPower, 'Martial Frenzy', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$MartialArtist$theFalseDeath = A7(_user$project$PowerUtilities$quickPower, 'The False Death', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$MartialArtist$decapitation = A7(_user$project$PowerUtilities$quickPower, 'Decapitation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$MartialArtist$l3encounters = function (m) {
+var _user$project$Classes_MartialArtist$extraFocusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Extra Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_MartialArtist$martialFrenzy = A7(_user$project$PowerUtilities$quickPower, 'Martial Frenzy', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_MartialArtist$theFalseDeath = A7(_user$project$PowerUtilities$quickPower, 'The False Death', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_MartialArtist$decapitation = A7(_user$project$PowerUtilities$quickPower, 'Decapitation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_MartialArtist$l3encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$MartialArtist$extraFocusedAttack, _user$project$MartialArtist$decapitation, _user$project$MartialArtist$theFalseDeath]));
+			[_user$project$Classes_MartialArtist$extraFocusedAttack, _user$project$Classes_MartialArtist$decapitation, _user$project$Classes_MartialArtist$theFalseDeath]));
 };
-var _user$project$MartialArtist$l3encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc3', _user$project$MartialArtist$l3encounters);
+var _user$project$Classes_MartialArtist$l3encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc3', _user$project$Classes_MartialArtist$l3encounters);
 };
-var _user$project$MartialArtist$l7encounters = function (m) {
+var _user$project$Classes_MartialArtist$l7encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$MartialArtist$extraFocusedAttack, _user$project$MartialArtist$decapitation, _user$project$MartialArtist$theFalseDeath, _user$project$MartialArtist$martialFrenzy]));
+			[_user$project$Classes_MartialArtist$extraFocusedAttack, _user$project$Classes_MartialArtist$decapitation, _user$project$Classes_MartialArtist$theFalseDeath, _user$project$Classes_MartialArtist$martialFrenzy]));
 };
-var _user$project$MartialArtist$l7encpower = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc7', _user$project$MartialArtist$l7encounters);
+var _user$project$Classes_MartialArtist$l7encpower = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'ma-enc7', _user$project$Classes_MartialArtist$l7encounters);
 };
-var _user$project$MartialArtist$stanceList = _elm_lang$core$Native_List.fromArray(
+var _user$project$Classes_MartialArtist$stanceList = _elm_lang$core$Native_List.fromArray(
 	['Stone Wall', 'Weeping Willow', 'Tempest', 'Python', 'Scorpion', 'Flickering Flame', 'Mandala']);
-var _user$project$MartialArtist$forms = function (m) {
+var _user$project$Classes_MartialArtist$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -11028,7 +11028,7 @@ var _user$project$MartialArtist$forms = function (m) {
 								_elm_lang$core$Basics_ops['++'],
 								_elm_lang$core$Native_List.fromArray(
 									['']),
-								_user$project$MartialArtist$stanceList),
+								_user$project$Classes_MartialArtist$stanceList),
 							del: false
 						}),
 						_user$project$FormsModel$DropdownField(
@@ -11039,7 +11039,7 @@ var _user$project$MartialArtist$forms = function (m) {
 								_elm_lang$core$Basics_ops['++'],
 								_elm_lang$core$Native_List.fromArray(
 									['']),
-								_user$project$MartialArtist$stanceList),
+								_user$project$Classes_MartialArtist$stanceList),
 							del: false
 						}),
 						_user$project$FormsModel$DropdownField(
@@ -11050,7 +11050,7 @@ var _user$project$MartialArtist$forms = function (m) {
 								_elm_lang$core$Basics_ops['++'],
 								_elm_lang$core$Native_List.fromArray(
 									['']),
-								_user$project$MartialArtist$stanceList),
+								_user$project$Classes_MartialArtist$stanceList),
 							del: false
 						})
 					]),
@@ -11060,35 +11060,35 @@ var _user$project$MartialArtist$forms = function (m) {
 						_user$project$PowerUtilities$atLevel,
 						m,
 						3,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc3', _user$project$MartialArtist$l3encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc3', _user$project$Classes_MartialArtist$l3encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						7,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc7', _user$project$MartialArtist$l7encounters)))))
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'ma-enc7', _user$project$Classes_MartialArtist$l7encounters)))))
 		]);
 };
-var _user$project$MartialArtist$quickStance = F2(
+var _user$project$Classes_MartialArtist$quickStance = F2(
 	function (m, n) {
 		return A8(_user$project$PowerUtilities$quickPower, n, _user$project$ModelDB$Special, _user$project$ModelDB$None, 0, 0, 0, _user$project$ModelDB$Yellow, m);
 	});
-var _user$project$MartialArtist$genStances = function (m) {
+var _user$project$Classes_MartialArtist$genStances = function (m) {
 	var allStances = function (x) {
 		return _elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_user$project$MartialArtist$quickStance,
+				_user$project$Classes_MartialArtist$quickStance,
 				m,
 				A2(_elm_lang$core$Basics_ops['++'], x, ' Style')),
 				A2(
-				_user$project$MartialArtist$quickStance,
+				_user$project$Classes_MartialArtist$quickStance,
 				m,
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					'Greater ',
 					A2(_elm_lang$core$Basics_ops['++'], x, ' Style'))),
 				A2(
-				_user$project$MartialArtist$quickStance,
+				_user$project$Classes_MartialArtist$quickStance,
 				m,
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -11108,20 +11108,20 @@ var _user$project$MartialArtist$genStances = function (m) {
 				A2(_user$project$ModelDB$getResponse, m, 'ma-s3'))));
 	return A2(_elm_lang$core$List$concatMap, allStances, stanceChoices);
 };
-var _user$project$MartialArtist$focusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$MartialArtist$changeStance = A7(_user$project$PowerUtilities$quickPower, 'Change Stance', _user$project$ModelDB$Special, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Yellow);
-var _user$project$MartialArtist$startStance = _user$project$PowerUtilities$quickSpecial('Stances');
-var _user$project$MartialArtist$powers = function (m) {
+var _user$project$Classes_MartialArtist$focusedAttack = A7(_user$project$PowerUtilities$quickPower, 'Focused Attack', _user$project$ModelDB$Special, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_MartialArtist$changeStance = A7(_user$project$PowerUtilities$quickPower, 'Change Stance', _user$project$ModelDB$Special, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Yellow);
+var _user$project$Classes_MartialArtist$startStance = _user$project$PowerUtilities$quickSpecial('Stances');
+var _user$project$Classes_MartialArtist$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$MartialArtist$genStances(m),
+		_user$project$Classes_MartialArtist$genStances(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_user$project$MartialArtist$startStance(m),
-					_user$project$MartialArtist$changeStance(m),
-					_user$project$MartialArtist$focusedAttack(m)
+					_user$project$Classes_MartialArtist$startStance(m),
+					_user$project$Classes_MartialArtist$changeStance(m),
+					_user$project$Classes_MartialArtist$focusedAttack(m)
 				]),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
@@ -11129,52 +11129,52 @@ var _user$project$MartialArtist$powers = function (m) {
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					3,
-					_user$project$MartialArtist$l3encpower(m)),
+					_user$project$Classes_MartialArtist$l3encpower(m)),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
 						_user$project$PowerUtilities$atLevelList,
 						m,
 						7,
-						_user$project$MartialArtist$l7encpower(m)),
+						_user$project$Classes_MartialArtist$l7encpower(m)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						9,
-						_user$project$MartialArtist$mamaster(m))))));
+						_user$project$Classes_MartialArtist$mamaster(m))))));
 };
-var _user$project$MartialArtist$atWillDamage = function (m) {
+var _user$project$Classes_MartialArtist$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : 3;
 };
-var _user$project$MartialArtist$modifyBasicMelee = F2(
+var _user$project$Classes_MartialArtist$modifyBasicMelee = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$MartialArtist$atWillDamage(m)
+				damage: _user$project$Classes_MartialArtist$atWillDamage(m)
 			});
 	});
-var _user$project$MartialArtist$modifyBasicRange = F2(
+var _user$project$Classes_MartialArtist$modifyBasicRange = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$MartialArtist$atWillDamage(m)
+				damage: _user$project$Classes_MartialArtist$atWillDamage(m)
 			});
 	});
-var _user$project$MartialArtist$classMA = {
+var _user$project$Classes_MartialArtist$classMA = {
 	name: 'Duelist',
-	classPowerList: _user$project$MartialArtist$powers,
-	classForms: _user$project$MartialArtist$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$MartialArtist$modifyBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$MartialArtist$modifyBasicRange),
+	classPowerList: _user$project$Classes_MartialArtist$powers,
+	classForms: _user$project$Classes_MartialArtist$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_MartialArtist$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_MartialArtist$modifyBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$Simplified$forms = function (m) {
+var _user$project$Classes_Simplified$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -11194,22 +11194,22 @@ var _user$project$Simplified$forms = function (m) {
 				]))
 		]);
 };
-var _user$project$Simplified$meleeSpecial = '\n\n**Special**: Treat any 2s rolled on the dice as though they were 5s.';
-var _user$project$Simplified$simpleDamageValue = function (m) {
+var _user$project$Classes_Simplified$meleeSpecial = '\n\n**Special**: Treat any 2s rolled on the dice as though they were 5s.';
+var _user$project$Classes_Simplified$simpleDamageValue = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : ((_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		9) < 0) ? 3 : 4);
 };
-var _user$project$Simplified$simpleDamageEffect = function (m) {
+var _user$project$Classes_Simplified$simpleDamageEffect = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		3) < 0) ? '**Effect**: 1 damage.' : ((_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		7) < 0) ? '**Effect**: 2 damage.' : '**Effect**: 3 damage.');
 };
-var _user$project$Simplified$simpleBasicMelee = F2(
+var _user$project$Classes_Simplified$simpleBasicMelee = F2(
 	function (m, p) {
 		var _p0 = A2(_user$project$ModelDB$getResponse, m, 'simple-type');
 		_v0_2:
@@ -11222,16 +11222,16 @@ var _user$project$Simplified$simpleBasicMelee = F2(
 							{
 								text: A2(
 									_elm_lang$core$Basics_ops['++'],
-									_user$project$Simplified$simpleDamageEffect(m),
-									_user$project$Simplified$meleeSpecial),
-								damage: _user$project$Simplified$simpleDamageValue(m)
+									_user$project$Classes_Simplified$simpleDamageEffect(m),
+									_user$project$Classes_Simplified$meleeSpecial),
+								damage: _user$project$Classes_Simplified$simpleDamageValue(m)
 							});
 					case 'None':
 						return _elm_lang$core$Native_Utils.update(
 							p,
 							{
-								text: _user$project$Simplified$simpleDamageEffect(m),
-								damage: _user$project$Simplified$simpleDamageValue(m)
+								text: _user$project$Classes_Simplified$simpleDamageEffect(m),
+								damage: _user$project$Classes_Simplified$simpleDamageValue(m)
 							});
 					default:
 						break _v0_2;
@@ -11242,7 +11242,7 @@ var _user$project$Simplified$simpleBasicMelee = F2(
 		} while(false);
 		return p;
 	});
-var _user$project$Simplified$simpleBasicRange = F2(
+var _user$project$Classes_Simplified$simpleBasicRange = F2(
 	function (m, p) {
 		var _p1 = A2(_user$project$ModelDB$getResponse, m, 'simple-type');
 		_v1_2:
@@ -11253,16 +11253,16 @@ var _user$project$Simplified$simpleBasicRange = F2(
 						return _elm_lang$core$Native_Utils.update(
 							p,
 							{
-								text: _user$project$Simplified$simpleDamageEffect(m),
-								damage: _user$project$Simplified$simpleDamageValue(m),
+								text: _user$project$Classes_Simplified$simpleDamageEffect(m),
+								damage: _user$project$Classes_Simplified$simpleDamageValue(m),
 								range: 20
 							});
 					case 'None':
 						return _elm_lang$core$Native_Utils.update(
 							p,
 							{
-								text: _user$project$Simplified$simpleDamageEffect(m),
-								damage: _user$project$Simplified$simpleDamageValue(m),
+								text: _user$project$Classes_Simplified$simpleDamageEffect(m),
+								damage: _user$project$Classes_Simplified$simpleDamageValue(m),
 								range: 10
 							});
 					default:
@@ -11274,43 +11274,43 @@ var _user$project$Simplified$simpleBasicRange = F2(
 		} while(false);
 		return p;
 	});
-var _user$project$Simplified$powers = function (m) {
+var _user$project$Classes_Simplified$powers = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[]);
 };
-var _user$project$Simplified$classSimplified = {
+var _user$project$Classes_Simplified$classSimplified = {
 	name: 'Simplified Class',
-	classPowerList: _user$project$Simplified$powers,
-	classForms: _user$project$Simplified$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Simplified$simpleBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Simplified$simpleBasicRange),
+	classPowerList: _user$project$Classes_Simplified$powers,
+	classForms: _user$project$Classes_Simplified$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Simplified$simpleBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Simplified$simpleBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$Warlord$ultimatum = function (m) {
+var _user$project$Classes_Warlord$ultimatum = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Ultimatum', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$alwaysInPosition = function (m) {
+var _user$project$Classes_Warlord$alwaysInPosition = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Always in Position', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 4, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$leadCharge = function (m) {
+var _user$project$Classes_Warlord$leadCharge = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Lead The Charge', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$biggerBag = function (m) {
+var _user$project$Classes_Warlord$biggerBag = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Bigger Punching Bag', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, -5, 0, -1, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$l7encounters = function (m) {
+var _user$project$Classes_Warlord$l7encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Warlord$biggerBag, _user$project$Warlord$leadCharge, _user$project$Warlord$alwaysInPosition, _user$project$Warlord$ultimatum]));
+			[_user$project$Classes_Warlord$biggerBag, _user$project$Classes_Warlord$leadCharge, _user$project$Classes_Warlord$alwaysInPosition, _user$project$Classes_Warlord$ultimatum]));
 };
-var _user$project$Warlord$l7echosen = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc7', _user$project$Warlord$l7encounters);
+var _user$project$Classes_Warlord$l7echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc7', _user$project$Classes_Warlord$l7encounters);
 };
-var _user$project$Warlord$battlecry = function (m) {
+var _user$project$Classes_Warlord$battlecry = function (m) {
 	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'warlord-special');
 	if (_p0.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
@@ -11325,48 +11325,48 @@ var _user$project$Warlord$battlecry = function (m) {
 			]);
 	}
 };
-var _user$project$Warlord$leaveHimExposed = function (m) {
+var _user$project$Classes_Warlord$leaveHimExposed = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Leave Him Exposed', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, -5, 0, 3, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$chanceToRecover = function (m) {
+var _user$project$Classes_Warlord$chanceToRecover = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Chance to Recover', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$neverSurrender = function (m) {
+var _user$project$Classes_Warlord$neverSurrender = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Never Surrender', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$l3encounters = function (m) {
+var _user$project$Classes_Warlord$l3encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Warlord$neverSurrender, _user$project$Warlord$chanceToRecover, _user$project$Warlord$leaveHimExposed]));
+			[_user$project$Classes_Warlord$neverSurrender, _user$project$Classes_Warlord$chanceToRecover, _user$project$Classes_Warlord$leaveHimExposed]));
 };
-var _user$project$Warlord$l3echosen = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc3', _user$project$Warlord$l3encounters);
+var _user$project$Classes_Warlord$l3echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc3', _user$project$Classes_Warlord$l3encounters);
 };
-var _user$project$Warlord$dontGiveUp = function (m) {
+var _user$project$Classes_Warlord$dontGiveUp = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Don\'t Give Up', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$defensiveTac = function (m) {
+var _user$project$Classes_Warlord$defensiveTac = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'Defensive Tactics', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$perfectChance = function (m) {
+var _user$project$Classes_Warlord$perfectChance = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'The Perfect Chance', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$myGrandma = function (m) {
+var _user$project$Classes_Warlord$myGrandma = function (m) {
 	return A8(_user$project$PowerUtilities$quickPower, 'You Hit Like My Grandmother', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple, m);
 };
-var _user$project$Warlord$l1encounters = function (m) {
+var _user$project$Classes_Warlord$l1encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Warlord$myGrandma, _user$project$Warlord$perfectChance, _user$project$Warlord$defensiveTac, _user$project$Warlord$dontGiveUp]));
+			[_user$project$Classes_Warlord$myGrandma, _user$project$Classes_Warlord$perfectChance, _user$project$Classes_Warlord$defensiveTac, _user$project$Classes_Warlord$dontGiveUp]));
 };
-var _user$project$Warlord$l1echosen = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc1', _user$project$Warlord$l1encounters);
+var _user$project$Classes_Warlord$l1echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-enc1', _user$project$Classes_Warlord$l1encounters);
 };
-var _user$project$Warlord$comeHelpMe = function (m) {
+var _user$project$Classes_Warlord$comeHelpMe = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Come Help Me With This Guy',
@@ -11380,7 +11380,7 @@ var _user$project$Warlord$comeHelpMe = function (m) {
 			[1, 5, 9]),
 		m);
 };
-var _user$project$Warlord$offBalance = function (m) {
+var _user$project$Classes_Warlord$offBalance = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Knock Him Off Balance',
@@ -11394,7 +11394,7 @@ var _user$project$Warlord$offBalance = function (m) {
 			[1, 9]),
 		m);
 };
-var _user$project$Warlord$enumerate = function (m) {
+var _user$project$Classes_Warlord$enumerate = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Enumerate its Weaknesses',
@@ -11408,7 +11408,7 @@ var _user$project$Warlord$enumerate = function (m) {
 			[1, 9]),
 		m);
 };
-var _user$project$Warlord$punchingBag = function (m) {
+var _user$project$Classes_Warlord$punchingBag = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Morale-Boosting Punching Bag',
@@ -11422,7 +11422,7 @@ var _user$project$Warlord$punchingBag = function (m) {
 			[1, 5, 9]),
 		m);
 };
-var _user$project$Warlord$alleyOop = function (m) {
+var _user$project$Classes_Warlord$alleyOop = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Alley-Oop',
@@ -11436,7 +11436,7 @@ var _user$project$Warlord$alleyOop = function (m) {
 			[1, 5, 9]),
 		m);
 };
-var _user$project$Warlord$hitThisGuy = function (m) {
+var _user$project$Classes_Warlord$hitThisGuy = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Hit This Guy',
@@ -11450,33 +11450,33 @@ var _user$project$Warlord$hitThisGuy = function (m) {
 			[1, 5, 9]),
 		m);
 };
-var _user$project$Warlord$l1atwills = function (m) {
+var _user$project$Classes_Warlord$l1atwills = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Warlord$hitThisGuy, _user$project$Warlord$alleyOop, _user$project$Warlord$punchingBag, _user$project$Warlord$enumerate, _user$project$Warlord$offBalance, _user$project$Warlord$comeHelpMe]));
+			[_user$project$Classes_Warlord$hitThisGuy, _user$project$Classes_Warlord$alleyOop, _user$project$Classes_Warlord$punchingBag, _user$project$Classes_Warlord$enumerate, _user$project$Classes_Warlord$offBalance, _user$project$Classes_Warlord$comeHelpMe]));
 };
-var _user$project$Warlord$l1awchosen = function (m) {
+var _user$project$Classes_Warlord$l1awchosen = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw1', _user$project$Warlord$l1atwills),
-		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw2', _user$project$Warlord$l1atwills));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw1', _user$project$Classes_Warlord$l1atwills),
+		A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-aw2', _user$project$Classes_Warlord$l1atwills));
 };
-var _user$project$Warlord$incisive = _user$project$PowerUtilities$quickSpecial('Incisive');
-var _user$project$Warlord$enabling = _user$project$PowerUtilities$quickSpecial('Enabling');
-var _user$project$Warlord$rousing = _user$project$PowerUtilities$quickSpecial('Rousing');
-var _user$project$Warlord$specials = function (m) {
+var _user$project$Classes_Warlord$incisive = _user$project$PowerUtilities$quickSpecial('Incisive');
+var _user$project$Classes_Warlord$enabling = _user$project$PowerUtilities$quickSpecial('Enabling');
+var _user$project$Classes_Warlord$rousing = _user$project$PowerUtilities$quickSpecial('Rousing');
+var _user$project$Classes_Warlord$specials = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Warlord$rousing, _user$project$Warlord$enabling, _user$project$Warlord$incisive]));
+			[_user$project$Classes_Warlord$rousing, _user$project$Classes_Warlord$enabling, _user$project$Classes_Warlord$incisive]));
 };
-var _user$project$Warlord$cspecial = function (m) {
-	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-special', _user$project$Warlord$specials);
+var _user$project$Classes_Warlord$cspecial = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'warlord-special', _user$project$Classes_Warlord$specials);
 };
-var _user$project$Warlord$forms = function (m) {
+var _user$project$Classes_Warlord$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -11487,10 +11487,10 @@ var _user$project$Warlord$forms = function (m) {
 				_elm_lang$core$Basics_ops['++'],
 				_elm_lang$core$Native_List.fromArray(
 					[
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Feature:', 'warlord-special', _user$project$Warlord$specials),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw1', _user$project$Warlord$l1atwills),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw2', _user$project$Warlord$l1atwills),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc1', _user$project$Warlord$l1encounters)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Feature:', 'warlord-special', _user$project$Classes_Warlord$specials),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw1', _user$project$Classes_Warlord$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'warlord-aw2', _user$project$Classes_Warlord$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc1', _user$project$Classes_Warlord$l1encounters)
 					]),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -11498,74 +11498,74 @@ var _user$project$Warlord$forms = function (m) {
 						_user$project$PowerUtilities$atLevel,
 						m,
 						3,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc3', _user$project$Warlord$l3encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc3', _user$project$Classes_Warlord$l3encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						7,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc7', _user$project$Warlord$l7encounters)))))
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'warlord-enc7', _user$project$Classes_Warlord$l7encounters)))))
 		]);
 };
-var _user$project$Warlord$support = A2(
+var _user$project$Classes_Warlord$support = A2(
 	_user$project$PowerUtilities$levelTextSpecial,
 	'Support Tokens',
 	_elm_lang$core$Native_List.fromArray(
 		[1, 5, 9]));
-var _user$project$Warlord$powers = function (m) {
+var _user$project$Classes_Warlord$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Warlord$support(m)
+				_user$project$Classes_Warlord$support(m)
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Warlord$cspecial(m),
+			_user$project$Classes_Warlord$cspecial(m),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				_user$project$Warlord$l1awchosen(m),
+				_user$project$Classes_Warlord$l1awchosen(m),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_user$project$Warlord$l1echosen(m),
+					_user$project$Classes_Warlord$l1echosen(m),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						A3(
 							_user$project$PowerUtilities$atLevelList,
 							m,
 							3,
-							_user$project$Warlord$l3echosen(m)),
+							_user$project$Classes_Warlord$l3echosen(m)),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							A3(
 								_user$project$PowerUtilities$atLevelList,
 								m,
 								5,
-								_user$project$Warlord$battlecry(m)),
+								_user$project$Classes_Warlord$battlecry(m)),
 							A3(
 								_user$project$PowerUtilities$atLevelList,
 								m,
 								7,
-								_user$project$Warlord$l7echosen(m))))))));
+								_user$project$Classes_Warlord$l7echosen(m))))))));
 };
-var _user$project$Warlord$modifyBasicRange = F2(
+var _user$project$Classes_Warlord$modifyBasicRange = F2(
 	function (m, p) {
 		return p;
 	});
-var _user$project$Warlord$modifyBasicMelee = F2(
+var _user$project$Classes_Warlord$modifyBasicMelee = F2(
 	function (m, p) {
 		return p;
 	});
-var _user$project$Warlord$classWarlord = {
+var _user$project$Classes_Warlord$classWarlord = {
 	name: 'Warlord',
-	classPowerList: _user$project$Warlord$powers,
-	classForms: _user$project$Warlord$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Warlord$modifyBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Warlord$modifyBasicRange),
+	classPowerList: _user$project$Classes_Warlord$powers,
+	classForms: _user$project$Classes_Warlord$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Warlord$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Warlord$modifyBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$Magician$chaosMajorKeys = function (m) {
+var _user$project$Classes_Magician$chaosMajorKeys = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		A3(_user$project$PowerUtilities$atLevel, m, 5, 'mage-maj1'),
@@ -11574,7 +11574,7 @@ var _user$project$Magician$chaosMajorKeys = function (m) {
 			A3(_user$project$PowerUtilities$atLevel, m, 7, 'mage-maj2'),
 			A3(_user$project$PowerUtilities$atLevel, m, 9, 'mage-maj3')));
 };
-var _user$project$Magician$chaosEncounterKeys = function (m) {
+var _user$project$Classes_Magician$chaosEncounterKeys = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -11586,7 +11586,7 @@ var _user$project$Magician$chaosEncounterKeys = function (m) {
 			_elm_lang$core$Native_List.fromArray(
 				['mage-enc4', 'mage-enc5', 'mage-enc6'])));
 };
-var _user$project$Magician$decorate = F2(
+var _user$project$Classes_Magician$decorate = F2(
 	function (s, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
@@ -11600,7 +11600,7 @@ var _user$project$Magician$decorate = F2(
 						A2(_elm_lang$core$Basics_ops['++'], ') ', p.name)))
 			});
 	});
-var _user$project$Magician$chaosSurges = F3(
+var _user$project$Classes_Magician$chaosSurges = F3(
 	function (m, chosenkeys, mainlist) {
 		var choices = A2(
 			_elm_lang$core$List$map,
@@ -11626,50 +11626,50 @@ var _user$project$Magician$chaosSurges = F3(
 			unpickedkeys);
 		return A2(
 			_elm_lang$core$List$map,
-			_user$project$Magician$decorate('Surge'),
+			_user$project$Classes_Magician$decorate('Surge'),
 			unpickedspells);
 	});
-var _user$project$Magician$slowmoment = A7(_user$project$PowerUtilities$quickPower, 'Renalai\'s Slow Moment', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$vulnerable = A7(_user$project$PowerUtilities$quickPower, 'Incantation of Vulnerability', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$colors = A7(_user$project$PowerUtilities$quickPower, 'The Dome of Many Colors', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$subjugation = A7(_user$project$PowerUtilities$quickPower, 'Fay Zu\'s Lesser Subjugation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$malediction = A7(_user$project$PowerUtilities$quickPower, 'Thanatin\'s Malediction', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$encasement = A7(_user$project$PowerUtilities$quickPower, 'The Otherworldly Encasement', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
-var _user$project$Magician$majspells = function (m) {
+var _user$project$Classes_Magician$slowmoment = A7(_user$project$PowerUtilities$quickPower, 'Renalai\'s Slow Moment', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$vulnerable = A7(_user$project$PowerUtilities$quickPower, 'Incantation of Vulnerability', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$colors = A7(_user$project$PowerUtilities$quickPower, 'The Dome of Many Colors', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$subjugation = A7(_user$project$PowerUtilities$quickPower, 'Fay Zu\'s Lesser Subjugation', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$malediction = A7(_user$project$PowerUtilities$quickPower, 'Thanatin\'s Malediction', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$encasement = A7(_user$project$PowerUtilities$quickPower, 'The Otherworldly Encasement', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 5, _user$project$ModelDB$Yellow);
+var _user$project$Classes_Magician$majspells = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Magician$encasement, _user$project$Magician$malediction, _user$project$Magician$subjugation, _user$project$Magician$colors, _user$project$Magician$vulnerable, _user$project$Magician$slowmoment]));
+			[_user$project$Classes_Magician$encasement, _user$project$Classes_Magician$malediction, _user$project$Classes_Magician$subjugation, _user$project$Classes_Magician$colors, _user$project$Classes_Magician$vulnerable, _user$project$Classes_Magician$slowmoment]));
 };
-var _user$project$Magician$majlookup = F2(
+var _user$project$Classes_Magician$majlookup = F2(
 	function (m, k) {
-		return A3(_user$project$PowerUtilities$powerlookup, m, k, _user$project$Magician$majspells);
+		return A3(_user$project$PowerUtilities$powerlookup, m, k, _user$project$Classes_Magician$majspells);
 	});
-var _user$project$Magician$amalgam = A7(_user$project$PowerUtilities$quickPower, 'Horwell\'s Offensive Amalgam', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Magician$inferno = A7(_user$project$PowerUtilities$quickPower, 'Mudge\'s Localized Inferno', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Magician$dome = A7(_user$project$PowerUtilities$quickPower, 'Practical Dome of Preservation', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
-var _user$project$Magician$cant = A7(_user$project$PowerUtilities$quickPower, 'The Cant of Inexplicable Lust', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$caltrop = A7(_user$project$PowerUtilities$quickPower, 'Hozrel\'s Efficacious Caltrop', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$ripening = A7(_user$project$PowerUtilities$quickPower, 'Hura\'s Hasty Ripening', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$motes = A7(_user$project$PowerUtilities$quickPower, 'Radiant Motes of the Overworld', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$constriction = A7(_user$project$PowerUtilities$quickPower, 'Parvel\'s Total Constriction', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$soporific = A7(_user$project$PowerUtilities$quickPower, 'Soporific Decree', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$command = A7(_user$project$PowerUtilities$quickPower, 'Furz\'s Undeniable Command', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$encystment = A7(_user$project$PowerUtilities$quickPower, 'Momentary Encystment', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$friendship = A7(_user$project$PowerUtilities$quickPower, 'Word of Instant Friendship', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
-var _user$project$Magician$encspells = function (m) {
+var _user$project$Classes_Magician$amalgam = A7(_user$project$PowerUtilities$quickPower, 'Horwell\'s Offensive Amalgam', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$inferno = A7(_user$project$PowerUtilities$quickPower, 'Mudge\'s Localized Inferno', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$dome = A7(_user$project$PowerUtilities$quickPower, 'Practical Dome of Preservation', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$cant = A7(_user$project$PowerUtilities$quickPower, 'The Cant of Inexplicable Lust', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$caltrop = A7(_user$project$PowerUtilities$quickPower, 'Hozrel\'s Efficacious Caltrop', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 0, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$ripening = A7(_user$project$PowerUtilities$quickPower, 'Hura\'s Hasty Ripening', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$motes = A7(_user$project$PowerUtilities$quickPower, 'Radiant Motes of the Overworld', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$constriction = A7(_user$project$PowerUtilities$quickPower, 'Parvel\'s Total Constriction', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$soporific = A7(_user$project$PowerUtilities$quickPower, 'Soporific Decree', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$command = A7(_user$project$PowerUtilities$quickPower, 'Furz\'s Undeniable Command', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$encystment = A7(_user$project$PowerUtilities$quickPower, 'Momentary Encystment', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$friendship = A7(_user$project$PowerUtilities$quickPower, 'Word of Instant Friendship', _user$project$ModelDB$Attack, _user$project$ModelDB$Encounter, 10, 0, 3, _user$project$ModelDB$Purple);
+var _user$project$Classes_Magician$encspells = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Magician$friendship, _user$project$Magician$encystment, _user$project$Magician$command, _user$project$Magician$soporific, _user$project$Magician$constriction, _user$project$Magician$motes, _user$project$Magician$ripening, _user$project$Magician$caltrop, _user$project$Magician$cant, _user$project$Magician$dome, _user$project$Magician$inferno, _user$project$Magician$amalgam]));
+			[_user$project$Classes_Magician$friendship, _user$project$Classes_Magician$encystment, _user$project$Classes_Magician$command, _user$project$Classes_Magician$soporific, _user$project$Classes_Magician$constriction, _user$project$Classes_Magician$motes, _user$project$Classes_Magician$ripening, _user$project$Classes_Magician$caltrop, _user$project$Classes_Magician$cant, _user$project$Classes_Magician$dome, _user$project$Classes_Magician$inferno, _user$project$Classes_Magician$amalgam]));
 };
-var _user$project$Magician$enclookup = F2(
+var _user$project$Classes_Magician$enclookup = F2(
 	function (m, k) {
-		return A3(_user$project$PowerUtilities$powerlookup, m, k, _user$project$Magician$encspells);
+		return A3(_user$project$PowerUtilities$powerlookup, m, k, _user$project$Classes_Magician$encspells);
 	});
-var _user$project$Magician$starPowers = function (m) {
+var _user$project$Classes_Magician$starPowers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -11683,13 +11683,13 @@ var _user$project$Magician$starPowers = function (m) {
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			A2(_user$project$Magician$enclookup, m, 'mage-enc1'),
+			A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc1'),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A2(_user$project$Magician$enclookup, m, 'mage-enc2'),
+				A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc2'),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					A2(_user$project$Magician$enclookup, m, 'mage-enc3'),
+					A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc3'),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						A3(
@@ -11698,18 +11698,18 @@ var _user$project$Magician$starPowers = function (m) {
 							3,
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								A2(_user$project$Magician$enclookup, m, 'mage-enc4'),
+								A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc4'),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									A2(_user$project$Magician$enclookup, m, 'mage-enc5'),
-									A2(_user$project$Magician$enclookup, m, 'mage-enc6')))),
+									A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc5'),
+									A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc6')))),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							A3(
 								_user$project$PowerUtilities$atLevelList,
 								m,
 								5,
-								A2(_user$project$Magician$majlookup, m, 'mage-maj1')),
+								A2(_user$project$Classes_Magician$majlookup, m, 'mage-maj1')),
 							A2(
 								_elm_lang$core$Basics_ops['++'],
 								A3(
@@ -11718,26 +11718,26 @@ var _user$project$Magician$starPowers = function (m) {
 									7,
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										A2(_user$project$Magician$enclookup, m, 'mage-enc7'),
-										A2(_user$project$Magician$majlookup, m, 'mage-maj2'))),
+										A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc7'),
+										A2(_user$project$Classes_Magician$majlookup, m, 'mage-maj2'))),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									A3(
 										_user$project$PowerUtilities$atLevelList,
 										m,
 										9,
-										A2(_user$project$Magician$majlookup, m, 'mage-maj3')),
+										A2(_user$project$Classes_Magician$majlookup, m, 'mage-maj3')),
 									(_elm_lang$core$Native_Utils.cmp(
 										_user$project$ModelDB$getLevel(m),
 										9) > -1) ? A2(
 										_elm_lang$core$List$map,
-										_user$project$Magician$decorate('Reserve'),
-										A2(_user$project$Magician$majlookup, m, 'mage-mres')) : A2(
+										_user$project$Classes_Magician$decorate('Reserve'),
+										A2(_user$project$Classes_Magician$majlookup, m, 'mage-mres')) : A2(
 										_elm_lang$core$List$map,
-										_user$project$Magician$decorate('Reserve'),
-										A2(_user$project$Magician$enclookup, m, 'mage-res'))))))))));
+										_user$project$Classes_Magician$decorate('Reserve'),
+										A2(_user$project$Classes_Magician$enclookup, m, 'mage-res'))))))))));
 };
-var _user$project$Magician$bloodPowers = function (m) {
+var _user$project$Classes_Magician$bloodPowers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -11751,14 +11751,14 @@ var _user$project$Magician$bloodPowers = function (m) {
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			A2(_user$project$Magician$enclookup, m, 'mage-enc1'),
+			A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc1'),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				A3(
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					3,
-					A2(_user$project$Magician$enclookup, m, 'mage-enc2')),
+					A2(_user$project$Classes_Magician$enclookup, m, 'mage-enc2')),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
@@ -11767,21 +11767,21 @@ var _user$project$Magician$bloodPowers = function (m) {
 						5,
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$Magician$decorate('Blood Curse'),
-							A2(_user$project$Magician$majlookup, m, 'mage-bc'))),
+							_user$project$Classes_Magician$decorate('Blood Curse'),
+							A2(_user$project$Classes_Magician$majlookup, m, 'mage-bc'))),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						A3(
 							_user$project$PowerUtilities$atLevelList,
 							m,
 							7,
-							A2(_user$project$Magician$enclookup, m, 'mage-maj1')),
+							A2(_user$project$Classes_Magician$enclookup, m, 'mage-maj1')),
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$Magician$decorate('Reserve'),
-							A2(_user$project$Magician$enclookup, m, 'mage-res')))))));
+							_user$project$Classes_Magician$decorate('Reserve'),
+							A2(_user$project$Classes_Magician$enclookup, m, 'mage-res')))))));
 };
-var _user$project$Magician$chaosPowers = function (m) {
+var _user$project$Classes_Magician$chaosPowers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -11797,37 +11797,37 @@ var _user$project$Magician$chaosPowers = function (m) {
 			_elm_lang$core$Basics_ops['++'],
 			A2(
 				_elm_lang$core$List$concatMap,
-				_user$project$Magician$enclookup(m),
-				_user$project$Magician$chaosEncounterKeys(m)),
+				_user$project$Classes_Magician$enclookup(m),
+				_user$project$Classes_Magician$chaosEncounterKeys(m)),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				A2(
 					_elm_lang$core$List$concatMap,
-					_user$project$Magician$majlookup(m),
-					_user$project$Magician$chaosMajorKeys(m)),
+					_user$project$Classes_Magician$majlookup(m),
+					_user$project$Classes_Magician$chaosMajorKeys(m)),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A2(
 						_elm_lang$core$List$map,
-						_user$project$Magician$decorate('Reserve'),
-						A2(_user$project$Magician$enclookup, m, 'mage-res')),
+						_user$project$Classes_Magician$decorate('Reserve'),
+						A2(_user$project$Classes_Magician$enclookup, m, 'mage-res')),
 					(_elm_lang$core$Native_Utils.cmp(
 						_user$project$ModelDB$getLevel(m),
 						9) < 0) ? A3(
-						_user$project$Magician$chaosSurges,
+						_user$project$Classes_Magician$chaosSurges,
 						m,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_user$project$Magician$chaosEncounterKeys(m),
+							_user$project$Classes_Magician$chaosEncounterKeys(m),
 							_elm_lang$core$Native_List.fromArray(
 								['mage-res'])),
-						_user$project$Magician$encspells(m)) : A3(
-						_user$project$Magician$chaosSurges,
+						_user$project$Classes_Magician$encspells(m)) : A3(
+						_user$project$Classes_Magician$chaosSurges,
 						m,
-						_user$project$Magician$chaosMajorKeys(m),
-						_user$project$Magician$majspells(m))))));
+						_user$project$Classes_Magician$chaosMajorKeys(m),
+						_user$project$Classes_Magician$majspells(m))))));
 };
-var _user$project$Magician$prismatic = A8(
+var _user$project$Classes_Magician$prismatic = A8(
 	_user$project$PowerUtilities$levelTextPower,
 	'The Excellent Prismatic Spray',
 	_user$project$ModelDB$Attack,
@@ -11838,29 +11838,29 @@ var _user$project$Magician$prismatic = A8(
 	_user$project$ModelDB$Green,
 	_elm_lang$core$Native_List.fromArray(
 		[1, 5]));
-var _user$project$Magician$atWillDamage = function (m) {
+var _user$project$Classes_Magician$atWillDamage = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		5) < 0) ? 2 : 3;
 };
-var _user$project$Magician$modifyBasicMelee = F2(
+var _user$project$Classes_Magician$modifyBasicMelee = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Magician$atWillDamage(m)
+				damage: _user$project$Classes_Magician$atWillDamage(m)
 			});
 	});
-var _user$project$Magician$modifyBasicRange = F2(
+var _user$project$Classes_Magician$modifyBasicRange = F2(
 	function (m, p) {
 		return _elm_lang$core$Native_Utils.update(
 			p,
 			{
-				damage: _user$project$Magician$atWillDamage(m),
+				damage: _user$project$Classes_Magician$atWillDamage(m),
 				range: 10
 			});
 	});
-var _user$project$Magician$repulsion = function (m) {
+var _user$project$Classes_Magician$repulsion = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'The Instant Repulsion',
@@ -11868,11 +11868,11 @@ var _user$project$Magician$repulsion = function (m) {
 		_user$project$ModelDB$AtWill,
 		0,
 		0,
-		_user$project$Magician$atWillDamage(m),
+		_user$project$Classes_Magician$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Magician$lubrication = function (m) {
+var _user$project$Classes_Magician$lubrication = function (m) {
 	return A8(
 		_user$project$PowerUtilities$quickPower,
 		'Liscato\'s Bountiful Lubrication',
@@ -11880,11 +11880,11 @@ var _user$project$Magician$lubrication = function (m) {
 		_user$project$ModelDB$AtWill,
 		10,
 		0,
-		_user$project$Magician$atWillDamage(m),
+		_user$project$Classes_Magician$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		m);
 };
-var _user$project$Magician$marguls = function (m) {
+var _user$project$Classes_Magician$marguls = function (m) {
 	return A9(
 		_user$project$PowerUtilities$levelTextPower,
 		'Margul\'s Toxic Missile',
@@ -11892,29 +11892,29 @@ var _user$project$Magician$marguls = function (m) {
 		_user$project$ModelDB$AtWill,
 		10,
 		0,
-		_user$project$Magician$atWillDamage(m),
+		_user$project$Classes_Magician$atWillDamage(m),
 		_user$project$ModelDB$Green,
 		_elm_lang$core$Native_List.fromArray(
 			[1, 5]),
 		m);
 };
-var _user$project$Magician$awspells = function (m) {
+var _user$project$Classes_Magician$awspells = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Magician$repulsion, _user$project$Magician$lubrication, _user$project$Magician$marguls, _user$project$Magician$prismatic]));
+			[_user$project$Classes_Magician$repulsion, _user$project$Classes_Magician$lubrication, _user$project$Classes_Magician$marguls, _user$project$Classes_Magician$prismatic]));
 };
-var _user$project$Magician$chosenaws = function (m) {
+var _user$project$Classes_Magician$chosenaws = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		A3(_user$project$PowerUtilities$powerlookup, m, 'mage-aw1', _user$project$Magician$awspells),
-		A3(_user$project$PowerUtilities$powerlookup, m, 'mage-aw2', _user$project$Magician$awspells));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'mage-aw1', _user$project$Classes_Magician$awspells),
+		A3(_user$project$PowerUtilities$powerlookup, m, 'mage-aw2', _user$project$Classes_Magician$awspells));
 };
-var _user$project$Magician$powers = function (m) {
+var _user$project$Classes_Magician$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Magician$chosenaws(m),
+		_user$project$Classes_Magician$chosenaws(m),
 		function () {
 			var _p0 = A2(_user$project$ModelDB$getResponse, m, 'mage-source');
 			_v0_3:
@@ -11922,11 +11922,11 @@ var _user$project$Magician$powers = function (m) {
 				if (_p0.ctor === 'Just') {
 					switch (_p0._0) {
 						case 'Star':
-							return _user$project$Magician$starPowers(m);
+							return _user$project$Classes_Magician$starPowers(m);
 						case 'Chaos':
-							return _user$project$Magician$chaosPowers(m);
+							return _user$project$Classes_Magician$chaosPowers(m);
 						case 'Blood':
-							return _user$project$Magician$bloodPowers(m);
+							return _user$project$Classes_Magician$bloodPowers(m);
 						default:
 							break _v0_3;
 					}
@@ -11938,16 +11938,16 @@ var _user$project$Magician$powers = function (m) {
 				[]);
 		}());
 };
-var _user$project$Magician$starForm = function (m) {
+var _user$project$Classes_Magician$starForm = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Magician$encspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Magician$encspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc3', _user$project$Magician$encspells)
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Classes_Magician$encspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Classes_Magician$encspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc3', _user$project$Classes_Magician$encspells)
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
@@ -11957,9 +11957,9 @@ var _user$project$Magician$starForm = function (m) {
 				3,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc4', _user$project$Magician$encspells),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc5', _user$project$Magician$encspells),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc6', _user$project$Magician$encspells)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc4', _user$project$Classes_Magician$encspells),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc5', _user$project$Classes_Magician$encspells),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc6', _user$project$Classes_Magician$encspells)
 					])),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
@@ -11969,7 +11969,7 @@ var _user$project$Magician$starForm = function (m) {
 					7,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc7', _user$project$Magician$encspells)
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc7', _user$project$Classes_Magician$encspells)
 						])),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -11979,7 +11979,7 @@ var _user$project$Magician$starForm = function (m) {
 						5,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Magician$majspells)
+								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Classes_Magician$majspells)
 							])),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
@@ -11989,7 +11989,7 @@ var _user$project$Magician$starForm = function (m) {
 							7,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj2', _user$project$Magician$majspells)
+									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj2', _user$project$Classes_Magician$majspells)
 								])),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
@@ -11999,28 +11999,28 @@ var _user$project$Magician$starForm = function (m) {
 								9,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj3', _user$project$Magician$majspells)
+										A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj3', _user$project$Classes_Magician$majspells)
 									])),
 							(_elm_lang$core$Native_Utils.cmp(
 								_user$project$ModelDB$getLevel(m),
 								9) < 0) ? _elm_lang$core$Native_List.fromArray(
 								[
-									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Magician$encspells)
+									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Classes_Magician$encspells)
 								]) : _elm_lang$core$Native_List.fromArray(
 								[
-									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-mres', _user$project$Magician$majspells)
+									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-mres', _user$project$Classes_Magician$majspells)
 								])))))));
 };
-var _user$project$Magician$chaosForm = function (m) {
+var _user$project$Classes_Magician$chaosForm = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Magician$encspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Magician$encspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc3', _user$project$Magician$encspells)
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Classes_Magician$encspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Classes_Magician$encspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc3', _user$project$Classes_Magician$encspells)
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
@@ -12030,9 +12030,9 @@ var _user$project$Magician$chaosForm = function (m) {
 				3,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc4', _user$project$Magician$encspells),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc5', _user$project$Magician$encspells),
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc6', _user$project$Magician$encspells)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc4', _user$project$Classes_Magician$encspells),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc5', _user$project$Classes_Magician$encspells),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc6', _user$project$Classes_Magician$encspells)
 					])),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
@@ -12042,7 +12042,7 @@ var _user$project$Magician$chaosForm = function (m) {
 					5,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Magician$majspells)
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Classes_Magician$majspells)
 						])),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -12052,7 +12052,7 @@ var _user$project$Magician$chaosForm = function (m) {
 						7,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj2', _user$project$Magician$majspells)
+								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj2', _user$project$Classes_Magician$majspells)
 							])),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
@@ -12062,21 +12062,21 @@ var _user$project$Magician$chaosForm = function (m) {
 							9,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj3', _user$project$Magician$majspells)
+									A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj3', _user$project$Classes_Magician$majspells)
 								])),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Magician$encspells)
+								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Classes_Magician$encspells)
 							]))))));
 };
-var _user$project$Magician$bloodForm = function (m) {
+var _user$project$Classes_Magician$bloodForm = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Magician$awspells),
-				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Magician$encspells)
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw1', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'mage-aw2', _user$project$Classes_Magician$awspells),
+				A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc1', _user$project$Classes_Magician$encspells)
 			]),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
@@ -12086,7 +12086,7 @@ var _user$project$Magician$bloodForm = function (m) {
 				3,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Magician$encspells)
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'mage-enc2', _user$project$Classes_Magician$encspells)
 					])),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
@@ -12096,7 +12096,7 @@ var _user$project$Magician$bloodForm = function (m) {
 					5,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Blood Curse:', 'mage-bc', _user$project$Magician$majspells)
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Blood Curse:', 'mage-bc', _user$project$Classes_Magician$majspells)
 						])),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
@@ -12106,14 +12106,14 @@ var _user$project$Magician$bloodForm = function (m) {
 						7,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Magician$majspells)
+								A4(_user$project$PowerUtilities$powerChoiceField, m, 'Major:', 'mage-maj1', _user$project$Classes_Magician$majspells)
 							])),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Magician$encspells)
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Reserve:', 'mage-res', _user$project$Classes_Magician$encspells)
 						])))));
 };
-var _user$project$Magician$forms = function (m) {
+var _user$project$Classes_Magician$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -12140,11 +12140,11 @@ var _user$project$Magician$forms = function (m) {
 						if (_p1.ctor === 'Just') {
 							switch (_p1._0) {
 								case 'Star':
-									return _user$project$Magician$starForm(m);
+									return _user$project$Classes_Magician$starForm(m);
 								case 'Chaos':
-									return _user$project$Magician$chaosForm(m);
+									return _user$project$Classes_Magician$chaosForm(m);
 								case 'Blood':
-									return _user$project$Magician$bloodForm(m);
+									return _user$project$Classes_Magician$bloodForm(m);
 								default:
 									break _v1_3;
 							}
@@ -12157,17 +12157,17 @@ var _user$project$Magician$forms = function (m) {
 				}()))
 		]);
 };
-var _user$project$Magician$classMagician = {
+var _user$project$Classes_Magician$classMagician = {
 	name: 'Magician',
-	classPowerList: _user$project$Magician$powers,
-	classForms: _user$project$Magician$forms,
-	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Magician$modifyBasicMelee),
-	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Magician$modifyBasicRange),
+	classPowerList: _user$project$Classes_Magician$powers,
+	classForms: _user$project$Classes_Magician$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Magician$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Magician$modifyBasicRange),
 	modifyRally: _elm_lang$core$Maybe$Nothing,
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
-var _user$project$Striker$upgraded = F2(
+var _user$project$Roles_Striker$upgraded = F2(
 	function (x, m) {
 		var _p0 = x;
 		switch (_p0) {
@@ -12196,7 +12196,7 @@ var _user$project$Striker$upgraded = F2(
 					[]);
 		}
 	});
-var _user$project$Striker$checkUpgrade = F2(
+var _user$project$Roles_Striker$checkUpgrade = F2(
 	function (m, p) {
 		if (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
@@ -12212,13 +12212,13 @@ var _user$project$Striker$checkUpgrade = F2(
 				if (_p2.ctor === 'Nothing') {
 					return p;
 				} else {
-					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Striker$upgraded, _p3.name, m) : p;
+					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Roles_Striker$upgraded, _p3.name, m) : p;
 				}
 			}
 		}
 	});
-var _user$project$Striker$momentaryWeakness = A7(_user$project$PowerUtilities$quickPower, 'Momentary Weakness', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red);
-var _user$project$Striker$windUpStrike = function (m) {
+var _user$project$Roles_Striker$momentaryWeakness = A7(_user$project$PowerUtilities$quickPower, 'Momentary Weakness', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red);
+var _user$project$Roles_Striker$windUpStrike = function (m) {
 	var extraDamage = _elm_lang$core$Basics$truncate(
 		(_elm_lang$core$Basics$toFloat(
 			_user$project$ModelDB$getLevel(m)) / 2) + 3);
@@ -12239,7 +12239,7 @@ var _user$project$Striker$windUpStrike = function (m) {
 				' extra damage if you hit with your next attack. If you next attack hits multiple targets, apply this damage to only one of them.'))
 	};
 };
-var _user$project$Striker$strikedodge = A8(
+var _user$project$Roles_Striker$strikedodge = A8(
 	_user$project$PowerUtilities$levelTextPower,
 	'Strike and Dodge',
 	_user$project$ModelDB$RoleSlot,
@@ -12250,27 +12250,27 @@ var _user$project$Striker$strikedodge = A8(
 	_user$project$ModelDB$Red,
 	_elm_lang$core$Native_List.fromArray(
 		[1, 6, 10]));
-var _user$project$Striker$lightning = A7(_user$project$PowerUtilities$quickPower, 'Lightning Strikes', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red);
-var _user$project$Striker$encounters = function (m) {
+var _user$project$Roles_Striker$lightning = A7(_user$project$PowerUtilities$quickPower, 'Lightning Strikes', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red);
+var _user$project$Roles_Striker$encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Striker$lightning, _user$project$Striker$strikedodge, _user$project$Striker$windUpStrike, _user$project$Striker$momentaryWeakness]));
+			[_user$project$Roles_Striker$lightning, _user$project$Roles_Striker$strikedodge, _user$project$Roles_Striker$windUpStrike, _user$project$Roles_Striker$momentaryWeakness]));
 };
-var _user$project$Striker$l2encchosen = function (m) {
+var _user$project$Roles_Striker$l2encchosen = function (m) {
 	return A2(
-		_user$project$Striker$checkUpgrade,
+		_user$project$Roles_Striker$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc1', _user$project$Striker$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc1', _user$project$Roles_Striker$encounters));
 };
-var _user$project$Striker$l6encchosen = function (m) {
+var _user$project$Roles_Striker$l6encchosen = function (m) {
 	return A2(
-		_user$project$Striker$checkUpgrade,
+		_user$project$Roles_Striker$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc2', _user$project$Striker$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc2', _user$project$Roles_Striker$encounters));
 };
-var _user$project$Striker$upgradable = function (m) {
+var _user$project$Roles_Striker$upgradable = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -12282,10 +12282,10 @@ var _user$project$Striker$upgradable = function (m) {
 			},
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc1', _user$project$Striker$encounters),
-				A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc2', _user$project$Striker$encounters))));
+				A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc1', _user$project$Roles_Striker$encounters),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'striker-enc2', _user$project$Roles_Striker$encounters))));
 };
-var _user$project$Striker$forms = function (m) {
+var _user$project$Roles_Striker$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -12311,14 +12311,14 @@ var _user$project$Striker$forms = function (m) {
 						_user$project$PowerUtilities$atLevel,
 						m,
 						2,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'striker-enc1', _user$project$Striker$encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'striker-enc1', _user$project$Roles_Striker$encounters)),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						A3(
 							_user$project$PowerUtilities$atLevel,
 							m,
 							6,
-							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'striker-enc2', _user$project$Striker$encounters)),
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'striker-enc2', _user$project$Roles_Striker$encounters)),
 						A3(
 							_user$project$PowerUtilities$atLevel,
 							m,
@@ -12328,11 +12328,11 @@ var _user$project$Striker$forms = function (m) {
 									name: 'Upgrade:',
 									del: false,
 									key: 'striker-upgrade',
-									choices: _user$project$Striker$upgradable(m)
+									choices: _user$project$Roles_Striker$upgradable(m)
 								}))))))
 		]);
 };
-var _user$project$Striker$actionTrigger = function (m) {
+var _user$project$Roles_Striker$actionTrigger = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		6) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12343,7 +12343,7 @@ var _user$project$Striker$actionTrigger = function (m) {
 			A8(_user$project$PowerUtilities$quickPower, 'Dodge and Strike Back', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
 		]);
 };
-var _user$project$Striker$drawABead = A8(
+var _user$project$Roles_Striker$drawABead = A8(
 	_user$project$PowerUtilities$levelTextPower,
 	'Draw a Bead',
 	_user$project$ModelDB$RoleSlot,
@@ -12354,7 +12354,7 @@ var _user$project$Striker$drawABead = A8(
 	_user$project$ModelDB$Blue,
 	_elm_lang$core$Native_List.fromArray(
 		[1, 4, 8]));
-var _user$project$Striker$quickShift = A8(
+var _user$project$Roles_Striker$quickShift = A8(
 	_user$project$PowerUtilities$levelTextPower,
 	'Quick Shift',
 	_user$project$ModelDB$RoleSlot,
@@ -12365,7 +12365,7 @@ var _user$project$Striker$quickShift = A8(
 	_user$project$ModelDB$Blue,
 	_elm_lang$core$Native_List.fromArray(
 		[1, 8]));
-var _user$project$Striker$otherBoost = function (m) {
+var _user$project$Roles_Striker$otherBoost = function (m) {
 	var _p4 = A2(_user$project$ModelDB$getResponse, m, 'striker-boost');
 	_v3_2:
 	do {
@@ -12374,12 +12374,12 @@ var _user$project$Striker$otherBoost = function (m) {
 				case 'Mobility':
 					return _elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Striker$quickShift(m)
+							_user$project$Roles_Striker$quickShift(m)
 						]);
 				case 'Accuracy':
 					return _elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Striker$drawABead(m)
+							_user$project$Roles_Striker$drawABead(m)
 						]);
 				default:
 					break _v3_2;
@@ -12391,7 +12391,7 @@ var _user$project$Striker$otherBoost = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[]);
 };
-var _user$project$Striker$damageBoost = function (m) {
+var _user$project$Roles_Striker$damageBoost = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		4) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12407,32 +12407,32 @@ var _user$project$Striker$damageBoost = function (m) {
 			A2(_user$project$PowerUtilities$quickSpecial, 'Super Damage Boost', m)
 		]));
 };
-var _user$project$Striker$powers = function (m) {
+var _user$project$Roles_Striker$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Striker$damageBoost(m),
+		_user$project$Roles_Striker$damageBoost(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Striker$otherBoost(m),
+			_user$project$Roles_Striker$otherBoost(m),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				_user$project$Striker$actionTrigger(m),
+				_user$project$Roles_Striker$actionTrigger(m),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
 						_user$project$PowerUtilities$atLevelList,
 						m,
 						2,
-						_user$project$Striker$l2encchosen(m)),
+						_user$project$Roles_Striker$l2encchosen(m)),
 					A3(
 						_user$project$PowerUtilities$atLevelList,
 						m,
 						6,
-						_user$project$Striker$l6encchosen(m))))));
+						_user$project$Roles_Striker$l6encchosen(m))))));
 };
-var _user$project$Striker$roleStriker = {name: 'Striker', rolePowerList: _user$project$Striker$powers, roleForms: _user$project$Striker$forms};
+var _user$project$Roles_Striker$roleStriker = {name: 'Striker', rolePowerList: _user$project$Roles_Striker$powers, roleForms: _user$project$Roles_Striker$forms};
 
-var _user$project$Leader$upgraded = F2(
+var _user$project$Roles_Leader$upgraded = F2(
 	function (x, m) {
 		var _p0 = x;
 		switch (_p0) {
@@ -12466,7 +12466,7 @@ var _user$project$Leader$upgraded = F2(
 					[]);
 		}
 	});
-var _user$project$Leader$checkUpgrade = F2(
+var _user$project$Roles_Leader$checkUpgrade = F2(
 	function (m, p) {
 		if (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
@@ -12482,12 +12482,12 @@ var _user$project$Leader$checkUpgrade = F2(
 				if (_p2.ctor === 'Nothing') {
 					return p;
 				} else {
-					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Leader$upgraded, _p3.name, m) : p;
+					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Roles_Leader$upgraded, _p3.name, m) : p;
 				}
 			}
 		}
 	});
-var _user$project$Leader$encounters = function (m) {
+var _user$project$Roles_Leader$encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
@@ -12500,19 +12500,19 @@ var _user$project$Leader$encounters = function (m) {
 				A7(_user$project$PowerUtilities$quickPower, 'Reveal Weakness', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red)
 			]));
 };
-var _user$project$Leader$l2encchosen = function (m) {
+var _user$project$Roles_Leader$l2encchosen = function (m) {
 	return A2(
-		_user$project$Leader$checkUpgrade,
+		_user$project$Roles_Leader$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc1', _user$project$Leader$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc1', _user$project$Roles_Leader$encounters));
 };
-var _user$project$Leader$l6encchosen = function (m) {
+var _user$project$Roles_Leader$l6encchosen = function (m) {
 	return A2(
-		_user$project$Leader$checkUpgrade,
+		_user$project$Roles_Leader$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc2', _user$project$Leader$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc2', _user$project$Roles_Leader$encounters));
 };
-var _user$project$Leader$upgradable = function (m) {
+var _user$project$Roles_Leader$upgradable = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -12524,10 +12524,10 @@ var _user$project$Leader$upgradable = function (m) {
 			},
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc1', _user$project$Leader$encounters),
-				A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc2', _user$project$Leader$encounters))));
+				A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc1', _user$project$Roles_Leader$encounters),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'leader-enc2', _user$project$Roles_Leader$encounters))));
 };
-var _user$project$Leader$forms = function (m) {
+var _user$project$Roles_Leader$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -12540,14 +12540,14 @@ var _user$project$Leader$forms = function (m) {
 					_user$project$PowerUtilities$atLevel,
 					m,
 					2,
-					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'leader-enc1', _user$project$Leader$encounters)),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'leader-enc1', _user$project$Roles_Leader$encounters)),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						6,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'leader-enc2', _user$project$Leader$encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'leader-enc2', _user$project$Roles_Leader$encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
@@ -12557,11 +12557,11 @@ var _user$project$Leader$forms = function (m) {
 								name: 'Upgrade:',
 								del: false,
 								key: 'leader-upgrade',
-								choices: _user$project$Leader$upgradable(m)
+								choices: _user$project$Roles_Leader$upgradable(m)
 							})))))
 		]);
 };
-var _user$project$Leader$boosts = function (m) {
+var _user$project$Roles_Leader$boosts = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A9(
@@ -12590,7 +12590,7 @@ var _user$project$Leader$boosts = function (m) {
 			m)
 		]);
 };
-var _user$project$Leader$actionTrigger = function (m) {
+var _user$project$Roles_Leader$actionTrigger = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		6) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12601,29 +12601,29 @@ var _user$project$Leader$actionTrigger = function (m) {
 			A8(_user$project$PowerUtilities$quickPower, 'Try harder!', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
 		]);
 };
-var _user$project$Leader$powers = function (m) {
+var _user$project$Roles_Leader$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Leader$boosts(m),
+		_user$project$Roles_Leader$boosts(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Leader$actionTrigger(m),
+			_user$project$Roles_Leader$actionTrigger(m),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				A3(
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					2,
-					_user$project$Leader$l2encchosen(m)),
+					_user$project$Roles_Leader$l2encchosen(m)),
 				A3(
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					6,
-					_user$project$Leader$l6encchosen(m)))));
+					_user$project$Roles_Leader$l6encchosen(m)))));
 };
-var _user$project$Leader$roleLeader = {name: 'Leader', rolePowerList: _user$project$Leader$powers, roleForms: _user$project$Leader$forms};
+var _user$project$Roles_Leader$roleLeader = {name: 'Leader', rolePowerList: _user$project$Roles_Leader$powers, roleForms: _user$project$Roles_Leader$forms};
 
-var _user$project$Defender$upgraded = F2(
+var _user$project$Roles_Defender$upgraded = F2(
 	function (x, m) {
 		var _p0 = x;
 		switch (_p0) {
@@ -12652,7 +12652,7 @@ var _user$project$Defender$upgraded = F2(
 					[]);
 		}
 	});
-var _user$project$Defender$checkUpgrade = F2(
+var _user$project$Roles_Defender$checkUpgrade = F2(
 	function (m, p) {
 		if (_elm_lang$core$Native_Utils.cmp(
 			_user$project$ModelDB$getLevel(m),
@@ -12668,12 +12668,12 @@ var _user$project$Defender$checkUpgrade = F2(
 				if (_p2.ctor === 'Nothing') {
 					return p;
 				} else {
-					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Defender$upgraded, _p3.name, m) : p;
+					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Roles_Defender$upgraded, _p3.name, m) : p;
 				}
 			}
 		}
 	});
-var _user$project$Defender$encounters = function (m) {
+var _user$project$Roles_Defender$encounters = function (m) {
 	return A2(
 		_user$project$PowerUtilities$powerDict,
 		m,
@@ -12685,19 +12685,19 @@ var _user$project$Defender$encounters = function (m) {
 				A7(_user$project$PowerUtilities$quickPower, 'I\'ll Cover You!', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red)
 			]));
 };
-var _user$project$Defender$l2encchosen = function (m) {
+var _user$project$Roles_Defender$l2encchosen = function (m) {
 	return A2(
-		_user$project$Defender$checkUpgrade,
+		_user$project$Roles_Defender$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc1', _user$project$Defender$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc1', _user$project$Roles_Defender$encounters));
 };
-var _user$project$Defender$l6encchosen = function (m) {
+var _user$project$Roles_Defender$l6encchosen = function (m) {
 	return A2(
-		_user$project$Defender$checkUpgrade,
+		_user$project$Roles_Defender$checkUpgrade,
 		m,
-		A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc2', _user$project$Defender$encounters));
+		A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc2', _user$project$Roles_Defender$encounters));
 };
-var _user$project$Defender$upgradable = function (m) {
+var _user$project$Roles_Defender$upgradable = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -12709,10 +12709,10 @@ var _user$project$Defender$upgradable = function (m) {
 			},
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc1', _user$project$Defender$encounters),
-				A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc2', _user$project$Defender$encounters))));
+				A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc1', _user$project$Roles_Defender$encounters),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'defender-enc2', _user$project$Roles_Defender$encounters))));
 };
-var _user$project$Defender$forms = function (m) {
+var _user$project$Roles_Defender$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
 			A3(
@@ -12725,14 +12725,14 @@ var _user$project$Defender$forms = function (m) {
 					_user$project$PowerUtilities$atLevel,
 					m,
 					2,
-					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'defender-enc1', _user$project$Defender$encounters)),
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'defender-enc1', _user$project$Roles_Defender$encounters)),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
 						6,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'defender-enc2', _user$project$Defender$encounters)),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'defender-enc2', _user$project$Roles_Defender$encounters)),
 					A3(
 						_user$project$PowerUtilities$atLevel,
 						m,
@@ -12742,11 +12742,11 @@ var _user$project$Defender$forms = function (m) {
 								name: 'Upgrade:',
 								del: false,
 								key: 'defender-upgrade',
-								choices: _user$project$Defender$upgradable(m)
+								choices: _user$project$Roles_Defender$upgradable(m)
 							})))))
 		]);
 };
-var _user$project$Defender$actionTrigger = function (m) {
+var _user$project$Roles_Defender$actionTrigger = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		6) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12757,7 +12757,7 @@ var _user$project$Defender$actionTrigger = function (m) {
 			A8(_user$project$PowerUtilities$quickPower, 'THIS is a punch!', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
 		]);
 };
-var _user$project$Defender$stickyBoost = function (m) {
+var _user$project$Roles_Defender$stickyBoost = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		4) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12773,7 +12773,7 @@ var _user$project$Defender$stickyBoost = function (m) {
 			A2(_user$project$PowerUtilities$quickSpecial, 'Super Stickiness Boost', m)
 		]));
 };
-var _user$project$Defender$defenseBoost = function (m) {
+var _user$project$Roles_Defender$defenseBoost = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
 		4) < 0) ? _elm_lang$core$Native_List.fromArray(
@@ -12789,13 +12789,13 @@ var _user$project$Defender$defenseBoost = function (m) {
 			A2(_user$project$PowerUtilities$quickSpecial, 'Super Defense Boost', m)
 		]));
 };
-var _user$project$Defender$boosts = function (m) {
+var _user$project$Roles_Defender$boosts = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Defender$defenseBoost(m),
+		_user$project$Roles_Defender$defenseBoost(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Defender$stickyBoost(m),
+			_user$project$Roles_Defender$stickyBoost(m),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					A9(
@@ -12812,27 +12812,447 @@ var _user$project$Defender$boosts = function (m) {
 					m)
 				])));
 };
-var _user$project$Defender$powers = function (m) {
+var _user$project$Roles_Defender$powers = function (m) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		_user$project$Defender$boosts(m),
+		_user$project$Roles_Defender$boosts(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Defender$actionTrigger(m),
+			_user$project$Roles_Defender$actionTrigger(m),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				A3(
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					2,
-					_user$project$Defender$l2encchosen(m)),
+					_user$project$Roles_Defender$l2encchosen(m)),
 				A3(
 					_user$project$PowerUtilities$atLevelList,
 					m,
 					6,
-					_user$project$Defender$l6encchosen(m)))));
+					_user$project$Roles_Defender$l6encchosen(m)))));
 };
-var _user$project$Defender$roleDefender = {name: 'Defender', rolePowerList: _user$project$Defender$powers, roleForms: _user$project$Defender$forms};
+var _user$project$Roles_Defender$roleDefender = {name: 'Defender', rolePowerList: _user$project$Roles_Defender$powers, roleForms: _user$project$Roles_Defender$forms};
+
+var _user$project$Roles_Controller$upgraded = F2(
+	function (x, m) {
+		var _p0 = x;
+		switch (_p0) {
+			case 'Save or Suck':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'Save or Die', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'Stand Still':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'All Tied Up', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'Battlefield Repositioning':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'Warzone Repositioning', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 10, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'Flash':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'Solarbeam', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			default:
+				return _elm_lang$core$Native_List.fromArray(
+					[]);
+		}
+	});
+var _user$project$Roles_Controller$checkUpgrade = F2(
+	function (m, p) {
+		if (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			10) < 0) {
+			return p;
+		} else {
+			var _p1 = _elm_lang$core$List$head(p);
+			if (_p1.ctor === 'Nothing') {
+				return p;
+			} else {
+				var _p3 = _p1._0;
+				var _p2 = A2(_user$project$ModelDB$getResponse, m, 'controller-upgrade');
+				if (_p2.ctor === 'Nothing') {
+					return p;
+				} else {
+					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Roles_Controller$upgraded, _p3.name, m) : p;
+				}
+			}
+		}
+	});
+var _user$project$Roles_Controller$encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'Save or Suck', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red),
+				A7(_user$project$PowerUtilities$quickPower, 'Stand Still', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red),
+				A7(_user$project$PowerUtilities$quickPower, 'Battlefield Repositioning', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 5, 0, _user$project$ModelDB$Red),
+				A7(_user$project$PowerUtilities$quickPower, 'Flash', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 10, 0, 0, _user$project$ModelDB$Red)
+			]));
+};
+var _user$project$Roles_Controller$l2encchosen = function (m) {
+	return A2(
+		_user$project$Roles_Controller$checkUpgrade,
+		m,
+		A3(_user$project$PowerUtilities$powerlookup, m, 'controller-enc1', _user$project$Roles_Controller$encounters));
+};
+var _user$project$Roles_Controller$l6encchosen = function (m) {
+	return A2(
+		_user$project$Roles_Controller$checkUpgrade,
+		m,
+		A3(_user$project$PowerUtilities$powerlookup, m, 'controller-enc2', _user$project$Roles_Controller$encounters));
+};
+var _user$project$Roles_Controller$upgradable = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			['']),
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.name;
+			},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(_user$project$PowerUtilities$powerlookup, m, 'controller-enc1', _user$project$Roles_Controller$encounters),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'controller-enc2', _user$project$Roles_Controller$encounters))));
+};
+var _user$project$Roles_Controller$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Controller',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_user$project$PowerUtilities$atLevel,
+					m,
+					2,
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'controller-enc1', _user$project$Roles_Controller$encounters)),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						6,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'controller-enc2', _user$project$Roles_Controller$encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						10,
+						_user$project$FormsModel$DropdownField(
+							{
+								name: 'Upgrade:',
+								del: false,
+								key: 'controller-upgrade',
+								choices: _user$project$Roles_Controller$upgradable(m)
+							})))))
+		]);
+};
+var _user$project$Roles_Controller$actionTrigger = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		6) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A8(_user$project$PowerUtilities$quickPower, 'Freeze!', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
+		]) : _elm_lang$core$Native_List.fromArray(
+		[
+			A8(_user$project$PowerUtilities$quickPower, 'Slide!', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
+		]);
+};
+var _user$project$Roles_Controller$sapStrength = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Sap Strength',
+			_user$project$ModelDB$RoleSlot,
+			_user$project$ModelDB$AtWill,
+			5,
+			0,
+			0,
+			_user$project$ModelDB$Blue,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 4, 8]),
+			m)
+		]);
+};
+var _user$project$Roles_Controller$controlBoost = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		4) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Control Boost', m)
+		]) : ((_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		8) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Improved Control Boost', m)
+		]) : _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Super Control Boost', m)
+		]));
+};
+var _user$project$Roles_Controller$boosts = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Roles_Controller$controlBoost(m),
+		_user$project$Roles_Controller$sapStrength(m));
+};
+var _user$project$Roles_Controller$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Roles_Controller$boosts(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Roles_Controller$actionTrigger(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_user$project$PowerUtilities$atLevelList,
+					m,
+					2,
+					_user$project$Roles_Controller$l2encchosen(m)),
+				A3(
+					_user$project$PowerUtilities$atLevelList,
+					m,
+					6,
+					_user$project$Roles_Controller$l6encchosen(m)))));
+};
+var _user$project$Roles_Controller$roleController = {name: 'Controller', rolePowerList: _user$project$Roles_Controller$powers, roleForms: _user$project$Roles_Controller$forms};
+
+var _user$project$Roles_Blaster$upgraded = F2(
+	function (x, m) {
+		var _p0 = x;
+		switch (_p0) {
+			case 'That Wasn\'t There Before':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'Where Did He Come From?', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'Like Maple Syrup':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'Like Concrete', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 10, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'The Friend Zone':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'The Friends with Benefits Zone', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			case 'The Not So Friendly Zone':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A8(_user$project$PowerUtilities$quickPower, 'The Downright Unfriendly Zone', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red, m)
+					]);
+			default:
+				return _elm_lang$core$Native_List.fromArray(
+					[]);
+		}
+	});
+var _user$project$Roles_Blaster$checkUpgrade = F2(
+	function (m, p) {
+		if (_elm_lang$core$Native_Utils.cmp(
+			_user$project$ModelDB$getLevel(m),
+			10) < 0) {
+			return p;
+		} else {
+			var _p1 = _elm_lang$core$List$head(p);
+			if (_p1.ctor === 'Nothing') {
+				return p;
+			} else {
+				var _p3 = _p1._0;
+				var _p2 = A2(_user$project$ModelDB$getResponse, m, 'blaster-upgrade');
+				if (_p2.ctor === 'Nothing') {
+					return p;
+				} else {
+					return _elm_lang$core$Native_Utils.eq(_p2._0, _p3.name) ? A2(_user$project$Roles_Blaster$upgraded, _p3.name, m) : p;
+				}
+			}
+		}
+	});
+var _user$project$Roles_Blaster$encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'That Wasn\'t There Before', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red),
+				A7(_user$project$PowerUtilities$quickPower, 'Like Maple Syrup', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 10, 0, _user$project$ModelDB$Red),
+				A7(_user$project$PowerUtilities$quickPower, 'The Friend Zone', _user$project$ModelDB$RoleSlot, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Red),
+				A8(
+				_user$project$PowerUtilities$levelTextPower,
+				'The Not So Friendly Zone',
+				_user$project$ModelDB$RoleSlot,
+				_user$project$ModelDB$Encounter,
+				0,
+				0,
+				0,
+				_user$project$ModelDB$Red,
+				_elm_lang$core$Native_List.fromArray(
+					[1, 6]))
+			]));
+};
+var _user$project$Roles_Blaster$l2encchosen = function (m) {
+	return A2(
+		_user$project$Roles_Blaster$checkUpgrade,
+		m,
+		A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc1', _user$project$Roles_Blaster$encounters));
+};
+var _user$project$Roles_Blaster$l6encchosen = function (m) {
+	return A2(
+		_user$project$Roles_Blaster$checkUpgrade,
+		m,
+		A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc2', _user$project$Roles_Blaster$encounters));
+};
+var _user$project$Roles_Blaster$upgradable = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			['']),
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.name;
+			},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc1', _user$project$Roles_Blaster$encounters),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc2', _user$project$Roles_Blaster$encounters))));
+};
+var _user$project$Roles_Blaster$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Blaster',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_user$project$PowerUtilities$atLevel,
+					m,
+					2,
+					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc1', _user$project$Roles_Blaster$encounters)),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						6,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc2', _user$project$Roles_Blaster$encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						10,
+						_user$project$FormsModel$DropdownField(
+							{
+								name: 'Upgrade:',
+								del: false,
+								key: 'blaster-upgrade',
+								choices: _user$project$Roles_Blaster$upgradable(m)
+							})))))
+		]);
+};
+var _user$project$Roles_Blaster$actionTrigger = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		6) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A8(_user$project$PowerUtilities$quickPower, 'Consistent Attack', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
+		]) : _elm_lang$core$Native_List.fromArray(
+		[
+			A8(_user$project$PowerUtilities$quickPower, 'Dependable', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Yellow, m)
+		]);
+};
+var _user$project$Roles_Blaster$terrain = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Terrain',
+			_user$project$ModelDB$RoleSlot,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			0,
+			_user$project$ModelDB$Blue,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 4, 8]),
+			m)
+		]);
+};
+var _user$project$Roles_Blaster$precision = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A9(
+			_user$project$PowerUtilities$levelTextPower,
+			'Precision',
+			_user$project$ModelDB$RoleSlot,
+			_user$project$ModelDB$AtWill,
+			0,
+			0,
+			0,
+			_user$project$ModelDB$Blue,
+			_elm_lang$core$Native_List.fromArray(
+				[1, 4, 8]),
+			m)
+		]);
+};
+var _user$project$Roles_Blaster$multiBoost = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		4) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Multitarget Boost', m)
+		]) : ((_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		8) < 0) ? _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Improved Multitarget Boost', m)
+		]) : _elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$PowerUtilities$quickSpecial, 'Super Multitarget Boost', m)
+		]));
+};
+var _user$project$Roles_Blaster$boosts = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Roles_Blaster$multiBoost(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Roles_Blaster$precision(m),
+			_user$project$Roles_Blaster$terrain(m)));
+};
+var _user$project$Roles_Blaster$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Roles_Blaster$boosts(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Roles_Blaster$actionTrigger(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(
+					_user$project$PowerUtilities$atLevelList,
+					m,
+					2,
+					_user$project$Roles_Blaster$l2encchosen(m)),
+				A3(
+					_user$project$PowerUtilities$atLevelList,
+					m,
+					6,
+					_user$project$Roles_Blaster$l6encchosen(m)))));
+};
+var _user$project$Roles_Blaster$roleBlaster = {name: 'Blaster', rolePowerList: _user$project$Roles_Blaster$powers, roleForms: _user$project$Roles_Blaster$forms};
 
 var _user$project$TacticalModel$nullPowerModifier = F2(
 	function (_p0, p) {
@@ -12842,9 +13262,11 @@ var _user$project$TacticalModel$pAssess = {name: 'Assess', text: 'Roll a die and
 var _user$project$TacticalModel$roles = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			{ctor: '_Tuple2', _0: 'Defender', _1: _user$project$Defender$roleDefender},
-			{ctor: '_Tuple2', _0: 'Leader', _1: _user$project$Leader$roleLeader},
-			{ctor: '_Tuple2', _0: 'Striker', _1: _user$project$Striker$roleStriker}
+			{ctor: '_Tuple2', _0: 'Defender', _1: _user$project$Roles_Defender$roleDefender},
+			{ctor: '_Tuple2', _0: 'Leader', _1: _user$project$Roles_Leader$roleLeader},
+			{ctor: '_Tuple2', _0: 'Striker', _1: _user$project$Roles_Striker$roleStriker},
+			{ctor: '_Tuple2', _0: 'Controller', _1: _user$project$Roles_Controller$roleController},
+			{ctor: '_Tuple2', _0: 'Blaster', _1: _user$project$Roles_Blaster$roleBlaster}
 		]));
 var _user$project$TacticalModel$rolePowers = function (m) {
 	return A6(
@@ -12863,13 +13285,13 @@ var _user$project$TacticalModel$rolePowers = function (m) {
 var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Archer$classArcher},
-			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Duelist$classDuelist},
-			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$MartialArtist$classMA},
-			{ctor: '_Tuple2', _0: 'Magician', _1: _user$project$Magician$classMagician},
-			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Necromancer$classNecro},
-			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Simplified$classSimplified},
-			{ctor: '_Tuple2', _0: 'Warlord', _1: _user$project$Warlord$classWarlord}
+			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Classes_Archer$classArcher},
+			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Classes_Duelist$classDuelist},
+			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$Classes_MartialArtist$classMA},
+			{ctor: '_Tuple2', _0: 'Magician', _1: _user$project$Classes_Magician$classMagician},
+			{ctor: '_Tuple2', _0: 'Necromancer', _1: _user$project$Classes_Necromancer$classNecro},
+			{ctor: '_Tuple2', _0: 'Simplified', _1: _user$project$Classes_Simplified$classSimplified},
+			{ctor: '_Tuple2', _0: 'Warlord', _1: _user$project$Classes_Warlord$classWarlord}
 		]));
 var _user$project$TacticalModel$applyClassModifier = F3(
 	function (m, extractor, value) {
