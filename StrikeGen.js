@@ -12167,6 +12167,306 @@ var _user$project$Classes_Magician$classMagician = {
 	modifyCharge: _elm_lang$core$Maybe$Nothing
 };
 
+var _user$project$Classes_Bombardier$l7encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'Invigorating Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Flattening Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Flash Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Big Kaboom', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple)
+			]));
+};
+var _user$project$Classes_Bombardier$l7echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-enc7', _user$project$Classes_Bombardier$l7encounters);
+};
+var _user$project$Classes_Bombardier$l3encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'Healing Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Icky Sticky Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Weakening Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Concussive Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Getaway Bomb', _user$project$ModelDB$Reaction, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple)
+			]));
+};
+var _user$project$Classes_Bombardier$l3echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-enc3', _user$project$Classes_Bombardier$l3encounters);
+};
+var _user$project$Classes_Bombardier$l1encounters = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'Energizing Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Smoke Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple),
+				A7(_user$project$PowerUtilities$quickPower, 'Sticky Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$Encounter, 0, 0, 0, _user$project$ModelDB$Purple)
+			]));
+};
+var _user$project$Classes_Bombardier$l1echosen = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-enc1', _user$project$Classes_Bombardier$l1encounters);
+};
+var _user$project$Classes_Bombardier$l1atwills = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A7(_user$project$PowerUtilities$quickPower, 'Kaboom', _user$project$ModelDB$Misc, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+				A7(_user$project$PowerUtilities$quickPower, 'Sonic Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+				A7(_user$project$PowerUtilities$quickPower, 'Toxic Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+				A7(_user$project$PowerUtilities$quickPower, 'Slime Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green),
+				A7(_user$project$PowerUtilities$quickPower, 'Hot Bomb', _user$project$ModelDB$Misc, _user$project$ModelDB$AtWill, 0, 0, 0, _user$project$ModelDB$Green)
+			]));
+};
+var _user$project$Classes_Bombardier$lastingBlasting = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Lasting Blasting',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 9]));
+var _user$project$Classes_Bombardier$misfire = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Misfire!',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5]));
+var _user$project$Classes_Bombardier$shapeCone = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Shaped Blasts (Cone)',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5]));
+var _user$project$Classes_Bombardier$shapeCross = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Shaped Blasts (Cross)',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5]));
+var _user$project$Classes_Bombardier$shapeRing = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Shaped Blasts (Ring)',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5]));
+var _user$project$Classes_Bombardier$shapeSquare = A2(
+	_user$project$PowerUtilities$levelTextSpecial,
+	'Shaped Blasts (Square)',
+	_elm_lang$core$Native_List.fromArray(
+		[1, 5]));
+var _user$project$Classes_Bombardier$shapechoice = function (m) {
+	return _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Square',
+				_1: _user$project$Classes_Bombardier$shapeSquare(m)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Ring',
+				_1: _user$project$Classes_Bombardier$shapeRing(m)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Cross',
+				_1: _user$project$Classes_Bombardier$shapeCross(m)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Cone',
+				_1: _user$project$Classes_Bombardier$shapeCone(m)
+			}
+			]));
+};
+var _user$project$Classes_Bombardier$cshapes = function (m) {
+	var _p0 = A2(_user$project$ModelDB$getResponse, m, 'basics-role');
+	if ((_p0.ctor === 'Just') && (_p0._0 === 'Blaster')) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Classes_Bombardier$misfire(m),
+				_user$project$Classes_Bombardier$shapeSquare(m),
+				_user$project$Classes_Bombardier$shapeRing(m),
+				_user$project$Classes_Bombardier$shapeCross(m),
+				_user$project$Classes_Bombardier$shapeCone(m)
+			]);
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$Classes_Bombardier$misfire(m)
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-shape1', _user$project$Classes_Bombardier$shapechoice),
+				A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-shape2', _user$project$Classes_Bombardier$shapechoice)));
+	}
+};
+var _user$project$Classes_Bombardier$atWillDamage = function (m) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_user$project$ModelDB$getLevel(m),
+		5) < 0) ? 2 : 3;
+};
+var _user$project$Classes_Bombardier$modifyBasicMelee = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Classes_Bombardier$atWillDamage(m)
+			});
+	});
+var _user$project$Classes_Bombardier$modifyBasicRange = F2(
+	function (m, p) {
+		return _elm_lang$core$Native_Utils.update(
+			p,
+			{
+				damage: _user$project$Classes_Bombardier$atWillDamage(m)
+			});
+	});
+var _user$project$Classes_Bombardier$slowBurn = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Delayed Fuse',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		10,
+		0,
+		_user$project$Classes_Bombardier$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 9]),
+		m);
+};
+var _user$project$Classes_Bombardier$bomberman = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Bombing Run',
+		_user$project$ModelDB$Attack,
+		_user$project$ModelDB$AtWill,
+		10,
+		0,
+		_user$project$Classes_Bombardier$atWillDamage(m),
+		_user$project$ModelDB$Green,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 9]),
+		m);
+};
+var _user$project$Classes_Bombardier$specials = function (m) {
+	return _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Lasting Blasting',
+				_1: _user$project$Classes_Bombardier$lastingBlasting(m)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Slow Burn',
+				_1: _user$project$Classes_Bombardier$slowBurn(m)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Bomberman',
+				_1: _user$project$Classes_Bombardier$bomberman(m)
+			}
+			]));
+};
+var _user$project$Classes_Bombardier$cspecial = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-feature', _user$project$Classes_Bombardier$specials);
+};
+var _user$project$Classes_Bombardier$forms = function (m) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Bombardier',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Shape:', 'bombard-shape1', _user$project$Classes_Bombardier$shapechoice),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Shape:', 'bombard-shape2', _user$project$Classes_Bombardier$shapechoice),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Type:', 'bombard-feature', _user$project$Classes_Bombardier$specials),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'bombard-aw1', _user$project$Classes_Bombardier$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'At-Will:', 'bombard-aw2', _user$project$Classes_Bombardier$l1atwills),
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'bombard-enc1', _user$project$Classes_Bombardier$l1encounters)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						3,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'bombard-enc3', _user$project$Classes_Bombardier$l3encounters)),
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						7,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'bombard-enc7', _user$project$Classes_Bombardier$l7encounters)))))
+		]);
+};
+var _user$project$Classes_Bombardier$l1awchosen = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A8(
+				_user$project$PowerUtilities$quickPower,
+				'Grenade',
+				_user$project$ModelDB$Attack,
+				_user$project$ModelDB$AtWill,
+				10,
+				0,
+				_user$project$Classes_Bombardier$atWillDamage(m),
+				_user$project$ModelDB$Green,
+				m)
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-aw1', _user$project$Classes_Bombardier$l1atwills),
+			A3(_user$project$PowerUtilities$powerlookup, m, 'bombard-aw2', _user$project$Classes_Bombardier$l1atwills)));
+};
+var _user$project$Classes_Bombardier$powers = function (m) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$Classes_Bombardier$cspecial(m),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$Classes_Bombardier$cshapes(m),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Classes_Bombardier$l1awchosen(m),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_user$project$Classes_Bombardier$l1echosen(m),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						A3(
+							_user$project$PowerUtilities$atLevelList,
+							m,
+							3,
+							_user$project$Classes_Bombardier$l3echosen(m)),
+						A3(
+							_user$project$PowerUtilities$atLevelList,
+							m,
+							7,
+							_user$project$Classes_Bombardier$l7echosen(m)))))));
+};
+var _user$project$Classes_Bombardier$classBombardier = {
+	name: 'Bombardier',
+	classPowerList: _user$project$Classes_Bombardier$powers,
+	classForms: _user$project$Classes_Bombardier$forms,
+	modifyBasicMelee: _elm_lang$core$Maybe$Just(_user$project$Classes_Bombardier$modifyBasicMelee),
+	modifyBasicRange: _elm_lang$core$Maybe$Just(_user$project$Classes_Bombardier$modifyBasicRange),
+	modifyRally: _elm_lang$core$Maybe$Nothing,
+	modifyCharge: _elm_lang$core$Maybe$Nothing
+};
+
 var _user$project$Roles_Striker$upgraded = F2(
 	function (x, m) {
 		var _p0 = x;
@@ -13207,6 +13507,18 @@ var _user$project$Roles_Blaster$precision = function (m) {
 			m)
 		]);
 };
+var _user$project$Roles_Blaster$blasterBombardier = function (m) {
+	var _p4 = A2(_user$project$ModelDB$getResponse, m, 'basics-class');
+	if ((_p4.ctor === 'Just') && (_p4._0 === 'Bombardier')) {
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				A2(_user$project$PowerUtilities$quickSpecial, 'Blaster Bombardier', m)
+			]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	}
+};
 var _user$project$Roles_Blaster$multiBoost = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
@@ -13230,7 +13542,10 @@ var _user$project$Roles_Blaster$boosts = function (m) {
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_user$project$Roles_Blaster$precision(m),
-			_user$project$Roles_Blaster$terrain(m)));
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Roles_Blaster$terrain(m),
+				_user$project$Roles_Blaster$blasterBombardier(m))));
 };
 var _user$project$Roles_Blaster$powers = function (m) {
 	return A2(
@@ -13262,11 +13577,11 @@ var _user$project$TacticalModel$pAssess = {name: 'Assess', text: 'Roll a die and
 var _user$project$TacticalModel$roles = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
+			{ctor: '_Tuple2', _0: 'Blaster', _1: _user$project$Roles_Blaster$roleBlaster},
+			{ctor: '_Tuple2', _0: 'Controller', _1: _user$project$Roles_Controller$roleController},
 			{ctor: '_Tuple2', _0: 'Defender', _1: _user$project$Roles_Defender$roleDefender},
 			{ctor: '_Tuple2', _0: 'Leader', _1: _user$project$Roles_Leader$roleLeader},
-			{ctor: '_Tuple2', _0: 'Striker', _1: _user$project$Roles_Striker$roleStriker},
-			{ctor: '_Tuple2', _0: 'Controller', _1: _user$project$Roles_Controller$roleController},
-			{ctor: '_Tuple2', _0: 'Blaster', _1: _user$project$Roles_Blaster$roleBlaster}
+			{ctor: '_Tuple2', _0: 'Striker', _1: _user$project$Roles_Striker$roleStriker}
 		]));
 var _user$project$TacticalModel$rolePowers = function (m) {
 	return A6(
@@ -13286,6 +13601,7 @@ var _user$project$TacticalModel$classes = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
 			{ctor: '_Tuple2', _0: 'Archer', _1: _user$project$Classes_Archer$classArcher},
+			{ctor: '_Tuple2', _0: 'Bombardier', _1: _user$project$Classes_Bombardier$classBombardier},
 			{ctor: '_Tuple2', _0: 'Duelist', _1: _user$project$Classes_Duelist$classDuelist},
 			{ctor: '_Tuple2', _0: 'Martial Artist', _1: _user$project$Classes_MartialArtist$classMA},
 			{ctor: '_Tuple2', _0: 'Magician', _1: _user$project$Classes_Magician$classMagician},
@@ -13822,8 +14138,8 @@ var _user$project$CharModel$closeGaps$ = F4(
 						return _elm_lang$core$Native_Utils.crashCase(
 							'CharModel',
 							{
-								start: {line: 262, column: 20},
-								end: {line: 264, column: 163}
+								start: {line: 258, column: 20},
+								end: {line: 260, column: 163}
 							},
 							_p21)(
 							A2(
@@ -13862,8 +14178,8 @@ var _user$project$CharModel$updateDeleteField = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'CharModel',
 					{
-						start: {line: 280, column: 28},
-						end: {line: 282, column: 63}
+						start: {line: 276, column: 28},
+						end: {line: 278, column: 63}
 					},
 					_p23)('RemoveResponse didn\'t work!???');
 			}
@@ -13875,8 +14191,8 @@ var _user$project$CharModel$updateDeleteField = F2(
 				return _elm_lang$core$Native_Utils.crashCase(
 					'CharModel',
 					{
-						start: {line: 274, column: 26},
-						end: {line: 276, column: 18}
+						start: {line: 270, column: 26},
+						end: {line: 272, column: 18}
 					},
 					_p25)('Missing hyphen in expandable form deletion process');
 			} else {
