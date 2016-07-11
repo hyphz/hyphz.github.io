@@ -13853,40 +13853,6 @@ var _user$project$Roles_Blaster$upgradable = function (m) {
 				A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc1', _user$project$Roles_Blaster$encounters),
 				A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-enc2', _user$project$Roles_Blaster$encounters))));
 };
-var _user$project$Roles_Blaster$forms = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			A3(
-			_user$project$FormsModel$Form,
-			false,
-			'Blaster',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A3(
-					_user$project$PowerUtilities$atLevel,
-					m,
-					2,
-					A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc1', _user$project$Roles_Blaster$encounters)),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					A3(
-						_user$project$PowerUtilities$atLevel,
-						m,
-						6,
-						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc2', _user$project$Roles_Blaster$encounters)),
-					A3(
-						_user$project$PowerUtilities$atLevel,
-						m,
-						10,
-						_user$project$FormsModel$DropdownField(
-							{
-								name: 'Upgrade:',
-								del: false,
-								key: 'blaster-upgrade',
-								choices: _user$project$Roles_Blaster$upgradable(m)
-							})))))
-		]);
-};
 var _user$project$Roles_Blaster$actionTrigger = function (m) {
 	return (_elm_lang$core$Native_Utils.cmp(
 		_user$project$ModelDB$getLevel(m),
@@ -13899,37 +13865,81 @@ var _user$project$Roles_Blaster$actionTrigger = function (m) {
 		]);
 };
 var _user$project$Roles_Blaster$terrain = function (m) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			A9(
-			_user$project$PowerUtilities$levelTextPower,
-			'Terrain',
-			_user$project$ModelDB$RoleSlot,
-			_user$project$ModelDB$AtWill,
-			0,
-			0,
-			0,
-			_user$project$ModelDB$Blue,
-			_elm_lang$core$Native_List.fromArray(
-				[1, 4, 8]),
-			m)
-		]);
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Terrain',
+		_user$project$ModelDB$RoleSlot,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		0,
+		_user$project$ModelDB$Blue,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 4, 8]),
+		m);
 };
 var _user$project$Roles_Blaster$precision = function (m) {
+	return A9(
+		_user$project$PowerUtilities$levelTextPower,
+		'Precision',
+		_user$project$ModelDB$RoleSlot,
+		_user$project$ModelDB$AtWill,
+		0,
+		0,
+		0,
+		_user$project$ModelDB$Blue,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 4, 8]),
+		m);
+};
+var _user$project$Roles_Blaster$boostchoices = function (m) {
+	return A2(
+		_user$project$PowerUtilities$powerDict,
+		m,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Roles_Blaster$precision, _user$project$Roles_Blaster$terrain]));
+};
+var _user$project$Roles_Blaster$cboost = function (m) {
+	return A3(_user$project$PowerUtilities$powerlookup, m, 'blaster-boost', _user$project$Roles_Blaster$boostchoices);
+};
+var _user$project$Roles_Blaster$forms = function (m) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
-			A9(
-			_user$project$PowerUtilities$levelTextPower,
-			'Precision',
-			_user$project$ModelDB$RoleSlot,
-			_user$project$ModelDB$AtWill,
-			0,
-			0,
-			0,
-			_user$project$ModelDB$Blue,
-			_elm_lang$core$Native_List.fromArray(
-				[1, 4, 8]),
-			m)
+			A3(
+			_user$project$FormsModel$Form,
+			false,
+			'Blaster',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Boost:', 'blaster-boost', _user$project$Roles_Blaster$boostchoices)
+					]),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_user$project$PowerUtilities$atLevel,
+						m,
+						2,
+						A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc1', _user$project$Roles_Blaster$encounters)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						A3(
+							_user$project$PowerUtilities$atLevel,
+							m,
+							6,
+							A4(_user$project$PowerUtilities$powerChoiceField, m, 'Encounter:', 'blaster-enc2', _user$project$Roles_Blaster$encounters)),
+						A3(
+							_user$project$PowerUtilities$atLevel,
+							m,
+							10,
+							_user$project$FormsModel$DropdownField(
+								{
+									name: 'Upgrade:',
+									del: false,
+									key: 'blaster-upgrade',
+									choices: _user$project$Roles_Blaster$upgradable(m)
+								}))))))
 		]);
 };
 var _user$project$Roles_Blaster$blasterBombardier = function (m) {
@@ -13966,11 +13976,8 @@ var _user$project$Roles_Blaster$boosts = function (m) {
 		_user$project$Roles_Blaster$multiBoost(m),
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$Roles_Blaster$precision(m),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_user$project$Roles_Blaster$terrain(m),
-				_user$project$Roles_Blaster$blasterBombardier(m))));
+			_user$project$Roles_Blaster$cboost(m),
+			_user$project$Roles_Blaster$blasterBombardier(m)));
 };
 var _user$project$Roles_Blaster$powers = function (m) {
 	return A2(
